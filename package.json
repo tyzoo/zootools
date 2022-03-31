@@ -1,6 +1,6 @@
 {
   "name": "zootools",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Dcl SDK Library",
   "main": "./dist/index.js",
   "scripts": {
