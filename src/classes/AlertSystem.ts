@@ -41,7 +41,6 @@ export class AlertSystem {
 		this.recttext.fontSize = 15;
 		this.recttext.positionY = 25;
 		this.recttext.visible = true;
-
 		this.hideNotification();
 	}
 	new(
