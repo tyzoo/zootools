@@ -12,7 +12,7 @@ export function makeid(length: number): string {
 	return result;
 }
 
-export function randomInt(min:number, max: number) {
+export function randomInt(min:number, max: number): number {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -47,12 +47,12 @@ export function groupBy(array: any[], key: string){
 const NUMBER_FORMATTER = new Intl.NumberFormat(undefined);
 
 export function formatNumber(number:number){
-	NUMBER_FORMATTER.format(number);
+	return NUMBER_FORMATTER.format(number);
 }
 const COMPACT_NUMBER_FORMATTER = new Intl.NumberFormat(undefined, {
 	notation: "compact"
 } as Intl.NumberFormatOptions);
 
 export function formatCompactNumber(number:number){
-	COMPACT_NUMBER_FORMATTER.format(number);
+	return COMPACT_NUMBER_FORMATTER.format(number);
 }
