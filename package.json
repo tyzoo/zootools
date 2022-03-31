@@ -1,11 +1,12 @@
 {
   "name": "zootools",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Dcl SDK Library",
   "main": "./dist/index.js",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
-    "link": "npm link && rollup --watch -c --environment BUILD:production"
+    "link": "npm link && rollup --watch -c --environment BUILD:production",
+    "deploy": "npm run build && git add . && git commit -m \"deploy script\" && git push origin master && npm publish"
   },
   "typings": "./dist/index.d.ts",
   "decentralandLibrary": {
@@ -21,7 +22,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/$author/$name"
+    "url": "git+https://github.com/tyzoo/zootools"
   },
   "files": [
     "dist"
@@ -32,9 +33,10 @@
     "@rollup/plugin-typescript": "^8.3.1",
     "decentraland-ecs": "latest",
     "rollup": "^2.70.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-terser": "^7.0.2"
   },
-  "dependencies": {
+  "peerDependencies": {
     "dcldash": "^0.0.5"
   },
   "engines": {

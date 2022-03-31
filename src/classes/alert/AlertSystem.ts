@@ -1,7 +1,9 @@
 import { Dash_Wait as Wait } from "dcldash"
 
 @Component('AlertSystem')
-
+/**
+ * Create an alert system for your scene, and call alert.new() to make new notifications
+ */
 export class AlertSystem {
 	canvas: UICanvas = new UICanvas();
 	parent: UIContainerStack;
