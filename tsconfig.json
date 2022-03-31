@@ -1,0 +1,24 @@
+{
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "dist"
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "removeComments": true,
+    "declaration": true,
+    "declarationDir": ".",
+    "outDir": "dist",
+    "noLib": false,
+    "paths": {
+      "dcldash": [
+        "node_modules\\dcldash\\dist\\index.d.ts",
+        "node_modules/dcldash/dist/index.d.ts"
+      ]
+    },
+    "baseUrl": "."
+  },
+  "extends": "./node_modules/decentraland-ecs/types/tsconfig.json"
+}
