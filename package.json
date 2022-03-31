@@ -5,8 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
-    "link": "npm link && rollup --watch -c --environment BUILD:production",
-    "deploy": "npm run build && git add . && git commit -m \"deploy script\" && git push origin master && npm publish"
+    "link": "npm link && rollup --watch -c --environment BUILD:production"
   },
   "typings": "./dist/index.d.ts",
   "decentralandLibrary": {
