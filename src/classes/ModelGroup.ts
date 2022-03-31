@@ -2,7 +2,7 @@ import { makeid, Model } from 'src/index';
 
 declare const Set: any;
 
-export interface IModelProps {
+export interface IModelGroupProps {
 	host?: Entity;
 	name: string | string[];
 	path: string | string[];
@@ -12,7 +12,7 @@ export interface IModelProps {
 export class ModelGroup extends Entity {
 	public items: typeof Set = new Set();
 
-	constructor(private props: IModelProps) {
+	constructor(private props: IModelGroupProps) {
 		super();
 		this.addComponent(
 			new Transform({

@@ -2,8 +2,9 @@
 /**
  * Classes
  */
-export { Model } from './classes/Model'
-export { ModelGroup } from './classes/ModelGroup'
+export { Model, IModelProps } from './classes/Model'
+export { ModelGroup, IModelGroupProps } from './classes/ModelGroup'
+export { OnMove } from './classes/OnMove'
 export { AlertSystem } from './classes/AlertSystem'
 export { TransformGatherer } from './classes/TransformGatherer'
 

@@ -1,6 +1,6 @@
 import { makeid } from "src/index";
 
-export const defaultModelOptions = {
+const defaultModelOptions = {
 	useColliders: true,
 };
 
