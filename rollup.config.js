@@ -25,7 +25,7 @@ export default {
       preferBuiltins: false,
       browser: true
     }),
-    typescript({ tsconfig: './tsconfig.json' }),
+    typescript({ tsconfig: './tsconfig.json', sourceMap: false }),
     commonjs({
       exclude: 'node_modules',
       ignoreGlobal: true,
