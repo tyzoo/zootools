@@ -1,6 +1,6 @@
 {
   "name": "zootools",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Dcl SDK Library",
   "main": "./dist/index.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "rollup-plugin-terser": "^7.0.2"
   },
   "peerDependencies": {
-    "dcldash": "^0.0.5"
+    "dcldash": "^0.0.6-20220331200917.commit-86fd509"
   },
   "engines": {
     "node": ">=16.0.0",
