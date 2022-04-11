@@ -51,15 +51,15 @@ export class Booth extends Entity  {
 	  this.cylinder.getComponent(Material).emissiveColor = Color3.White();
 	  this.cylinder.getComponent(Material).emissiveIntensity = 1;
 	  this.cylinder.setParent(this)
-		  this.button.addComponent(new Transform({
+	  this.button.addComponent(new Transform({
 		position: new Vector3(0, -0.18, 0.12),
 		scale: new Vector3().setAll(1.25),
 		rotation: new Quaternion().setEuler(0,180,0)
 	  }))
-		  this.button.addComponent(new Animator())
-		  this.button.getComponent(Animator).addClip(new AnimationState("Button_Action", { looping: false }));
-		  this.button.addComponent(new GLTFShape(props.buttonModelPath))
-		  this.button.setParent(this)
+	  this.button.addComponent(new Animator())
+	  this.button.getComponent(Animator).addClip(new AnimationState("Button_Action", { looping: false }));
+	  this.button.addComponent(new GLTFShape(props.buttonModelPath))
+	  this.button.setParent(this)
 	  this.button.addComponent(new OnPointerDown(()=>{
 		props.onButtonClick();
 		this.button.getComponent(Animator).getClip('Button_Action').play();
