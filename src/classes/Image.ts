@@ -1,17 +1,12 @@
 export class Image extends Entity {
     url: string | null = null;
-    host: Entity;
     constructor(
-        host: Entity,
         transform: TransformConstructorArgs,
         imageUrl?: string,
         onClick?: OnPointerDown,
         private alpha?: boolean
     ) {
         super();
-        this.host = host;
-        this.setParent(host);
-
         this.addComponentOrReplace(
             new Transform({ rotation: Quaternion.Euler(0, 180, 180), ...transform })
         );
@@ -21,7 +16,6 @@ export class Image extends Entity {
         if (onClick) {
             this.addComponent(onClick);
         }
-        this.setParent(host);
     }
     setUrl(url: string): void {
         this.url = url;

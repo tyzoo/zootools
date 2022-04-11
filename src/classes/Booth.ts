@@ -2,6 +2,15 @@ import { RotateSystem } from "../systems/RotateSystem";
 import { makeid } from "../utils/index";
 import { Dash_UV_Image, Dash_Wait } from "dcldash";
 
+export interface IBoothProps {
+	transformArgs: TransformConstructorArgs, 
+	buttonText: string, 
+	onButtonClick: () => void,
+	wrapTexturePath: string, 
+	dispenserModelPath: string,
+	buttonModelPath: string,
+}
+
 export class Booth extends Entity  {
 	name = `${makeid(5)}`
 	booth = new Entity(`booth-${this.name}`);
@@ -12,17 +21,12 @@ export class Booth extends Entity  {
 	image: Entity | undefined;
 	item: Entity | undefined;
 	constructor(
-	  tf: TransformConstructorArgs, 
-	  buttonText: string, 
-	  onButtonClick: () => void,
-	  wrapTexturePath: string, 
-	  dispenserModelPath: string,
-	  buttonModelPath: string,
+	  props: IBoothProps
 	){
 	  super()
-	  this.wrapTexture = new Texture(wrapTexturePath)
-	  this.addComponent(new Transform(tf));
-	  this.booth.addComponent(new GLTFShape(dispenserModelPath));
+	  this.wrapTexture = new Texture(props.wrapTexturePath)
+	  this.addComponent(new Transform(props.transformArgs));
+	  this.booth.addComponent(new GLTFShape(props.dispenserModelPath));
 	  this.booth.getComponent(GLTFShape).isPointerBlocker = false;
 	  this.booth.addComponent(new Transform({
 		rotation: new Quaternion().setEuler(0,180,0)
@@ -47,16 +51,16 @@ export class Booth extends Entity  {
 	  }))
 		  this.button.addComponent(new Animator())
 		  this.button.getComponent(Animator).addClip(new AnimationState("Button_Action", { looping: false }));
-		  this.button.addComponent(new GLTFShape(buttonModelPath))
+		  this.button.addComponent(new GLTFShape(props.buttonModelPath))
 		  this.button.setParent(this)
 	  this.button.addComponent(new OnPointerDown(()=>{
-		onButtonClick();
+		props.onButtonClick();
 		this.button.getComponent(Animator).getClip('Button_Action').play();
 		Dash_Wait(()=>{
 		  this.button.getComponent(Animator).getClip('Button_Action').stop();
 		},1)
 	  }, {
-		hoverText: buttonText,
+		hoverText: props.buttonText,
 	  }))
 	  this.rotateSystem = new RotateSystem([],[this.cylinder]);
 	  engine.addSystem(this.rotateSystem)

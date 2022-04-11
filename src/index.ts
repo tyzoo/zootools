@@ -9,7 +9,7 @@ export { ModelGroup, IModelGroupProps } from './classes/ModelGroup'
 export { OnMove } from './classes/OnMove'
 export { AlertSystem } from './classes/AlertSystem'
 export { TransformGatherer } from './classes/TransformGatherer'
-export { Booth } from './classes/Booth'
+export { Booth, IBoothProps } from './classes/Booth'
 export { PersistUntil } from './classes/PersistUntil'
 export { Sound, SoundPlayer } from './classes/SoundPlayer'
 
