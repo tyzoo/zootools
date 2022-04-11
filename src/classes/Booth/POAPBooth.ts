@@ -39,19 +39,20 @@ export class POAPBooth extends Booth {
     access_token: string | null = null;
     secret_code: string | null = null;
     constructor(
-        private boothProps: Partial<IBoothProps>, 
+        boothProps: Partial<IBoothProps>, 
         private poapProps: Props,
-        private confirmCodeOptions: Partial<IConfirmCodeOptions>,
         private alertSystem: AlertSystem,
+        private confirmCodeOptions?: Partial<IConfirmCodeOptions>,
     ){
         super({
+            //Default booth props:
             transformArgs: {
                 position: new Vector3(8, 0, 8),
                 rotation: new Quaternion().setEuler(0,0,0),
             },
             buttonText: `Get Attendance Token`,
             onButtonClick: () => {
-                log('Claiming POAP')
+                this.mintPOAP();
             },
             wrapTexturePath: `poap_assets/images/wrap1.png`, 
             dispenserModelPath: `poap_assets/models/POAP_dispenser.glb`,
