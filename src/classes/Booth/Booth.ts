@@ -1,5 +1,5 @@
-import { RotateSystem } from "../systems/RotateSystem";
-import { makeid } from "../utils/index";
+import { RotateSystem } from "../../systems/RotateSystem";
+import { makeid } from "../../utils/index";
 import { Dash_UV_Image, Dash_Wait } from "dcldash";
 
 export interface IBoothProps {
