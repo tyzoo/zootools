@@ -12,6 +12,7 @@ export { TransformGatherer } from './classes/TransformGatherer'
 export { Booth, IBoothProps } from './classes/Booth/Booth'
 export { POAPBooth } from './classes/Booth/POAPBooth'
 export { WearableBooth } from './classes/Booth/WearableBooth'
+export { SignedFetchAPI } from './classes/SignedFetch'
 export { PersistUntil } from './classes/PersistUntil'
 export { Sound, SoundPlayer } from './classes/SoundPlayer'
 

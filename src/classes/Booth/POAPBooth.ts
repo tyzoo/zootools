@@ -1,7 +1,50 @@
+import { getCurrentRealm } from '@decentraland/EnvironmentAPI';
+import { AlertSystem } from "../AlertSystem";
+import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
+import { SignedFetchAPI } from "../SignedFetch";
 import { Booth, IBoothProps } from "./Booth"
+import { parse } from "../../utils/JWT"
+import { SoundPlayer } from '../SoundPlayer';
+import { ETHSigner } from '../EthSigner';
+import { getUserData, UserData } from '@decentraland/Identity';
+
+export type Props = {
+    booth_number: number;
+    property: string;
+    api_key: string;
+    event_id: number;
+    banner_url: string;
+};
+
+const soundPlayer = new SoundPlayer([
+    {
+        name: `openDialog`,
+        path: `poap_assets/sounds/navigationForward.mp3`
+    },
+    {
+        name: `closeDialog`,
+        path: `poap_assets/sounds/navigationBackward.mp3`
+    },
+    {
+        name: `coin`,
+        path: `poap_assets/sounds/star-collect.mp3`
+    },
+]);
 
 export class POAPBooth extends Booth {
-    constructor(props: Partial<IBoothProps>){
+    servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
+    claimsAPI = new SignedFetchAPI("https://claims.poap.cc/");
+    confirmCodeUI: ConfirmCodeUI;
+    lastClick: Date = new Date(new Date().getTime() - 5000);
+    ethSigner: ETHSigner
+    access_token: string | null = null;
+    secret_code: string | null = null;
+    constructor(
+        private boothProps: Partial<IBoothProps>, 
+        private poapProps: Props,
+        private confirmCodeOptions: Partial<IConfirmCodeOptions>,
+        private alertSystem: AlertSystem,
+    ){
         super({
             transformArgs: {
                 position: new Vector3(8, 0, 8),
@@ -14,7 +57,127 @@ export class POAPBooth extends Booth {
             wrapTexturePath: `poap_assets/images/wrap1.png`, 
             dispenserModelPath: `poap_assets/models/POAP_dispenser.glb`,
             buttonModelPath: `poap_assets/models/POAP_button.glb`,
-            ...props
+            ...boothProps
         })
+        this.ethSigner = new ETHSigner(this.alertSystem);
+        this.confirmCodeUI = new ConfirmCodeUI(
+            (secret:string)=>{
+                this.secret_code = secret;
+                executeTask(async ()=>{
+                    this.processPOAP(await getUserData())
+                })
+            },
+            this.confirmCodeOptions,
+            alertSystem
+        );
+    }
+    public async mintPOAP() {
+        if (!this.poapProps.event_id) return this.alertSystem.new('Missing Event ID', 1000);
+        let prevClick = this.lastClick;
+        this.lastClick = new Date();
+        if (prevClick.getTime() + 5000 > this.lastClick.getTime()) {
+            return;
+        }
+        const userData = await getUserData();
+        const name = userData?.displayName;
+        const address = userData?.userId;
+        const realm = (await getCurrentRealm())?.serverName;
+        const api_key = this.poapProps.api_key;
+        const property = this.poapProps.property;
+        let message: string | undefined;
+        let signature: string | undefined;
+        soundPlayer.playSound('openDialog');
+        executeTask(async () => {
+            try {
+                let params: any = { name, address, realm, api_key, property };
+                if (userData.hasConnectedWeb3)
+                    return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
+                if (signature && message) { params.signature = signature, params.message = message; }
+                let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.poapProps.event_id}`,params)
+                const { message: msg, success, data } = response;
+                if (msg) {
+                    if (success && data) {
+                        const { token } = data;                
+                        if (token) {
+                            this.access_token = token;
+                            const { hash, sig_required } = parse(token)
+                            if(sig_required){
+                                try {
+                                    const results = await this.ethSigner.signKeyValue({ address, realm, hash })
+                                    message = results.message;
+                                    signature = results.signature;
+                                }catch (err:any){ return log(`An error occured with ETH Signer:`, err); }        
+                            }
+                            if(hash){
+                                this.confirmCodeUI.setCaptcha(hash);
+                                this.confirmCodeUI.showUI();
+                            }else{
+                                this.processPOAP(userData);
+                            }
+                        }
+                    }else{
+                        this.alertSystem.new(msg, 5000);
+                    }
+                }
+            } catch (err: any) {
+                log('Failed to reach URL', err);
+                this.alertSystem.new('Failed to reach URL.', 1000);
+            }
+        });
+    }
+
+    private async processPOAP(userData: UserData){
+        if (userData!.hasConnectedWeb3) {
+            let poap:any = await this.sendPoap(userData.displayName, userData.publicKey);
+            if (poap.success === true) {
+                soundPlayer.playSound('coin')
+                let text = poap.message ? poap.message : "A POAP token for today's event will arrive to your account very soon!";
+                this.alertSystem.new(text, 5000);
+            } else {
+                soundPlayer.playSound('closeDialog');
+                this.alertSystem.new(poap.message ? poap.message : 'Something is wrong with the server, please try again later.', 5000);
+            }       
+        } else {
+            soundPlayer.playSound('closeDialog')
+            this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
+        }
+    }
+
+    private async sendPoap(name: string, address: string) {
+        const body = JSON.stringify({
+            name, 
+            address,
+            event_id: this.poapProps.event_id,
+            property: this.poapProps.property,
+            booth_number: this.poapProps.booth_number,
+            api_key: this.poapProps.api_key,
+            access_token: this.access_token,
+            secret_code: this.secret_code
+        });
+        try {
+            let response = await this.claimsAPI.request("POST", 'send-poap', body);
+            return response;
+        } catch (err:any) {
+            log('Failed to reach URL', err);
+            this.alertSystem.new('Failed to reach URL.', 1000);
+        }
+    }
+    
+    setEventId(event_id: number){
+        this.poapProps.event_id = event_id;
+        executeTask(async () => {
+            let response:any = await this.servicesAPI.request("GET",`poap/info/${event_id}?api_key=${this.poapProps.api_key}`)
+            const { success, data } = response;
+            if (success) {
+                const { image_info } = data, { image_url, height, width } = image_info;
+                this.confirmCodeUI.setImageSrc(image_url,width,height);
+                this.setImage(
+                    image_url, 
+                    `https://poap.gallery/event/${event_id}`, 
+                    `View Event on POAP.gallery`
+                );
+            }
+        });
+        this.setRotation(this.image!, "left");
     }
 }

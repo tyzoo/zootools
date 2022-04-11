@@ -1,0 +1,38 @@
+import * as EthereumController from '@decentraland/EthereumController';
+import { AlertSystem } from './AlertSystem';
+
+let eth = EthereumController;
+
+function keyValueObjToString(keyValueObj: any = {}): string {
+    let variables = '';
+    Object.keys(keyValueObj).map(key => {
+        variables += `${key}: ${keyValueObj[key]}\n`;
+    });
+    return `# DCL Signed message\n${variables}Timestamp: ${new Date().getTime()}`;
+}
+
+export class ETHSigner {
+    constructor(private alertSystem: AlertSystem){}
+    signKeyValue(obj:any): Promise<{message:string, signature:string}>{
+        return new Promise((resolve, reject) =>{
+            try {
+                executeTask(async () => {
+                    this.alertSystem.new(
+                        'Open MetaMask and sign the message to complete the transaction.',
+                        5000
+                    );
+                    const messageToSign = keyValueObjToString(obj);
+                    const convertedMessage = await eth.convertMessageToObject(
+                        messageToSign
+                    );
+                    const { hexEncodedMessage: message, signature } =
+                        await eth.signMessage(convertedMessage);
+                    resolve({message, signature});
+                })
+            }catch(err:any){
+                log(`ETHSigner error`, err)
+                reject(`An error occurred`)
+            }
+        })
+    }
+}

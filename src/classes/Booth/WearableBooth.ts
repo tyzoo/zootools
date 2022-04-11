@@ -1,7 +1,7 @@
 import { Booth, IBoothProps } from "./Booth"
 
 export class WearableBooth extends Booth {
-    constructor(props: Partial<IBoothProps>){
+    constructor(props: Partial<IBoothProps>, wearableModelPath: string){
         super({
             transformArgs: {
                 position: new Vector3(8, 0, 8),
@@ -16,5 +16,7 @@ export class WearableBooth extends Booth {
             buttonModelPath: `poap_assets/models/POAP_button.glb`,
             ...props
         })
+        this.setItem(new GLTFShape(wearableModelPath));
+        this.setRotation(this.item!, "left");
     }
 }

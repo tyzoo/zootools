@@ -16,7 +16,11 @@
       "dcldash": [
         "node_modules\\dcldash\\dist\\index.d.ts",
         "node_modules/dcldash/dist/index.d.ts"
-      ]
+      ],
+      "dclconnect": [
+        "node_modules\\dclconnect\\dist\\index.d.ts",
+        "node_modules/dclconnect/dist/index.d.ts"
+      ],
     },
     "baseUrl": "."
   },
