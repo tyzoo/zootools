@@ -1,11 +1,9 @@
 // import { noSign } from "src/ui/noSign";
 
 export class TransformGatherer {
-	axis: boolean[] = []
-	positions: Vector3[] = []
-	rotations: Vector3[] = []
-
-	testEntity = new Entity('transform-gatherer-test-entity')
+	private positions: Vector3[] = []
+	private rotations: Vector3[] = []
+	private testEntity = new Entity('transform-gatherer-test-entity')
 
 	constructor(){
 		this.testEntity
@@ -37,7 +35,7 @@ export class TransformGatherer {
 
 	}
 
-	add(position: Vector3, origin: Vector3): void {
+	public add(position: Vector3, origin: Vector3): void {
 		this.positions.push(position)
 		this.testEntity.addComponentOrReplace(new Transform({position}))
 		const tf = this.testEntity.getComponent(Transform)
@@ -47,7 +45,7 @@ export class TransformGatherer {
 		log(`added transform !`)
 	}
 
-	get(){
+	public get(): [position: Vector3, rotation: Vector3][]{
 		let res:[position:Vector3, rotation:Vector3][] = []
 		for(let i = 0; i < this.positions.length; i++){
 			res.push([this.positions[i],this.rotations[i]])
@@ -56,7 +54,7 @@ export class TransformGatherer {
 		return res
 	}
 
-	unsubscribe(){
+	public unsubscribe(): void{
 		Input.instance.unsubscribe('BUTTON_DOWN', ActionButton.SECONDARY,(e:any)=>{
 			log("unsubscribled secondary",e)
 		})

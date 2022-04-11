@@ -2,7 +2,7 @@ import { signedFetch } from "@decentraland/SignedFetch"
 
 export class SignedFetchAPI {
     constructor(private baseURL: string){}
-    request(method:"GET"|"POST"|"PUT"|"DELETE", path: string, body:any = {}){
+    public request(method:"GET"|"POST"|"PUT"|"DELETE", path: string, body:any = {}): Promise<unknown>{
       const _path = this.baseURL + path
       log(`API Request: ${method} ${_path}`)
       return new Promise((resolve, reject)=>{

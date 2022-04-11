@@ -24,17 +24,17 @@ export class Sound extends Entity {
 }
 
 export class SoundPlayer {
-    sounds = new Map()
+    private sounds = new Map()
     constructor(sounds: {name:string, path:string}[]){
         sounds.forEach(sound => {
             const _sound = new Sound(sound.path)
             this.registerSound(sound.name, _sound)
         });
     }
-    registerSound(name: string, sound: Sound):void {
+    private registerSound(name: string, sound: Sound): void {
         this.sounds.set(name, sound)
     }
-    playSound(registeredName:string):void {
+    public playSound(registeredName:string): void {
         if(this.sounds.has(registeredName)){
             this.sounds.get(registeredName).playOnce()
         }

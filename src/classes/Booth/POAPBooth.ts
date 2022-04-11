@@ -94,7 +94,7 @@ export class POAPBooth extends Booth {
         executeTask(async () => {
             try {
                 let params: any = { name, address, realm, api_key, property };
-                if (userData.hasConnectedWeb3)
+                if (!userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
                 if (signature && message) { params.signature = signature, params.message = message; }
                 let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.poapProps.event_id}`,params)

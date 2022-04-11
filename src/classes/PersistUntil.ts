@@ -1,6 +1,6 @@
 export class PersistUntil implements ISystem {
-    system: ISystem
-	timer = 0;
+    private system: ISystem
+	private timer = 0;
 	constructor(
         private checkIfTrue: () => boolean, 
         private interval: number = 0.5,
@@ -9,7 +9,7 @@ export class PersistUntil implements ISystem {
         this.system = this;
         engine.addSystem(this.system);
     }
-	update(dt: number) {
+	public update(dt: number): void {
 		this.timer += dt;
 		if (this.timer > this.interval) {
 			this.timer = 0;

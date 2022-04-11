@@ -17,14 +17,14 @@ export class DCLConnectUserInfo {
         // }); }catch{ }
     }
 
-    userData: UserData | null = null;
-    realm: Realm | undefined | null = null;
-    provider: Provider | undefined | null = null;
-    previewMode: boolean | null = null;
-    address: string | undefined = undefined;
-    initialized: Promise<void> | null = null
+    public userData: UserData | null = null;
+    public realm: Realm | undefined | null = null;
+    public provider: Provider | undefined | null = null;
+    public previewMode: boolean | null = null;
+    public address: string | undefined = undefined;
+    public initialized: Promise<void> | null = null
 
-    fetchUser() {
+    public fetchUser() {
         if(!this.initialized){
             this.initialized = new Promise<void>((resolve, reject) => {
                 executeTask(async () => {
@@ -39,7 +39,7 @@ export class DCLConnectUserInfo {
         }
     }
 
-    getUserData(): Promise<UserData | null> {
+    public getUserData(): Promise<UserData | null> {
         if (this.userData === null) {
             return executeTask(async () => {
                 const userData = await getUserData();
@@ -58,7 +58,7 @@ export class DCLConnectUserInfo {
         }
     }
 
-    getRealm(): Promise<Realm | null> {
+    public getRealm(): Promise<Realm | null> {
         if (this.realm === null) {
             return executeTask(async () => {
                 const realm = await getCurrentRealm();
@@ -76,7 +76,7 @@ export class DCLConnectUserInfo {
         }
     }
 
-    getProvider(): Promise<Provider> {
+    public getProvider(): Promise<Provider> {
         if (this.provider === null) {
             return executeTask(async () => {
                 const provider: Provider | null = await getProvider();
@@ -90,7 +90,7 @@ export class DCLConnectUserInfo {
         }
     }
 
-    getPreviewMode(): Promise<boolean | null> {
+    public getPreviewMode(): Promise<boolean | null> {
         if (this.previewMode === null) {
             return executeTask(async () => {
                 this.previewMode = await isPreviewMode();

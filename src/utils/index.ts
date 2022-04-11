@@ -1,5 +1,3 @@
-import { Dash_Wait } from "dcldash";
-
 export function removeLineBreaks(str: string): string {
 	return str.replace(/[\r\n]+/gm, '');
 }
@@ -22,25 +20,25 @@ export function randomInt(x:number, y?: number): number {
 	return Math.floor(Math.random() * (y - x + 1) + x);
 }
 
-export function first(array: any[], n?: number){
+export function first(array: any[], n?: number): any {
 	if( n === undefined ) return array[0];
 	return array.slice( 0, n );
 }
 
-export function last(array: any[], n = 1){
+export function last(array: any[], n = 1): any {
 	if( n === 1 ) return array[array.length - 1]
 	return array.filter( ( _: any, idx: number ) => (array.length-idx) <= n )
 }
 
-export function sample(array: any[]){
+export function sample(array: any[]): any {
 	return array[ randomInt( array.length - 1 ) ];
 }
 
-export function pluck(array: any[], key: string){
+export function pluck(array: any[], key: string): any[] {
 	return array.map(element=>element[key])
 }
 
-export function groupBy(array: any[], key: string){
+export function groupBy(array: any[], key: string): any {
 	return array.reduce((group, element) => {
 		const keyValue = element[key]
 		return {
@@ -52,15 +50,20 @@ export function groupBy(array: any[], key: string){
 
 const NUMBER_FORMATTER = new Intl.NumberFormat(undefined);
 
-export function formatNumber(number:number){
+export function formatNumber(number:number): string {
 	return NUMBER_FORMATTER.format(number);
 }
 const COMPACT_NUMBER_FORMATTER = new Intl.NumberFormat(undefined, {
 	notation: "compact"
 } as Intl.NumberFormatOptions);
 
-export function formatCompactNumber(number:number){
+export function formatCompactNumber(number:number): string {
 	return COMPACT_NUMBER_FORMATTER.format(number);
+}
+
+export function urn(str: string): string {
+    const urnPrefix = 'urn:decentraland:matic:collections-v2:';
+    return urnPrefix + str;
 }
 
 // export function debouncer(

@@ -13,7 +13,7 @@ function keyValueObjToString(keyValueObj: any = {}): string {
 
 export class ETHSigner {
     constructor(private alertSystem: AlertSystem){}
-    signKeyValue(obj:any): Promise<{message:string, signature:string}>{
+    public signKeyValue(obj:any): Promise<{message:string, signature:string}>{
         return new Promise((resolve, reject) =>{
             try {
                 executeTask(async () => {

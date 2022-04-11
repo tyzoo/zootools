@@ -73,12 +73,13 @@ export class WearableBooth extends Booth {
             this.setGivewayId(this.wearableProps._giveawayId);
         }
     }
-    setModel(localPathToModel:string){
+
+    public setModel(localPathToModel:string): void{
         this.setItem(new GLTFShape(localPathToModel));
         this.setRotation(this.item!, "left");
     }
    
-    public async mintItem() {
+    public async mintItem(): Promise<void> {
         if (!this.wearableProps._giveawayId) return this.alertSystem.new('Missing Giveaway ID', 1000);
         let prevClick = this.lastClick;
         this.lastClick = new Date();
@@ -97,7 +98,7 @@ export class WearableBooth extends Booth {
         executeTask(async () => {
             try {
                 let params: any = { name, address, realm, api_key, property };
-                if (userData.hasConnectedWeb3)
+                if (!userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
                 if (signature && message) { params.signature = signature, params.message = message; }
                 let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.wearableProps._giveawayId}`,params)
@@ -133,7 +134,7 @@ export class WearableBooth extends Booth {
         });
     }
 
-    private async processItem(userData: UserData){
+    private async processItem(userData: UserData): Promise<void>{
         if (userData!.hasConnectedWeb3) {
             let item:any = await this.sendItem(userData.displayName, userData.publicKey);
             if (item.success === true) {
@@ -150,7 +151,7 @@ export class WearableBooth extends Booth {
         }
     }
 
-    private async sendItem(name: string, address: string) {
+    private async sendItem(name: string, address: string): Promise<unknown> {
         const body = JSON.stringify({
             name, 
             address,
@@ -170,7 +171,7 @@ export class WearableBooth extends Booth {
         }
     }
     
-    setGivewayId(_giveawayId: string){
+    public setGivewayId(_giveawayId: string): void{
         this.wearableProps._giveawayId = _giveawayId;
         executeTask(async () => {
             let response:any = await this.servicesAPI.request("GET",`quest/info/${_giveawayId}?api_key=${this.wearableProps.api_key}`)

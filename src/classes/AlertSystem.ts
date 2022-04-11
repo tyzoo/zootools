@@ -1,3 +1,4 @@
+import { GlobalCanvas } from "dclconnect";
 import { Dash_Wait as Wait } from "dcldash"
 
 @Component('AlertSystem')
@@ -5,15 +6,16 @@ import { Dash_Wait as Wait } from "dcldash"
  * Create an alert system for your scene, and call alert.new() to make new notifications
  */
 export class AlertSystem {
-	canvas: UICanvas = new UICanvas();
-	parent: UIContainerStack;
-	rect: UIContainerRect;
-	recttext: UIText;
-	notifyText: string = '';
-	pinMS: number = 0;
-	defaultMS: number = 5000;
-	notificationExpires: Date | null = null;
+	private canvas: UICanvas;
+	private parent: UIContainerStack;
+	private rect: UIContainerRect;
+	private recttext: UIText;
+	private notifyText: string = '';
+	private pinMS: number = 0;
+	private defaultMS: number = 5000;
+	private notificationExpires: Date | null = null;
 	constructor() {
+		this.canvas = GlobalCanvas;
 		this.parent = new UIContainerStack(this.canvas);
 		this.parent.adaptWidth = true;
 		this.parent.width = '40%';
@@ -43,7 +45,7 @@ export class AlertSystem {
 		this.recttext.visible = true;
 		this.hideNotification();
 	}
-	new(
+	public new(
 		notifyText: string | string[],
 		pinMS: number = this.defaultMS
 	): void {
@@ -85,7 +87,7 @@ export class AlertSystem {
 			}, pinMS / 1000);
 		}
 	}
-	hideNotification(): void {
+	public hideNotification(): void {
 		this.recttext.value = '';
 		this.parent.visible = false;
 	}

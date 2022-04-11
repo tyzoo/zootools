@@ -36,7 +36,7 @@ export class Model extends Entity {
 		if (this.props.host) this.setParent(this.props.host);
 		log(`ZooTools: Created new Model entity ${this.name}`);
 	}
-	setPosition(vec3: Vector3 | [x: number, y: number, z: number]) {
+	public setPosition(vec3: Vector3 | [x: number, y: number, z: number]): void {
 		if (vec3 instanceof Vector3) {
 			this.getComponent(Transform).position = vec3;
 		} else {
@@ -47,7 +47,7 @@ export class Model extends Entity {
 			);
 		}
 	}
-	setScale(vec3: Vector3 | [x: number, y: number, z: number]) {
+	public setScale(vec3: Vector3 | [x: number, y: number, z: number]): void {
 		if (vec3 instanceof Vector3) {
 			this.getComponent(Transform).scale = vec3;
 		} else {
@@ -58,7 +58,7 @@ export class Model extends Entity {
 			);
 		}
 	}
-	setRotation(vec3: Vector3 | [x: number, y: number, z: number]) {
+	public setRotation(vec3: Vector3 | [x: number, y: number, z: number]): void {
 		if (vec3 instanceof Vector3) {
 			this.getComponent(Transform).rotation = Quaternion.Euler(
 				vec3.x,
@@ -74,7 +74,7 @@ export class Model extends Entity {
 		}
 	}
 
-	enable(_host?: Entity) {
+	public enable(_host?: Entity): void {
 		if (_host) {
 			this.setParent(_host);
 		} else if (this.props.host) {
@@ -86,7 +86,7 @@ export class Model extends Entity {
 		if (_host && _host.alive) if (!this.alive) engine.addEntity(this);
 	}
 
-	destroy() {
+	public destroy(): void {
 		engine.removeEntity(this);
 		this.setParent(null);
 	}

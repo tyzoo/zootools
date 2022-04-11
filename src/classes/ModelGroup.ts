@@ -49,14 +49,14 @@ export class ModelGroup extends Entity {
 		this.init();
 	}
 
-	init() {
+	public init(): void {
 		this.items.forEach((model: Model) => model.setParent(this));
 		if (this.props.host) {
 			this.enable();
 		}
 	}
 
-	enable(_host?: Entity) {
+	public enable(_host?: Entity): void {
 		if (_host) {
 			this.setParent(_host);
 		} else if (this.props.host) {
@@ -68,7 +68,7 @@ export class ModelGroup extends Entity {
 		if (_host && _host.alive) if (!this.alive) engine.addEntity(this);
 	}
 
-	destroy() {
+	public destroy(): void {
 		engine.removeEntity(this);
 		this.setParent(null);
 	}

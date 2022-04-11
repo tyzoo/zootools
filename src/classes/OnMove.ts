@@ -1,9 +1,9 @@
 import { Dash_Wait as Wait } from "dcldash"
 
 export class CameraChecker implements ISystem {
-	timer = 0;
+	public timer = 0;
 	constructor(private onMove: OnMove) {}
-	update(dt: number) {
+	public update(dt: number): void {
 		this.timer += dt;
 		if (this.timer > 0.5) {
 			this.timer = 0;
@@ -22,9 +22,9 @@ export class CameraChecker implements ISystem {
 }
 
 export class PersistUntil implements ISystem {
-	timer = 0;
+	public timer = 0;
 	constructor(private onMove: OnMove, private onDone: Function, private interval: number = 0.5) {}
-	update(dt: number) {
+	public update(dt: number): void {
 		this.timer += dt;
 		if (this.timer > this.interval) {
 			this.timer = 0;
@@ -39,19 +39,19 @@ export class PersistUntil implements ISystem {
 }
 
 export class OnMove {
-	loading: boolean = true;
-	movement: boolean = false;
-	queue: Function[] = [];
-	initialFeetPositionX: number = 0;
-	initialFeetPositionY: number = 0;
-	initialFeetPositionZ: number = 0;
-	initialRotationX: number = 0;
-	initialRotationY: number = 0;
-	initialRotationZ: number = 0;
-	cameraChecker = new CameraChecker(this);
-	persistUntil = new PersistUntil(this, () => {
+	public loading: boolean = true;
+	public movement: boolean = false;
+	public queue: Function[] = [];
+	public cameraChecker = new CameraChecker(this);
+	public persistUntil = new PersistUntil(this, () => {
 		engine.addSystem(this.cameraChecker);
 	});
+	private initialFeetPositionX: number = 0;
+	private initialFeetPositionY: number = 0;
+	private initialFeetPositionZ: number = 0;
+	private initialRotationX: number = 0;
+	private initialRotationY: number = 0;
+	private initialRotationZ: number = 0;
 	constructor() {
 		// log(`initialx`, this.initialFeetPositionX);
 		Wait(() => {
@@ -61,11 +61,10 @@ export class OnMove {
 			}, 1);
 		}, 0);
 	}
-	round = 0;
-	setCamera() {
+	private round = 0;
+	public setCamera(): void {
 		this.round++;
 		const instance = { ...Camera.instance };
-		// log(`Setting camera - round ${this.round}`,instance)
 		this.initialFeetPositionX = instance.feetPosition.x;
 		this.initialFeetPositionY = instance.feetPosition.y;
 		this.initialFeetPositionZ = instance.feetPosition.z;
@@ -73,7 +72,7 @@ export class OnMove {
 		this.initialRotationY = instance.rotation.y;
 		this.initialRotationZ = instance.rotation.z;
 	}
-	hasLoaded(): boolean {
+	public hasLoaded(): boolean {
 		return (
 			this.initialFeetPositionX !== 0 ||
 			this.initialFeetPositionY !== 0 ||
@@ -83,7 +82,7 @@ export class OnMove {
 			this.initialRotationZ !== 0
 		);
 	}
-	hasMoved() {
+	public hasMoved(): boolean {
 		if(this.round < 5) {
 			this.setCamera();
 			return false;
@@ -98,7 +97,7 @@ export class OnMove {
 		if (instance.rotation.z !== this.initialRotationZ) return true;
 		return false;
 	}
-	addToQueue(fn: Function): boolean {
+	public addToQueue(fn: Function): boolean {
 		if (!this.movement) {
 			this.queue.push(fn);
 			return true;

@@ -1,14 +1,16 @@
+import { Dash_UV_Image } from "dcldash";
+
 export class Image extends Entity {
-    url: string | null = null;
+    public url: string | null = null;
     constructor(
         transform: TransformConstructorArgs,
         imageUrl?: string,
         onClick?: OnPointerDown,
-        private alpha?: boolean
+        private alphaSrcUrl?: string
     ) {
         super();
         this.addComponentOrReplace(
-            new Transform({ rotation: Quaternion.Euler(0, 180, 180), ...transform })
+            new Transform(transform)
         );
         if (imageUrl) {
             this.setUrl(imageUrl);
@@ -17,22 +19,26 @@ export class Image extends Entity {
             this.addComponent(onClick);
         }
     }
-    setUrl(url: string): void {
+    public setUrl(url: string): void {
         this.url = url;
         const tx = new Texture(this.url);
         const mt = new Material();
         mt.metallic = 0;
         mt.roughness = 1;
         mt.specularIntensity = 0;
-        mt.emissiveColor = Color3.White()
-        mt.emissiveIntensity = 1
-        mt.emissiveTexture = tx;
+        mt.emissiveColor = Color3.White();
+        mt.emissiveIntensity = 1;
         mt.albedoTexture = tx;
-        if (this.alpha) {
+        mt.emissiveTexture = tx;
+        mt.transparencyMode = 1;
+        if(this.alphaSrcUrl){
+            mt.alphaTexture = new Texture(this.alphaSrcUrl);
+        }else{
             mt.alphaTexture = tx;
-            mt.transparencyMode = 1;
         }
+        mt.transparencyMode = 1;
         this.addComponentOrReplace(new PlaneShape());
+        this.getComponent(PlaneShape).uvs = Dash_UV_Image()
         this.addComponentOrReplace(mt);
     }
 }

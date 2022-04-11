@@ -12,16 +12,14 @@ export interface IConfirmCodeOptions {
 const canvas = GlobalCanvas
 
 export class ConfirmCodeUI {
-	container: DynamicContainerRect;
-	texture = new Texture('poap_assets/images/popup.png');
-	images: DynamicImage[] = [];
-	captcha: UIImage;
-	poapImage: UIImage;
-	textInput: UIInputText;
-	secretCodeText: UIText;
-	attempts: number = 0;
-	secretCode: string | undefined;
-	active: boolean = false
+	private container: DynamicContainerRect;
+	private texture = new Texture('poap_assets/images/popup.png');
+	private images: DynamicImage[] = [];
+	private captcha: UIImage;
+	private poapImage: UIImage;
+	private textInput: UIInputText;
+	private attempts: number = 0;
+	private active: boolean = false
 	constructor(
 		private onAttemptCompleteCallback: (val:string)=>void, 
         private options: Partial<IConfirmCodeOptions>,
@@ -111,16 +109,17 @@ export class ConfirmCodeUI {
 	}
 	text:string = ''
 
-	public async onHelp(){
+	public async onHelp(): Promise<void> {
 		openExternalURL(`https://poap.help/`)
 	}
 
-	public async onSubmit(code?:string){
+	public onSubmit(code?:string):void {
+		this.attempts++;
 		this.onAttemptCompleteCallback(code?code:this.text)
 		this.onHide()
 	}
 
-	public setCaptcha(hash:string):void{
+	public setCaptcha(hash:string):void {
 		const [scx, scy] = this.options.secret_code_x_y_offset;
 		if(!this.captcha){
 			this.captcha = new UIImage(
@@ -152,17 +151,19 @@ export class ConfirmCodeUI {
 			}
 		},20)
 	}
+
 	public onHide():void {
 		this.active = false
 		this.container.scaleOut(0.5, DCLConnectEase.easeInOutSine);
 		this.container.fadeOut(0.25);
 		this.images.forEach(img=>img.image.isPointerBlocker = false);
 	}
-	public showUI(): void {
+	
+	public showUI():void {
 		this.onShow()
 	}
 	
-	public setImageSrc(src:string, width:number, height:number):void{
+	public setImageSrc(src:string, width:number, height:number):void {
 		if(!this.poapImage){
 			this.poapImage = new UIImage(
 				this.container.rect,

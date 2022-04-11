@@ -1,8 +1,8 @@
 declare const Map: any
 
 export class AnimatedModel extends Entity {
-    index = -1;
-    animations = new Map()
+    private index = -1;
+    private animations = new Map()
     constructor(path:string, tf:TranformConstructorArgs, animations: string[] = [], options: any[] = []){
         super()
         this.addComponent(new Transform(tf))
@@ -25,7 +25,7 @@ export class AnimatedModel extends Entity {
             }
         }
     }
-    registerAnimation(name:string, options: any = {}):void{
+    private registerAnimation(name:string, options: any = {}): void {
         this.index++
         const animation = new AnimationState(name, {
             looping: false,
@@ -35,20 +35,20 @@ export class AnimatedModel extends Entity {
         this.getComponent(Animator).addClip(animation);
         this.animations.set(name, animation);
     }
-    private getClip(string: string) {
+    public getClip(string: string): AnimationState {
         const anim = this.getComponent(Animator);
         return anim.getClip(string);
     }
-    public playClip(string:string){
+    public playClip(string:string): void {
         this.stopAll()
         const clip = this.getClip(string);
         if(clip) clip.play()
     }
-    public stopClip(string:string){
+    public stopClip(string:string): void {
         const clip = this.getClip(string);
         if(clip) clip.stop()
     }
-    public stopAll(){
+    public stopAll(): void {
         for(const [name, animation] of this.animations){
             (animation as AnimationState).stop()
         }

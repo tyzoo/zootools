@@ -12,14 +12,14 @@ export interface IBoothProps {
 }
 
 export class Booth extends Entity  {
-	name = `${makeid(5)}`
-	booth = new Entity(`booth-${this.name}`);
-	cylinder = new Entity(`cylinder-${this.name}`);
-	button = new Entity(`button-${this.name}`);
-	wrapTexture: Texture
-	rotateSystem: RotateSystem;
-	image: Entity | undefined;
-	item: Entity | undefined;
+	public name = `${makeid(5)}`
+	private booth = new Entity(`booth-${this.name}`);
+	private cylinder = new Entity(`cylinder-${this.name}`);
+	private button = new Entity(`button-${this.name}`);
+	private wrapTexture: Texture
+	private rotateSystem: RotateSystem;
+	public image: Entity | undefined;
+	public item: Entity | undefined;
 	constructor(
 	  props: IBoothProps
 	){
@@ -66,19 +66,23 @@ export class Booth extends Entity  {
 	  engine.addSystem(this.rotateSystem)
 	}
   
-	setImage(path: string, url: string, hoverText: string){
+	public setImage(path: string, url: string, hoverText: string): void{
 	  if(!path) return;
 	  const texture = new Texture(path)
+	  const circle = new Texture("poap_assets/images/alpha-circle.png");
 	  this.image = new Entity(`image-${this.name}`);
 	  this.image.addComponent(new PlaneShape());
 	  this.image.getComponent(PlaneShape).uvs = Dash_UV_Image()
 	  this.image.addComponent(new Material());
-	  this.image.getComponent(Material).albedoTexture = texture;
-	  this.image.getComponent(Material).alphaTexture = texture;
-	  this.image.getComponent(Material).alphaTest = 0;
-	  this.image.getComponent(Material).emissiveTexture = texture;
+	  this.image.getComponent(Material).metallic = 0;
+	  this.image.getComponent(Material).roughness = 1;
+	  this.image.getComponent(Material).specularIntensity = 0;
 	  this.image.getComponent(Material).emissiveColor = Color3.White();
 	  this.image.getComponent(Material).emissiveIntensity = 1;
+	  this.image.getComponent(Material).alphaTexture = circle;
+	  this.image.getComponent(Material).albedoTexture = texture;
+	  this.image.getComponent(Material).emissiveTexture = texture;
+	  this.image.getComponent(Material).transparencyMode = 1;
 	  this.image.addComponent(new Transform({
 		position: new Vector3(0,1.8,0),
 		scale: new Vector3().setAll(0.69),
@@ -90,7 +94,7 @@ export class Booth extends Entity  {
 	  this.image.setParent(this)
 	} 
   
-	setItem(model: GLTFShape){
+	public setItem(model: GLTFShape): void{
 	  if(!model) return;
 	  this.item = new Entity(`item-${this.name}`);
 	  this.item.addComponent(model);
@@ -104,7 +108,7 @@ export class Booth extends Entity  {
 	  this.item.setParent(this)
 	} 
 	
-	setRotation(entity: Entity, dir: "right" | "left"){
+	public setRotation(entity: Entity, dir: "right" | "left"): void{
 	  switch(dir){
 		case "right": this.rotateSystem.rotateRight.push(entity); break;
 		case "left": this.rotateSystem.rotateLeft.push(entity); break;
