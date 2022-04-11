@@ -3,6 +3,7 @@ import { AlertSystem } from "./AlertSystem";
 import { GlobalCanvas, DynamicContainerRect, DynamicImage, DCLConnectEase  } from "dclconnect";
 
 export interface IConfirmCodeOptions {
+	modal_bg_image_url: string;
     poap_image_x_y_offset: [x:number,y:number],
     secret_code_x_y_offset: [x:number,y:number],
     secret_code_color: Color4,
@@ -13,7 +14,7 @@ const canvas = GlobalCanvas
 
 export class ConfirmCodeUI {
 	private container: DynamicContainerRect;
-	private texture = new Texture('poap_assets/images/popup.png');
+	private texture: Texture;
 	private images: DynamicImage[] = [];
 	private captcha: UIImage;
 	private poapImage: UIImage;
@@ -25,6 +26,8 @@ export class ConfirmCodeUI {
         private options: Partial<IConfirmCodeOptions>,
         private alert: AlertSystem
 	){
+        if(this.options.modal_bg_image_url === undefined)
+            this.options.modal_bg_image_url = 'poap_assets/images/popup.png';
         if(this.options.poap_image_x_y_offset === undefined)
             this.options.poap_image_x_y_offset = [0,0];
         if(this.options.secret_code_x_y_offset === undefined)
@@ -33,6 +36,7 @@ export class ConfirmCodeUI {
             this.options.secret_input_x_y_offset = [0,0];
         if(this.options.secret_code_color === undefined)
             this.options.secret_code_color = Color4.FromHexString('#FFFFFF00');
+		this.texture = new Texture(this.options.modal_bg_image_url);
 		this.container = new DynamicContainerRect(new UIContainerRect(canvas));
 		this.container.rect.hAlign = 'center';
 		this.container.rect.vAlign = 'center';
@@ -158,7 +162,7 @@ export class ConfirmCodeUI {
 		this.container.fadeOut(0.25);
 		this.images.forEach(img=>img.image.isPointerBlocker = false);
 	}
-	
+
 	public showUI():void {
 		this.onShow()
 	}
