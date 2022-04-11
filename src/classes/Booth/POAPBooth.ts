@@ -70,6 +70,9 @@ export class POAPBooth extends Booth {
             this.confirmCodeOptions,
             alertSystem
         );
+        if(this.poapProps.event_id){
+            this.setEventId(this.poapProps.event_id);
+        }
     }
     public async mintPOAP() {
         if (!this.poapProps.event_id) return this.alertSystem.new('Missing Event ID', 1000);
