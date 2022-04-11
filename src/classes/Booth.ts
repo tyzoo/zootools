@@ -1,4 +1,5 @@
-import { makeid, RotateSystem } from "src/index";
+import { RotateSystem } from "../systems/RotateSystem";
+import { makeid } from "../utils/index";
 import { Dash_UV_Image, Dash_Wait } from "dcldash";
 
 export class Booth extends Entity  {

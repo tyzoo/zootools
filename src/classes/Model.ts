@@ -1,4 +1,4 @@
-import { makeid } from "src/index";
+import { makeid } from "../utils/index";
 
 const defaultModelOptions = {
 	useColliders: true,
