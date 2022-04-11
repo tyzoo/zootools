@@ -12,7 +12,7 @@ interface IWearableBoothProps {
     booth_number: number;
     property: string;
     api_key: string;
-    _giveawayId: number;
+    _giveawayId: string;
 }
 
 const soundPlayer = new SoundPlayer([
@@ -155,7 +155,7 @@ export class WearableBooth extends Booth {
         }
     }
     
-    setEventId(_giveawayId: number){
+    setEventId(_giveawayId: string){
         this.wearableProps._giveawayId = _giveawayId;
         executeTask(async () => {
             let response:any = await this.servicesAPI.request("GET",`quest/info/${_giveawayId}?api_key=${this.wearableProps.api_key}`)
