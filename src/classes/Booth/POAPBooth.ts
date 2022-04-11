@@ -13,7 +13,6 @@ export type Props = {
     property: string;
     api_key: string;
     event_id: number;
-    banner_url: string;
 };
 
 const soundPlayer = new SoundPlayer([

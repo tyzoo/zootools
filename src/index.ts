@@ -9,17 +9,12 @@ export { ModelGroup, IModelGroupProps } from './classes/ModelGroup'
 export { OnMove } from './classes/OnMove'
 export { AlertSystem } from './classes/AlertSystem'
 export { TransformGatherer } from './classes/TransformGatherer'
-export { Booth, IBoothProps } from './classes/Booth/Booth'
+export { Booth, IBoothProps, RotateSystem } from './classes/Booth/Booth'
 export { POAPBooth } from './classes/Booth/POAPBooth'
 export { WearableBooth } from './classes/Booth/WearableBooth'
 export { SignedFetchAPI } from './classes/SignedFetch'
 export { PersistUntil } from './classes/PersistUntil'
 export { Sound, SoundPlayer } from './classes/SoundPlayer'
-
-/**
- * Systems
- */
-export { RotateSystem } from './systems/RotateSystem'
 
 /**
  * Various Utils
