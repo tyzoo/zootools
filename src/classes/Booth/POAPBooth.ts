@@ -42,7 +42,7 @@ export class POAPBooth extends Booth {
         boothProps: Partial<IBoothProps>, 
         private poapProps: Props,
         private alertSystem: AlertSystem,
-        private confirmCodeOptions?: Partial<IConfirmCodeOptions>,
+        private confirmCodeOptions: Partial<IConfirmCodeOptions> = {},
     ){
         super({
             //Default booth props:
@@ -73,6 +73,7 @@ export class POAPBooth extends Booth {
         if(this.poapProps.event_id){
             this.setEventId(this.poapProps.event_id);
         }
+        
     }
     public async mintPOAP() {
         if (!this.poapProps.event_id) return this.alertSystem.new('Missing Event ID', 1000);

@@ -2,7 +2,7 @@ import { getCurrentRealm } from "@decentraland/EnvironmentAPI";
 import { getUserData, UserData } from "@decentraland/Identity";
 import { parse } from "../../utils/JWT";
 import { AlertSystem } from "../AlertSystem";
-import { ConfirmCodeUI } from "../ConfirmCodeUI";
+import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
 import { ETHSigner } from "../EthSigner";
 import { SignedFetchAPI } from "../SignedFetch";
 import { SoundPlayer } from "../SoundPlayer";
@@ -41,6 +41,7 @@ export class WearableBooth extends Booth {
         props: Partial<IBoothProps>,
         private wearableProps: IWearableBoothProps,
         private alertSystem: AlertSystem,
+        private confirmCodeOptions: Partial<IConfirmCodeOptions> = {},
     ){
         super({
             //Default booth props:
@@ -57,6 +58,20 @@ export class WearableBooth extends Booth {
             buttonModelPath: `poap_assets/models/POAP_button.glb`,
             ...props
         })
+        this.ethSigner = new ETHSigner(this.alertSystem);
+        this.confirmCodeUI = new ConfirmCodeUI(
+            (secret:string)=>{
+                this.secret_code = secret;
+                executeTask(async ()=>{
+                    this.processItem(await getUserData())
+                })
+            },
+            this.confirmCodeOptions,
+            alertSystem
+        );
+        if(this.wearableProps._giveawayId){
+            this.setGivewayId(this.wearableProps._giveawayId);
+        }
     }
     setModel(localPathToModel:string){
         this.setItem(new GLTFShape(localPathToModel));
@@ -155,7 +170,7 @@ export class WearableBooth extends Booth {
         }
     }
     
-    setEventId(_giveawayId: string){
+    setGivewayId(_giveawayId: string){
         this.wearableProps._giveawayId = _giveawayId;
         executeTask(async () => {
             let response:any = await this.servicesAPI.request("GET",`quest/info/${_giveawayId}?api_key=${this.wearableProps.api_key}`)
