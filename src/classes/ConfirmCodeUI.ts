@@ -90,7 +90,7 @@ export class ConfirmCodeUI {
 		this.textInput.color = this.options.secret_code_color ? this.options.secret_code_color : Color4.White();
 		this.textInput.vTextAlign = 'center';
 		this.textInput.positionX = -65+six;
-		this.textInput.positionY = -115+siy;
+		this.textInput.positionY = -130+siy;
 		this.textInput.isPointerBlocker = true;
 		this.textInput.paddingLeft = 10;
 		this.textInput.paddingRight = 10;
@@ -136,6 +136,7 @@ export class ConfirmCodeUI {
 		this.captcha.sourceHeight = 50;
 		this.captcha.positionX = -70+scx;
 		this.captcha.positionY = -100+scy;
+		this.captcha.isPointerBlocker = false;
 	}
 
 	public onShow():void {
