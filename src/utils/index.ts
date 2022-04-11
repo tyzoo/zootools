@@ -1,3 +1,5 @@
+import { Dash_Wait } from "dcldash";
+
 export function removeLineBreaks(str: string): string {
 	return str.replace(/[\r\n]+/gm, '');
 }
@@ -12,13 +14,17 @@ export function makeid(length: number): string {
 	return result;
 }
 
-export function randomInt(min:number, max: number): number {
-	return Math.floor(Math.random() * (max - min + 1) + min)
+export function randomInt(x:number, y?: number): number {
+	if(y === undefined) {
+		y = x;
+		x = 0;
+	}
+	return Math.floor(Math.random() * (y - x + 1) + x);
 }
 
-export function first(array: any[], n = 1){
-	if( n === 1 ) return array[0]
-	return array.filter( ( _: any, idx: number ) => idx < n )
+export function first(array: any[], n?: number){
+	if( n === undefined ) return array[0];
+	return array.slice( 0, n );
 }
 
 export function last(array: any[], n = 1){
@@ -27,7 +33,7 @@ export function last(array: any[], n = 1){
 }
 
 export function sample(array: any[]){
-	return array[randomInt(0, array.length-1)]
+	return array[ randomInt( array.length - 1 ) ];
 }
 
 export function pluck(array: any[], key: string){
@@ -56,3 +62,19 @@ const COMPACT_NUMBER_FORMATTER = new Intl.NumberFormat(undefined, {
 export function formatCompactNumber(number:number){
 	return COMPACT_NUMBER_FORMATTER.format(number);
 }
+
+// export function debouncer(
+// 	cb: (...args:any[]) => any, 
+// 	delay: number = 1,
+// ) {
+// 	let timeout: {
+// 		reset: () => void
+// 	} | undefined;
+// 	return (...args: any[]) => {
+// 		const { reset } = timeout;
+// 		if(reset) reset();
+// 		timeout = Dash_Wait(() => {
+// 			cb(...args);
+// 		}, delay);
+// 	}
+// }

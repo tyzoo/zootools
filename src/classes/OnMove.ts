@@ -23,16 +23,14 @@ export class CameraChecker implements ISystem {
 
 export class PersistUntil implements ISystem {
 	timer = 0;
-	constructor(private onMove: OnMove, private onDone: Function) {}
+	constructor(private onMove: OnMove, private onDone: Function, private interval: number = 0.5) {}
 	update(dt: number) {
 		this.timer += dt;
-		if (this.timer > 0.5) {
+		if (this.timer > this.interval) {
 			this.timer = 0;
-			// log('persist', dt);
 			this.onMove.setCamera();
 			if (this.onMove.hasLoaded()) {
 				this.onMove.loading = false;
-				// log('LOADING DONE!!!');
 				this.onDone();
 				engine.removeSystem(this.onMove.persistUntil);
 			}
