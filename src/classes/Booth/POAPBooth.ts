@@ -148,18 +148,17 @@ export class POAPBooth extends Booth {
     }
 
     private async sendPoap(name: string, address: string) {
-        const body = JSON.stringify({
-            name, 
-            address,
-            event_id: this.poapProps.event_id,
-            property: this.poapProps.property,
-            booth_number: this.poapProps.booth_number,
-            api_key: this.poapProps.api_key,
-            access_token: this.access_token,
-            secret_code: this.secret_code
-        });
         try {
-            let response = await this.claimsAPI.request("POST", 'send-poap', body);
+            let response = await this.claimsAPI.request("POST", 'send-poap', {
+                name, 
+                address,
+                event_id: this.poapProps.event_id,
+                property: this.poapProps.property,
+                booth_number: this.poapProps.booth_number,
+                api_key: this.poapProps.api_key,
+                access_token: this.access_token,
+                secret_code: this.secret_code
+            });
             return response;
         } catch (err:any) {
             log('Failed to reach URL', err);

@@ -152,18 +152,17 @@ export class WearableBooth extends Booth {
     }
 
     private async sendItem(name: string, address: string): Promise<unknown> {
-        const body = JSON.stringify({
-            name, 
-            address,
-            _giveawayId: this.wearableProps._giveawayId,
-            property: this.wearableProps.property,
-            booth_number: this.wearableProps.booth_number,
-            api_key: this.wearableProps.api_key,
-            access_token: this.access_token,
-            secret_code: this.secret_code
-        });
         try {
-            let response = await this.servicesAPI.request("POST", 'quest/complete', body);
+            let response = await this.servicesAPI.request("POST", 'quest/complete', {
+                name, 
+                address,
+                _giveawayId: this.wearableProps._giveawayId,
+                property: this.wearableProps.property,
+                booth_number: this.wearableProps.booth_number,
+                api_key: this.wearableProps.api_key,
+                access_token: this.access_token,
+                secret_code: this.secret_code
+            });
             return response;
         } catch (err:any) {
             log('Failed to reach URL', err);
