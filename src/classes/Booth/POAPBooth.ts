@@ -1,3 +1,4 @@
+
 import { AlertSystem } from "../AlertSystem";
 import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
 import { SignedFetchAPI } from "../SignedFetch";
@@ -5,7 +6,6 @@ import { Booth, IBoothProps } from "./Booth"
 import { parse } from "../../utils/JWT"
 import { SoundPlayer } from '../SoundPlayer';
 import { ETHSigner } from '../EthSigner';
-import { UserData } from '@decentraland/Identity';
 import { updateUserInfo, userInfo } from '../../utils/userInfo';
 
 export type Props = {
@@ -64,7 +64,8 @@ export class POAPBooth extends Booth {
             (secret:string)=>{
                 this.secret_code = secret;
                 executeTask(async ()=>{
-                    this.processPOAP(userInfo.userData)
+                    await updateUserInfo()
+                    this.processPOAP()
                 })
             },
             this.confirmCodeOptions,
@@ -82,17 +83,18 @@ export class POAPBooth extends Booth {
         if (prevClick.getTime() + 5000 > this.lastClick.getTime()) {
             return;
         }
-        await updateUserInfo()
-        const name = userInfo.userData?.displayName;
-        const address = userInfo.userData?.userId;
-        const realm = userInfo.realm?.serverName;
-        const api_key = this.poapProps.api_key;
-        const property = this.poapProps.property;
-        let message: string | undefined;
-        let signature: string | undefined;
-        soundPlayer.playSound('openDialog');
         executeTask(async () => {
             try {
+                await updateUserInfo()
+                const name = userInfo.userData?.displayName;
+                const address = userInfo.userData?.userId;
+                const realm = userInfo.realm?.serverName;
+                const api_key = this.poapProps.api_key;
+                const property = this.poapProps.property;
+                let message: string | undefined;
+                let signature: string | undefined;
+                soundPlayer.playSound('openDialog');
+
                 let params: any = { name, address, realm, api_key, property };
                 if (!userInfo.userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
@@ -116,7 +118,7 @@ export class POAPBooth extends Booth {
                                 this.confirmCodeUI.setCaptcha(hash);
                                 this.confirmCodeUI.showUI();
                             }else{
-                                this.processPOAP(userInfo.userData);
+                                this.processPOAP();
                             }
                         }
                     }else{
@@ -130,9 +132,9 @@ export class POAPBooth extends Booth {
         });
     }
 
-    private async processPOAP(userData: UserData){
-        if (userData!.hasConnectedWeb3) {
-            let poap:any = await this.sendPoap(userData.displayName, userData.publicKey);
+    private async processPOAP(){
+        if (userInfo.userData!.hasConnectedWeb3) {
+            let poap:any = await this.sendPoap(userInfo.userData.displayName, userInfo.userData.publicKey, userInfo.realm.displayName);
             if (poap.success === true) {
                 soundPlayer.playSound('coin')
                 let text = poap.message ? poap.message : "A POAP token for today's event will arrive to your account very soon!";
@@ -147,7 +149,7 @@ export class POAPBooth extends Booth {
         }
     }
 
-    private async sendPoap(name: string, address: string) {
+    private async sendPoap(name: string, address: string, realm: string) {
         try {
             let response = await this.claimsAPI.request("POST", 'send-poap', {
                 name, 

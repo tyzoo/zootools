@@ -1,5 +1,5 @@
-import { getCurrentRealm, Realm } from "@decentraland/EnvironmentAPI";
 import { getUserData, UserData } from "@decentraland/Identity";
+import { getCurrentRealm, Realm } from "@decentraland/EnvironmentAPI";
 
 export let userInfo: {
     userData: UserData
@@ -16,4 +16,6 @@ export function updateUserInfo(){
     })
 }
 
-updateUserInfo();
+executeTask(async () =>{
+    await updateUserInfo();
+})

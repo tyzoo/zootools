@@ -1,4 +1,3 @@
-import { UserData } from "@decentraland/Identity";
 import { updateUserInfo, userInfo } from "../../utils/userInfo";
 import { parse } from "../../utils/JWT";
 import { AlertSystem } from "../AlertSystem";
@@ -63,7 +62,7 @@ export class WearableBooth extends Booth {
             (secret:string)=>{
                 this.secret_code = secret;
                 executeTask(async ()=>{
-                    this.processItem(userInfo.userData)
+                    this.processItem()
                 })
             },
             this.confirmCodeOptions,
@@ -86,17 +85,17 @@ export class WearableBooth extends Booth {
         if (prevClick.getTime() + 5000 > this.lastClick.getTime()) {
             return;
         }
-        await updateUserInfo()
-        const name = userInfo.userData?.displayName;
-        const address = userInfo.userData?.userId;
-        const realm = userInfo.realm?.serverName;
-        const api_key = this.wearableProps.api_key;
-        const property = this.wearableProps.property;
-        let message: string | undefined;
-        let signature: string | undefined;
-        soundPlayer.playSound('openDialog');
         executeTask(async () => {
             try {
+                await updateUserInfo()
+                const name = userInfo.userData?.displayName;
+                const address = userInfo.userData?.userId;
+                const realm = userInfo.realm?.serverName;
+                const api_key = this.wearableProps.api_key;
+                const property = this.wearableProps.property;
+                let message: string | undefined;
+                let signature: string | undefined;
+                soundPlayer.playSound('openDialog');
                 let params: any = { name, address, realm, api_key, property };
                 if (!userInfo.userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
@@ -120,7 +119,7 @@ export class WearableBooth extends Booth {
                                 this.confirmCodeUI.setCaptcha(hash);
                                 this.confirmCodeUI.showUI();
                             }else{
-                                this.processItem(userInfo.userData);
+                                this.processItem();
                             }
                         }
                     }else{
@@ -134,9 +133,9 @@ export class WearableBooth extends Booth {
         });
     }
 
-    private async processItem(userData: UserData): Promise<void>{
-        if (userData!.hasConnectedWeb3) {
-            let item:any = await this.sendItem(userData.displayName, userData.publicKey);
+    private async processItem() {
+        if (userInfo.userData!.hasConnectedWeb3) {
+            let item:any = await this.sendItem(userInfo.userData.displayName, userInfo.userData.publicKey);
             if (item.success === true) {
                 soundPlayer.playSound('coin')
                 let text = item.message ? item.message : "An item for today's event will arrive to your account very soon!";
