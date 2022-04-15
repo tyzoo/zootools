@@ -1,4 +1,5 @@
-
+import { UserData } from "@decentraland/Identity";
+import { Realm } from "@decentraland/EnvironmentAPI";
 import { AlertSystem } from "../AlertSystem";
 import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
 import { SignedFetchAPI } from "../SignedFetch";
@@ -6,13 +7,14 @@ import { Booth, IBoothProps } from "./Booth"
 import { parse } from "../../utils/JWT"
 import { SoundPlayer } from '../SoundPlayer';
 import { ETHSigner } from '../EthSigner';
-import { userInfo } from '../../utils/userInfo';
 
 export type Props = {
     booth_number: number;
     property: string;
     api_key: string;
     event_id: number;
+    userData: UserData,
+    realm: Realm
 };
 
 const soundPlayer = new SoundPlayer([
@@ -84,10 +86,9 @@ export class POAPBooth extends Booth {
         }
         executeTask(async () => {
             try {
-                await userInfo.fetchUser()
-                const name = userInfo.userData?.displayName;
-                const address = userInfo.userData?.userId;
-                const realm = userInfo.realm?.serverName;
+                const name = this.poapProps.userData?.displayName;
+                const address = this.poapProps.userData?.userId;
+                const realm = this.poapProps.realm?.serverName;
                 const api_key = this.poapProps.api_key;
                 const property = this.poapProps.property;
                 let message: string | undefined;
@@ -95,7 +96,7 @@ export class POAPBooth extends Booth {
                 soundPlayer.playSound('openDialog');
 
                 let params: any = { name, address, realm, api_key, property };
-                if (!userInfo.userData.hasConnectedWeb3)
+                if (!this.poapProps.userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
                 if (signature && message) { params.signature = signature, params.message = message; }
                 let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.poapProps.event_id}`,params)
@@ -132,8 +133,8 @@ export class POAPBooth extends Booth {
     }
 
     private async processPOAP(){
-        if (userInfo.userData!.hasConnectedWeb3) {
-            let poap:any = await this.sendPoap(userInfo.userData.displayName, userInfo.userData.publicKey, userInfo.realm.displayName);
+        if (this.poapProps.userData!.hasConnectedWeb3) {
+            let poap:any = await this.sendPoap(this.poapProps.userData.displayName, this.poapProps.userData.publicKey, this.poapProps.realm.displayName);
             if (poap.success === true) {
                 soundPlayer.playSound('coin')
                 let text = poap.message ? poap.message : "A POAP token for today's event will arrive to your account very soon!";

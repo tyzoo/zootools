@@ -1,4 +1,5 @@
-import { userInfo } from "../../utils/userInfo";
+import { UserData } from "@decentraland/Identity";
+import { Realm } from "@decentraland/EnvironmentAPI";
 import { parse } from "../../utils/JWT";
 import { AlertSystem } from "../AlertSystem";
 import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
@@ -12,6 +13,8 @@ interface IWearableBoothProps {
     property: string;
     api_key: string;
     _giveawayId: string;
+    userData: UserData,
+    realm: Realm
 }
 
 const soundPlayer = new SoundPlayer([
@@ -87,17 +90,16 @@ export class WearableBooth extends Booth {
         }
         executeTask(async () => {
             try {
-                await userInfo.fetchUser()
-                const name = userInfo.userData?.displayName;
-                const address = userInfo.userData?.userId;
-                const realm = userInfo.realm?.serverName;
+                const name = this.wearableProps.userData?.displayName;
+                const address = this.wearableProps.userData?.userId;
+                const realm = this.wearableProps.realm?.serverName;
                 const api_key = this.wearableProps.api_key;
                 const property = this.wearableProps.property;
                 let message: string | undefined;
                 let signature: string | undefined;
                 soundPlayer.playSound('openDialog');
                 let params: any = { name, address, realm, api_key, property };
-                if (!userInfo.userData.hasConnectedWeb3)
+                if (!this.wearableProps.userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
                 if (signature && message) { params.signature = signature, params.message = message; }
                 let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.wearableProps._giveawayId}`,params)
@@ -134,8 +136,8 @@ export class WearableBooth extends Booth {
     }
 
     private async processItem() {
-        if (userInfo.userData!.hasConnectedWeb3) {
-            let item:any = await this.sendItem(userInfo.userData.displayName, userInfo.userData.publicKey);
+        if (this.wearableProps.userData!.hasConnectedWeb3) {
+            let item:any = await this.sendItem(this.wearableProps.userData.displayName, this.wearableProps.userData.publicKey);
             if (item.success === true) {
                 soundPlayer.playSound('coin')
                 let text = item.message ? item.message : "An item for today's event will arrive to your account very soon!";
