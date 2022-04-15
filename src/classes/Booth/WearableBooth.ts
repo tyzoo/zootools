@@ -1,5 +1,5 @@
-import { getCurrentRealm } from "@decentraland/EnvironmentAPI";
-import { getUserData, UserData } from "@decentraland/Identity";
+import { UserData } from "@decentraland/Identity";
+import { updateUserInfo, userInfo } from "../../utils/userInfo";
 import { parse } from "../../utils/JWT";
 import { AlertSystem } from "../AlertSystem";
 import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
@@ -63,7 +63,7 @@ export class WearableBooth extends Booth {
             (secret:string)=>{
                 this.secret_code = secret;
                 executeTask(async ()=>{
-                    this.processItem(await getUserData())
+                    this.processItem(userInfo.userData)
                 })
             },
             this.confirmCodeOptions,
@@ -86,10 +86,10 @@ export class WearableBooth extends Booth {
         if (prevClick.getTime() + 5000 > this.lastClick.getTime()) {
             return;
         }
-        const userData = await getUserData();
-        const name = userData?.displayName;
-        const address = userData?.userId;
-        const realm = (await getCurrentRealm())?.serverName;
+        await updateUserInfo()
+        const name = userInfo.userData?.displayName;
+        const address = userInfo.userData?.userId;
+        const realm = userInfo.realm?.serverName;
         const api_key = this.wearableProps.api_key;
         const property = this.wearableProps.property;
         let message: string | undefined;
@@ -98,7 +98,7 @@ export class WearableBooth extends Booth {
         executeTask(async () => {
             try {
                 let params: any = { name, address, realm, api_key, property };
-                if (!userData.hasConnectedWeb3)
+                if (!userInfo.userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
                 if (signature && message) { params.signature = signature, params.message = message; }
                 let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.wearableProps._giveawayId}`,params)
@@ -120,7 +120,7 @@ export class WearableBooth extends Booth {
                                 this.confirmCodeUI.setCaptcha(hash);
                                 this.confirmCodeUI.showUI();
                             }else{
-                                this.processItem(userData);
+                                this.processItem(userInfo.userData);
                             }
                         }
                     }else{
