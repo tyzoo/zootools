@@ -1,4 +1,4 @@
-import { updateUserInfo, userInfo } from "../../utils/userInfo";
+import { userInfo } from "../../utils/userInfo";
 import { parse } from "../../utils/JWT";
 import { AlertSystem } from "../AlertSystem";
 import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
@@ -87,7 +87,7 @@ export class WearableBooth extends Booth {
         }
         executeTask(async () => {
             try {
-                await updateUserInfo()
+                await userInfo.fetchUser()
                 const name = userInfo.userData?.displayName;
                 const address = userInfo.userData?.userId;
                 const realm = userInfo.realm?.serverName;

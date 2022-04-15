@@ -1,21 +1,3 @@
-import { getUserData, UserData } from "@decentraland/Identity";
-import { getCurrentRealm, Realm } from "@decentraland/EnvironmentAPI";
+import { DCLConnectUserInfo } from "../classes/UserInfo";
 
-export let userInfo: {
-    userData: UserData
-    realm: Realm
-}
-
-export function updateUserInfo(){
-    return new Promise((resolve)=>{
-        executeTask(async () => {
-            userInfo.userData = await getUserData();
-            userInfo.realm = await getCurrentRealm();
-            resolve()
-        })
-    })
-}
-
-executeTask(async () =>{
-    await updateUserInfo();
-})
+export const userInfo = new DCLConnectUserInfo()

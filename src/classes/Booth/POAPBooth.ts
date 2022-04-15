@@ -6,7 +6,7 @@ import { Booth, IBoothProps } from "./Booth"
 import { parse } from "../../utils/JWT"
 import { SoundPlayer } from '../SoundPlayer';
 import { ETHSigner } from '../EthSigner';
-import { updateUserInfo, userInfo } from '../../utils/userInfo';
+import { userInfo } from '../../utils/userInfo';
 
 export type Props = {
     booth_number: number;
@@ -64,7 +64,6 @@ export class POAPBooth extends Booth {
             (secret:string)=>{
                 this.secret_code = secret;
                 executeTask(async ()=>{
-                    await updateUserInfo()
                     this.processPOAP()
                 })
             },
@@ -85,7 +84,7 @@ export class POAPBooth extends Booth {
         }
         executeTask(async () => {
             try {
-                await updateUserInfo()
+                await userInfo.fetchUser()
                 const name = userInfo.userData?.displayName;
                 const address = userInfo.userData?.userId;
                 const realm = userInfo.realm?.serverName;
