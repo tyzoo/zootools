@@ -5,6 +5,7 @@
 export { AlertSystem } from './classes/AlertSystem'
 export { AnimatedModel } from './classes/AnimatedModel'
 export { Booth, IBoothProps } from './classes/Booth/Booth'
+export { CallbackDebouncer } from './classes/CallbackDebouncer'
 export { Image } from './classes/Image'
 export { Model, IModelProps } from './classes/Model'
 export { ModelGroup, IModelGroupProps } from './classes/ModelGroup'

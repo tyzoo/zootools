@@ -7,6 +7,7 @@ import { Booth, IBoothProps } from "./Booth"
 import { parse } from "../../utils/JWT"
 import { SoundPlayer } from '../SoundPlayer';
 import { ETHSigner } from '../EthSigner';
+import { CallbackDebouncer } from "../CallbackDebouncer";
 
 export type Props = {
     booth_number: number;
@@ -36,7 +37,6 @@ export class POAPBooth extends Booth {
     servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
     claimsAPI = new SignedFetchAPI("https://claims.poap.cc/");
     confirmCodeUI: ConfirmCodeUI;
-    lastClick: Date = new Date(new Date().getTime() - 5000);
     ethSigner: ETHSigner
     access_token: string | null = null;
     secret_code: string | null = null;
@@ -77,13 +77,17 @@ export class POAPBooth extends Booth {
         }
         
     }
+
     public async mintPOAP() {
+        this.mintDebouncer.execute();
+    }
+    
+    private mintDebouncer = new CallbackDebouncer(() => {
+        this.mintPOAPInternal()
+    },5000,false);
+
+    private async mintPOAPInternal() {
         if (!this.poapProps.event_id) return this.alertSystem.new('Missing Event ID', 1000);
-        let prevClick = this.lastClick;
-        this.lastClick = new Date();
-        if (prevClick.getTime() + 5000 > this.lastClick.getTime()) {
-            return;
-        }
         executeTask(async () => {
             try {
                 const name = this.poapProps.userData?.displayName;

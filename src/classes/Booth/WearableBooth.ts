@@ -7,6 +7,7 @@ import { ETHSigner } from "../EthSigner";
 import { SignedFetchAPI } from "../SignedFetch";
 import { SoundPlayer } from "../SoundPlayer";
 import { Booth, IBoothProps } from "./Booth"
+import { CallbackDebouncer } from "../CallbackDebouncer";
 
 interface IWearableBoothProps {
     booth_number: number;
@@ -35,7 +36,6 @@ const soundPlayer = new SoundPlayer([
 export class WearableBooth extends Booth {
     servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
     confirmCodeUI: ConfirmCodeUI;
-    lastClick: Date = new Date(new Date().getTime() - 5000);
     ethSigner: ETHSigner
     access_token: string | null = null;
     secret_code: string | null = null;
@@ -81,13 +81,16 @@ export class WearableBooth extends Booth {
         this.setRotation(this.item!, "left");
     }
    
-    public async mintItem(): Promise<void> {
+    public async mintItem() {
+        this.mintDebouncer.execute();
+    }
+    
+    private mintDebouncer = new CallbackDebouncer(() => {
+        this.mintItemInternal()
+    },5000,false);
+
+    private async mintItemInternal(): Promise<void> {
         if (!this.wearableProps._giveawayId) return this.alertSystem.new('Missing Giveaway ID', 1000);
-        let prevClick = this.lastClick;
-        this.lastClick = new Date();
-        if (prevClick.getTime() + 5000 > this.lastClick.getTime()) {
-            return;
-        }
         executeTask(async () => {
             try {
                 const name = this.wearableProps.userData?.displayName;
