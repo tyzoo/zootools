@@ -1,47 +1,79 @@
+///<reference lib="es2015.symbol" />
+///<reference lib="es2015.symbol.wellknown" />
+///<reference lib="es2015.collection" />
+///<reference lib="es2015.iterable" />
 /**
  * Classes
  */
-
 export { AlertSystem } from './classes/AlertSystem'
-export { AnimatedModel } from './classes/AnimatedModel'
-export { Booth, IBoothProps } from './classes/Booth/Booth'
 export { CallbackDebouncer } from './classes/CallbackDebouncer'
-export { Image } from './classes/Image'
-export { Model, IModelProps } from './classes/Model'
-export { ModelGroup, IModelGroupProps } from './classes/ModelGroup'
 export { OnMove } from './classes/OnMove'
-export { PersistUntil } from './classes/PersistUntil'
-export { POAPBooth } from './classes/Booth/POAPBooth'
 export { SignedFetchAPI } from './classes/SignedFetch'
-export { Sound, SoundPlayer } from './classes/SoundPlayer'
+export { SoundPlayer } from './classes/SoundPlayer'
 export { TransformGatherer } from './classes/TransformGatherer'
-export { WearableBooth } from './classes/Booth/WearableBooth'
+
+/**
+ * Entities
+ */
+export { AnimatedModel } from './entities/AnimatedModel'
+export { Booth, IBoothProps } from './entities/Booth/Booth'
+export { Image } from './entities/Image'
+export { Model, IModelProps } from './entities/Model'
+export { ModelGroup, IModelGroupProps } from './entities/ModelGroup'
+export { POAPBooth, IPOAPBoothProps } from './entities/Booth/POAPBooth'
+export { Sound } from './entities/Sound'
+export { WearableBooth, IWearableBoothProps } from './entities/Booth/WearableBooth'
 
 /**
  * Systems
  */ 
-
+export { PersistUntil } from './systems/PersistUntil'
 export { RotateSystem } from "./systems/RotateSystem"
+
+/**
+ * UI
+ */ 
+export { WrappedDynamicImage, IWrappedDynamicImageOptions, defaultWrappedDynamicImageProps } from './ui/classes/WrappedDynamicImage'
+export { noSign } from "./ui/images/noSign"
 
 /**
  * Various Utils
  */
 export { 
-    makeid, 
-    removeLineBreaks,
-    randomInt,
-    first,
-    last,
-    sample,
-    pluck,
-    groupBy,
-    formatNumber,
-    formatCompactNumber,
-    urn
+  //string
+  removeLineBreaks,
+  makeid,
+  proper,
+  lc,
+  uc,
+  truncate,
+  rgbToHex,
+  b2a,
+  a2b,
+  parse,
+  //number
+  randomInt,
+  round,
+  formatNumber,
+  formatCompactNumber,
+  //array
+  first,
+  last,
+  sample,
+  pluck,
+  groupBy,
+  createList,
+  //object
+  objectAssign,
+  //date
+  isDateValid,
+  //dcl
+  urn,
+  //utils grouped by type
+  zootils,
 } from './utils/index'
 
-export { 
-    parse, 
-    a2b,
-    b2a
-} from './utils/JWT'
+/**
+ * Other stuff
+ */
+export { userInfo } from "./utils/userInfo"

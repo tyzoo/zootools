@@ -1,15 +1,15 @@
 import { UserData } from "@decentraland/Identity";
 import { Realm } from "@decentraland/EnvironmentAPI";
-import { AlertSystem } from "../AlertSystem";
-import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
-import { SignedFetchAPI } from "../SignedFetch";
+import { AlertSystem } from "../../classes/AlertSystem";
+import { ConfirmCodeUI, IConfirmCodeOptions } from "../../classes/ConfirmCodeUI";
+import { SignedFetchAPI } from "../../classes/SignedFetch";
 import { Booth, IBoothProps } from "./Booth"
-import { parse } from "../../utils/JWT"
-import { SoundPlayer } from '../SoundPlayer';
-import { ETHSigner } from '../EthSigner';
-import { CallbackDebouncer } from "../CallbackDebouncer";
+import { SoundPlayer } from '../../classes/SoundPlayer';
+import { ETHSigner } from '../../classes/EthSigner';
+import { CallbackDebouncer } from "../../classes/CallbackDebouncer";
+import { parse } from "../../utils/index";
 
-export type Props = {
+export interface IPOAPBoothProps {
     booth_number: number;
     property: string;
     api_key: string;
@@ -42,7 +42,7 @@ export class POAPBooth extends Booth {
     secret_code: string | null = null;
     constructor(
         boothProps: Partial<IBoothProps>, 
-        private poapProps: Props,
+        private poapProps: IPOAPBoothProps,
         private alertSystem: AlertSystem,
         private confirmCodeOptions: Partial<IConfirmCodeOptions> = {},
     ){

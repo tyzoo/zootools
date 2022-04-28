@@ -1,3 +1,3 @@
-import { DCLConnectUserInfo } from "../classes/UserInfo";
+import { UserInfo } from "../classes/UserInfo";
 
-export const userInfo = new DCLConnectUserInfo()
+export const userInfo = new UserInfo()

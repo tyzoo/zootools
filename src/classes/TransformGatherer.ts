@@ -1,4 +1,4 @@
-// import { noSign } from "src/ui/noSign";
+import { noSign } from "../ui/images/noSign";
 
 export class TransformGatherer {
 	private positions: Vector3[] = []
@@ -19,7 +19,7 @@ export class TransformGatherer {
 						const origin = new Vector3(o.x, o.y, o.z)
 						this.add(hitEntity.getComponent(Transform).position, origin)
 					} else {
-						// noSign.show(1);
+						noSign.show(1.5);
 					}
 				}
 			}

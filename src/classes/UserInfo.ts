@@ -6,7 +6,7 @@ import {
 import { getUserData, UserData } from '@decentraland/Identity';
 import { getProvider, Provider } from '@decentraland/web3-provider';
 
-export class DCLConnectUserInfo {
+export class UserInfo {
     constructor() {
         // try { onRealmChangedObservable.add((realmChange) => {
         //         log("PLAYER CHANGED ISLAND TO ", realmChange.room);

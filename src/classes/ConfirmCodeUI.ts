@@ -1,6 +1,6 @@
-import { Dash_Wait } from "dcldash";
+import { Dash_Ease, Dash_Wait } from "dcldash";
 import { AlertSystem } from "./AlertSystem";
-import { GlobalCanvas, DynamicContainerRect, DynamicImage, DCLConnectEase  } from "dclconnect";
+import { GlobalCanvas, DynamicContainerRect, DynamicImage  } from "dclconnect";
 
 export interface IConfirmCodeOptions {
 	modal_bg_image_url: string;
@@ -144,7 +144,7 @@ export class ConfirmCodeUI {
 
 	public onShow():void {
 		this.active = true
-		this.container.scaleIn(0.5, DCLConnectEase.easeInOutSine);
+		this.container.scaleIn(0.5, Dash_Ease.easeInOutSine);
 		this.container.fadeIn(0.25);
 		this.textInput.value = '';
 		this.images.forEach(img=>img.image.isPointerBlocker = true);
@@ -158,7 +158,7 @@ export class ConfirmCodeUI {
 
 	public onHide():void {
 		this.active = false
-		this.container.scaleOut(0.5, DCLConnectEase.easeInOutSine);
+		this.container.scaleOut(0.5, Dash_Ease.easeInOutSine);
 		this.container.fadeOut(0.25);
 		this.images.forEach(img=>img.image.isPointerBlocker = false);
 	}

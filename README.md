@@ -1,78 +1,63 @@
 ## SDK Library
 
-This project has the basics to start building your own library for using in Decentraland scenes.
-
-The libraries in the [Awesome Repository](https://github.com/decentraland-scenes/Awesome-Repository#Libraries) are available for all to use. We encourage you to create and share your own as well, we'd love to see the community grow and start sharing more reusable solutions to common problems through libraries!
-
-## Publish
-
-See [Create Libraries]() for tips on how to design and develop your library, and for simple instructions for publishing it to NPM.
-
-Below is a template to help you craft documentation for your library, so others know how to use it.
-
-# MyAmazingLibrary Documentation
-
-myAmazingLibrary includes helpful solutions for `< insert use case >` in a Decentraland scene.
+zootools is a library to help speed up SDK development of Decentraland scenes.
 
 ## Install
 
 To use any of the helpers provided by this library:
 
-1. Install it as an npm package. Run this command in your scene's project folder:
+1. Install the dependencies as an npm package. Run this command in your scene's project folder:
 
    ```
-   npm install zootools
+   npm install dclconnect dcldash@latest zootools@latest -B
    ```
 
-2. Add this line at the start of your game.ts file, or any other TypeScript files that require it:
+2. Make sure tsconfig.json is properly set up. Also see [tsconfig.json example](https://tyzoo.github.io/assets/json/tsconfig.json)
+
+   ```
+      {
+      "compilerOptions": {
+         "outFile": "./bin/game.js",
+         "allowJs": true,
+         "strict": true,
+         "noLib": false,
+         "paths": {
+            "dcldash": [
+               "node_modules\\dcldash\\dist\\index.d.ts",
+               "node_modules/dcldash/dist/index.d.ts",
+               "./node_modules/dcldash/dist/index.d.ts",
+            ],
+            "zootools": [
+               "node_modules\\zootools\\dist\\index.d.ts",
+               "node_modules/zootools/dist/index.d.ts",
+               "./node_modules/zootools/dist/index.d.ts",
+            ]
+         },
+         "baseUrl": "."
+      },
+      "include": [
+         "src/**/*.ts"
+      ],
+      "extends": "./node_modules/decentraland-ecs/types/tsconfig.json",
+      "compileOnSave": false
+      }
+   ```
+
+3. Add this line at the start of your game.ts file:
 
    ```ts
    import { AlertSystem } from 'zootools';
 
    const alertSystem = new AlertSystem(scene);
 
+   alertSystem.new(`hello world`, 30000);
 
    ```
 
+
 ## Usage
 
-### < use case 1 >
-
-To do `< insert use case >`, add the `MyAmazingComponent` component to the entity.
-
-MyAmazingComponent requires two arguments when being constructed:
-
-- `start`: Vector3 for the start position
-- `duration`: duration (in seconds)
-
-MyAmazingComponent can optionally also take the following argument:
-
-- `color`: Color4 value for the color. If not provided, the default value is `Color4.Red()`
-
-This example uses MyAmazingComponent to do `< insert use case >` to an entity over a period of 2 seconds:
-
-```ts
-import * as magic from 'myAmazingLibrary'
-
-// Create entity
-const box = new Entity()
-
-// Give entity a shape and transform
-box.addComponent(new BoxShape())
-box.addComponent(new Transform())
-
-// Move entity
-box.addComponent(new magic.MyAmazingComponent(new Vector3(1, 1, 1), 2))
-
-// Add entity to engine
-engine.addEntity(box)
-```
-
-> Note: Be aware that if < other use case >, MyAmazingComponent will < do some other thing >.
-
-### < use case 2 >
-
-...
+### < Docs coming soon >
 
 ## Copyright info
 

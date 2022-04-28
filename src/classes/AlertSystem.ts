@@ -1,5 +1,4 @@
-import { GlobalCanvas } from "dclconnect";
-import { Dash_Wait as Wait } from "dcldash"
+import { Dash_GlobalCanvas, Dash_Wait as Wait } from "dcldash"
 
 @Component('AlertSystem')
 /**
@@ -10,12 +9,10 @@ export class AlertSystem {
 	private parent: UIContainerStack;
 	private rect: UIContainerRect;
 	private recttext: UIText;
-	private notifyText: string = '';
-	private pinMS: number = 0;
 	private defaultMS: number = 5000;
 	private notificationExpires: Date | null = null;
 	constructor() {
-		this.canvas = GlobalCanvas;
+		this.canvas = Dash_GlobalCanvas;
 		this.parent = new UIContainerStack(this.canvas);
 		this.parent.adaptWidth = true;
 		this.parent.width = '40%';
@@ -27,10 +24,8 @@ export class AlertSystem {
 		this.parent.stackOrientation = UIStackOrientation.VERTICAL;
 		this.parent.adaptHeight = true;
 		this.parent.visible = true;
-
 		this.rect = new UIContainerRect(this.parent);
 		this.rect.visible = true;
-
 		this.recttext = new UIText(this.parent);
 		this.recttext.vTextAlign = 'center';
 		this.recttext.hTextAlign = 'center';

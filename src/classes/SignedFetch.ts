@@ -8,11 +8,11 @@ export class SignedFetchAPI {
       return new Promise((resolve, reject)=>{
         try {
           executeTask(async ()=>{
-            let response
+            let response: any;
             switch(method){
               default:
               case "GET":
-                response = await signedFetch(_path)
+                response = await signedFetch(_path);
                 break;
               case "PUT":
               case "POST":
@@ -21,22 +21,23 @@ export class SignedFetchAPI {
                   headers: { "Content-Type": "application/json" },
                   method, 
                   body: JSON.stringify(body),
-                })
+                });
                 break;
             }
-            let json: any
-            if(response.text) json = JSON.parse(response.text)
+            let json: any;
+            if(response.text) json = JSON.parse(response.text);
             if(response.ok){
-                log(`API Request Success: ${json.message}`)
-                resolve(json)
+                log(`API Request Success: ${json.message}`);
+                resolve(json);
             }else{
-                log(`API Request Error: ${json.message}`)
-                resolve(json)
+                const m = `API Response was not ok`;
+                log(m);
+                reject(m);
             }
           })
         }catch(err:any){
-          log(`API Request error occurred`, err)
-          reject(false)
+          log(`API Request error occurred`, err);
+          reject(err);
         }
       })
     }

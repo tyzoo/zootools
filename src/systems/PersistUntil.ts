@@ -5,9 +5,10 @@ export class PersistUntil implements ISystem {
         private checkIfTrue: () => boolean, 
         private interval: number = 0.5,
         private onDone: () => void, 
+		private forceStart: boolean = true
     ) {
         this.system = this;
-        engine.addSystem(this.system);
+        if(this.forceStart) engine.addSystem(this.system);
     }
 	public update(dt: number): void {
 		this.timer += dt;

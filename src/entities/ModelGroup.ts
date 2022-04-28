@@ -1,5 +1,5 @@
 import { makeid } from "../utils/index";
-import { Model } from "../classes/Model";
+import { Model } from "./Model";
 
 declare const Set: any;
 

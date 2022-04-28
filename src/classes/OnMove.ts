@@ -1,49 +1,20 @@
 import { Dash_Wait as Wait } from "dcldash"
-
-export class CameraChecker implements ISystem {
-	public timer = 0;
-	constructor(private onMove: OnMove) {}
-	public update(dt: number): void {
-		this.timer += dt;
-		if (this.timer > 0.5) {
-			this.timer = 0;
-			// log('waitingmove', dt);
-			if (this.onMove.hasMoved()) {
-				log(`ZooTools: MOVEMENT DETECTED!  ${this.onMove.queue.length} delayed items`);
-				this.onMove.movement = true;
-				engine.removeSystem(this.onMove.cameraChecker);
-				this.onMove.queue.forEach(fn => {
-					fn();
-				});
-				this.onMove.queue = [];
-			}
-		}
-	}
-}
-
-export class PersistUntil implements ISystem {
-	public timer = 0;
-	constructor(private onMove: OnMove, private onDone: Function, private interval: number = 0.5) {}
-	public update(dt: number): void {
-		this.timer += dt;
-		if (this.timer > this.interval) {
-			this.timer = 0;
-			this.onMove.setCamera();
-			if (this.onMove.hasLoaded()) {
-				this.onMove.loading = false;
-				this.onDone();
-				engine.removeSystem(this.onMove.persistUntil);
-			}
-		}
-	}
-}
+import { PersistUntil } from "../systems/PersistUntil";
 
 export class OnMove {
 	public loading: boolean = true;
 	public movement: boolean = false;
 	public queue: Function[] = [];
-	public cameraChecker = new CameraChecker(this);
-	public persistUntil = new PersistUntil(this, () => {
+	public cameraChecker = new PersistUntil(this.hasMoved, 0.5, () => {
+		log(`ZooTools: MOVEMENT DETECTED!  ${this.queue.length} delayed items`);
+		this.movement = true;
+		engine.removeSystem(this.cameraChecker);
+		this.queue.forEach(fn => {
+			fn();
+		});
+		this.queue = [];
+	}, false);
+	public persistUntil = new PersistUntil(this.hasLoaded, 0.5, () => {
 		engine.addSystem(this.cameraChecker);
 	});
 	private initialFeetPositionX: number = 0;
@@ -53,9 +24,7 @@ export class OnMove {
 	private initialRotationY: number = 0;
 	private initialRotationZ: number = 0;
 	constructor() {
-		// log(`initialx`, this.initialFeetPositionX);
 		Wait(() => {
-			// log('INITIALIZING MOVEMENT TRACKER');
 			Wait(() => {
 				engine.addSystem(this.persistUntil);
 			}, 1);
@@ -88,7 +57,6 @@ export class OnMove {
 			return false;
 		}
 		const instance = Camera.instance;
-		// log(`instancex`, instance.feetPosition.x);
 		if (instance.feetPosition.x !== this.initialFeetPositionX) return true;
 		if (instance.feetPosition.y !== this.initialFeetPositionY) return true;
 		if (instance.feetPosition.z !== this.initialFeetPositionZ) return true;

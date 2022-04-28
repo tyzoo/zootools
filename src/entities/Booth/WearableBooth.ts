@@ -1,15 +1,15 @@
 import { UserData } from "@decentraland/Identity";
 import { Realm } from "@decentraland/EnvironmentAPI";
-import { parse } from "../../utils/JWT";
-import { AlertSystem } from "../AlertSystem";
-import { ConfirmCodeUI, IConfirmCodeOptions } from "../ConfirmCodeUI";
-import { ETHSigner } from "../EthSigner";
-import { SignedFetchAPI } from "../SignedFetch";
-import { SoundPlayer } from "../SoundPlayer";
+import { AlertSystem } from "../../classes/AlertSystem";
+import { ConfirmCodeUI, IConfirmCodeOptions } from "../../classes/ConfirmCodeUI";
+import { ETHSigner } from "../../classes/EthSigner";
+import { SignedFetchAPI } from "../../classes/SignedFetch";
+import { SoundPlayer } from "../../classes/SoundPlayer";
 import { Booth, IBoothProps } from "./Booth"
-import { CallbackDebouncer } from "../CallbackDebouncer";
+import { CallbackDebouncer } from "../../classes/CallbackDebouncer";
+import { parse } from "../../utils/index";
 
-interface IWearableBoothProps {
+export interface IWearableBoothProps {
     booth_number: number;
     property: string;
     api_key: string;
