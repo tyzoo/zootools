@@ -33,7 +33,9 @@ export { RotateSystem } from "./systems/RotateSystem"
 /**
  * UI
  */ 
+export { ImageSlicer, IImgSlice, IImgSliceProps, IImgSliceData } from './ui/classes/ImageSlicer'
 export { WrappedDynamicImage, IWrappedDynamicImageOptions, defaultWrappedDynamicImageProps } from './ui/classes/WrappedDynamicImage'
+export { WrappedImage, IWrappedImageOptions, defaultWrappedImageProps } from './ui/classes/WrappedImage'
 export { noSign } from "./ui/images/noSign"
 
 /**
