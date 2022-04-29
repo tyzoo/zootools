@@ -67,17 +67,21 @@ export class WrappedDynamicImage {
         this.di = new DynamicImage(img);
         if(options.startVisible){
             this.show();
-            if(!!!isNaN(options.hideAfter)) Dash_Wait(()=>{ this.hide(); }, options.hideAfter);
+            if(!!!isNaN(options.hideAfter!)) Dash_Wait(()=>{ this.hide(); }, options.hideAfter!);
         }else{
           this.di.image.visible = false;
         }
     }
+    setScale(scale:number): void {
+		this.di.image.width = this.di.image.sourceWidth / scale;
+		this.di.image.height = this.di.image.sourceHeight / scale;
+	}
     show(seconds?: number):void {
         this.di.image.isPointerBlocker = this.options.isPointerBlocker!;
         this.di.image.visible = true;
         this.di.fadeIn(this.options.fadeInTime!, this.options.fadeInEase!);
         this.di.scaleIn(this.options.scaleInStarting!, this.options.scaleInTime!, this.options.scaleInEase!);
-        if(seconds || this.options.hideAfter) Dash_Wait(()=>{ this.hide(); }, seconds ? seconds : this.options.hideAfter);
+        if(seconds || this.options.hideAfter) Dash_Wait(()=>{ this.hide(); }, seconds ? seconds : this.options.hideAfter!);
     }
     hide():void {
         this.di.fadeOut(this.options.fadeOutTime!, this.options.fadeOutEase!);

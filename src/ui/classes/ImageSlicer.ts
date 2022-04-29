@@ -58,3 +58,31 @@ export class ImageSlicer {
         })
     }
 }
+
+// import { Dash_GlobalCanvas } from "dcldash";
+// import { IImgSliceProps, ImageSlicer } from "zootools" //v0.0.38
+
+// const slices: IImgSliceProps[] = [
+//   { x:  0, y:   0, w: 100, h:  50, },
+//   { x:  0, y:  50, w:  12, h: 250, },
+//   { x: 12, y:  50, w:  75, h:  27, onClick: () => log("dance!") },
+//   { x: 12, y:  77, w:  75, h:  12, },
+//   { x: 12, y:  89, w:  75, h:  27, onClick: () => log("tik!") },
+//   { x: 12, y: 116, w:  75, h:  13, },
+//   { x: 12, y: 129, w:  75, h:  27, onClick: () => log("tektonik!") },
+//   { x: 12, y: 156, w:  75, h:  13, },
+//   { x: 12, y: 169, w:  75, h:  27, onClick: () => log("disco!") },
+//   { x: 12, y: 196, w:  75, h:  13, },
+//   { x: 12, y: 209, w:  75, h:  27, onClick: () => log("handsair!") },
+//   { x: 12, y: 236, w:  75, h:  13, },
+//   { x: 12, y: 249, w:  75, h:  27, onClick: () => log("random!") },
+//   { x: 12, y: 276, w:  75, h:  24, },
+//   { x: 87, y:  50, w:  13, h: 250, },
+// ]
+
+// new ImageSlicer(
+//   Dash_GlobalCanvas, //parent
+//   new Texture(`https://tyzoo.github.io/assets/images/emote-ui.png`),
+//   slices,
+//   [ 0, 100 ] //offset
+// )
