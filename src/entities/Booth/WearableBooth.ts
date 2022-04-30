@@ -18,27 +18,13 @@ export interface IWearableBoothProps {
     realm: Realm
 }
 
-const soundPlayer = new SoundPlayer([
-    {
-        name: `openDialog`,
-        path: `poap_assets/sounds/navigationForward.mp3`
-    },
-    {
-        name: `closeDialog`,
-        path: `poap_assets/sounds/navigationBackward.mp3`
-    },
-    {
-        name: `coin`,
-        path: `poap_assets/sounds/star-collect.mp3`
-    },
-]);
-
 export class WearableBooth extends Booth {
     servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
     confirmCodeUI: ConfirmCodeUI;
     ethSigner: ETHSigner
     access_token: string | null = null;
     secret_code: string | null = null;
+    soundPlayer: SoundPlayer
     constructor(
         props: Partial<IBoothProps>,
         private wearableProps: IWearableBoothProps,
@@ -69,8 +55,23 @@ export class WearableBooth extends Booth {
                 })
             },
             this.confirmCodeOptions,
-            alertSystem
+            alertSystem,
+            this.cdn
         );
+        this.soundPlayer = new SoundPlayer([
+            {
+                name: `openDialog`,
+                path: `${this.cdn}poap_assets/sounds/navigationForward.mp3`
+            },
+            {
+                name: `closeDialog`,
+                path: `${this.cdn}poap_assets/sounds/navigationBackward.mp3`
+            },
+            {
+                name: `coin`,
+                path: `${this.cdn}poap_assets/sounds/star-collect.mp3`
+            },
+        ]);       
         if(this.wearableProps._giveawayId){
             this.setGivewayId(this.wearableProps._giveawayId);
         }
@@ -100,7 +101,7 @@ export class WearableBooth extends Booth {
                 const property = this.wearableProps.property;
                 let message: string | undefined;
                 let signature: string | undefined;
-                soundPlayer.playSound('openDialog');
+                this.soundPlayer.playSound('openDialog');
                 let params: any = { name, address, realm, api_key, property };
                 if (!this.wearableProps.userData.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
@@ -142,15 +143,15 @@ export class WearableBooth extends Booth {
         if (this.wearableProps.userData!.hasConnectedWeb3) {
             let item:any = await this.sendItem(this.wearableProps.userData.displayName, this.wearableProps.userData.publicKey);
             if (item.success === true) {
-                soundPlayer.playSound('coin')
+                this.soundPlayer.playSound('coin')
                 let text = item.message ? item.message : "An item for today's event will arrive to your account very soon!";
                 this.alertSystem.new(text, 5000);
             } else {
-                soundPlayer.playSound('closeDialog');
+                this.soundPlayer.playSound('closeDialog');
                 this.alertSystem.new(item.message ? item.message : 'Something is wrong with the server, please try again later.', 5000);
             }       
         } else {
-            soundPlayer.playSound('closeDialog')
+            this.soundPlayer.playSound('closeDialog')
             this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
         }
     }

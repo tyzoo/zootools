@@ -18,21 +18,6 @@ export interface IPOAPBoothProps {
     realm: Realm
 };
 
-const soundPlayer = new SoundPlayer([
-    {
-        name: `openDialog`,
-        path: `poap_assets/sounds/navigationForward.mp3`
-    },
-    {
-        name: `closeDialog`,
-        path: `poap_assets/sounds/navigationBackward.mp3`
-    },
-    {
-        name: `coin`,
-        path: `poap_assets/sounds/star-collect.mp3`
-    },
-]);
-
 export class POAPBooth extends Booth {
     servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
     claimsAPI = new SignedFetchAPI("https://claims.poap.cc/");
@@ -40,6 +25,7 @@ export class POAPBooth extends Booth {
     ethSigner: ETHSigner
     access_token: string | null = null;
     secret_code: string | null = null;
+    soundPlayer: SoundPlayer
     constructor(
         boothProps: Partial<IBoothProps>, 
         private poapProps: IPOAPBoothProps,
@@ -70,8 +56,23 @@ export class POAPBooth extends Booth {
                 })
             },
             this.confirmCodeOptions,
-            alertSystem
+            alertSystem,
+            this.cdn
         );
+        this.soundPlayer = new SoundPlayer([
+            {
+                name: `openDialog`,
+                path: `${this.cdn}poap_assets/sounds/navigationForward.mp3`
+            },
+            {
+                name: `closeDialog`,
+                path: `${this.cdn}poap_assets/sounds/navigationBackward.mp3`
+            },
+            {
+                name: `coin`,
+                path: `${this.cdn}poap_assets/sounds/star-collect.mp3`
+            },
+        ]);
         if(this.poapProps.event_id){
             this.setEventId(this.poapProps.event_id);
         }
@@ -97,7 +98,7 @@ export class POAPBooth extends Booth {
                 const property = this.poapProps.property;
                 let message: string | undefined;
                 let signature: string | undefined;
-                soundPlayer.playSound('openDialog');
+                this.soundPlayer.playSound('openDialog');
 
                 let params: any = { name, address, realm, api_key, property };
                 if (!this.poapProps.userData.hasConnectedWeb3)
@@ -140,15 +141,15 @@ export class POAPBooth extends Booth {
         if (this.poapProps.userData!.hasConnectedWeb3) {
             let poap:any = await this.sendPoap(this.poapProps.userData.displayName, this.poapProps.userData.publicKey, this.poapProps.realm.displayName);
             if (poap.success === true) {
-                soundPlayer.playSound('coin')
+                this.soundPlayer.playSound('coin')
                 let text = poap.message ? poap.message : "A POAP token for today's event will arrive to your account very soon!";
                 this.alertSystem.new(text, 5000);
             } else {
-                soundPlayer.playSound('closeDialog');
+                this.soundPlayer.playSound('closeDialog');
                 this.alertSystem.new(poap.message ? poap.message : 'Something is wrong with the server, please try again later.', 5000);
             }       
         } else {
-            soundPlayer.playSound('closeDialog')
+            this.soundPlayer.playSound('closeDialog')
             this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
         }
     }

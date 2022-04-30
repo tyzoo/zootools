@@ -24,7 +24,8 @@ export class ConfirmCodeUI {
 	constructor(
 		private onAttemptCompleteCallback: (val:string)=>void, 
         private options: Partial<IConfirmCodeOptions>,
-        private alert: AlertSystem
+        private alert: AlertSystem,
+		private cdn: string
 	){
         if(this.options.modal_bg_image_url === undefined)
             this.options.modal_bg_image_url = 'poap_assets/images/popup.png';
@@ -36,7 +37,7 @@ export class ConfirmCodeUI {
             this.options.secret_input_x_y_offset = [0,0];
         if(this.options.secret_code_color === undefined)
             this.options.secret_code_color = Color4.FromHexString('#FFFFFF00');
-		this.texture = new Texture(this.options.modal_bg_image_url);
+		this.texture = new Texture(`${this.cdn}${this.options.modal_bg_image_url}`);
 		this.container = new DynamicContainerRect(new UIContainerRect(canvas));
 		this.container.rect.hAlign = 'center';
 		this.container.rect.vAlign = 'center';

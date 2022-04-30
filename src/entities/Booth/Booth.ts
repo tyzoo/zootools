@@ -9,6 +9,7 @@ export interface IBoothProps {
 	wrapTexturePath: string, 
 	dispenserModelPath: string,
 	buttonModelPath: string,
+	useHostedAssets?: boolean,
 }
 
 export class Booth extends Entity  {
@@ -20,11 +21,14 @@ export class Booth extends Entity  {
 	private rotateSystem: RotateSystem;
 	public image: Entity | undefined;
 	public item: Entity | undefined;
+	public cdn: string;
 	constructor(
 	  props: IBoothProps
 	){
 	  super()
-	  this.wrapTexture = new Texture(props.wrapTexturePath)
+	  if(props.useHostedAssets === undefined) props.useHostedAssets = true;
+	  this.cdn = props.useHostedAssets ? `https://tyzoo.github.io/assets/` : ``; 
+	  this.wrapTexture = new Texture(`${this.cdn}${props.wrapTexturePath}`)
 	  this.addComponent(new Transform(props.transformArgs));
 	  this.booth.addComponent(new GLTFShape(props.dispenserModelPath));
 	  this.booth.getComponent(GLTFShape).isPointerBlocker = false;
@@ -69,7 +73,7 @@ export class Booth extends Entity  {
 	public setImage(path: string, url: string, hoverText: string): void{
 	  if(!path) return;
 	  const texture = new Texture(path)
-	  const circle = new Texture("poap_assets/images/alpha-circle.png");
+	  const circle = new Texture(`${this.cdn}poap_assets/images/alpha-circle.png`);
 	  this.image = new Entity(`image-${this.name}`);
 	  this.image.addComponent(new PlaneShape());
 	  this.image.getComponent(PlaneShape).uvs = Dash_UV_Image()
