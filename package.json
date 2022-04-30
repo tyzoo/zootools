@@ -1,7 +1,7 @@
 {
   "name": "zootools",
   "version": "0.0.44",
-  "description": "Dcl SDK Library",
+  "description": "ZooTools Decentraland SDK Library",
   "main": "./dist/index.js",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
