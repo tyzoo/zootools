@@ -18,6 +18,7 @@ export { UserInfo } from './classes/UserInfo'
  */
 export { AnimatedModel } from './entities/AnimatedModel'
 export { Booth, IBoothProps } from './entities/Booth/Booth'
+export { Elements } from './entities/Elements'
 export { Image } from './entities/Image'
 export { Model, IModelProps } from './entities/Model'
 export { ModelGroup, IModelGroupProps } from './entities/ModelGroup'
