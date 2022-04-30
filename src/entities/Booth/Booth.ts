@@ -85,8 +85,7 @@ export class Booth extends Entity  {
 	  this.image.getComponent(Material).transparencyMode = 1;
 	  this.image.addComponent(new Transform({
 		position: new Vector3(0,1.8,0),
-		scale: new Vector3().setAll(0.69),
-		rotation: new Quaternion().setEuler(180,0,180)
+		scale: new Vector3().setAll(0.69)
 	  }));
 	  this.image.addComponent(new OnPointerDown(()=>{
 		openExternalURL(url);
