@@ -23,7 +23,7 @@ export class ImageSlicer {
         private slices: IImgSliceProps[],
         private offset: [x: number, y: number]
     ){
-        let calcOffset: [ x: number, y: number ] = [ 0, 0 ]
+        const calcOffset: [ x: number, y: number ] = [ 0, 0 ];
         const _slices = this.parseSliceData(this.slices);
         for(let i = 0; i < _slices.length; i++){
             const { slice: thisSlice, onClick } = _slices[i];

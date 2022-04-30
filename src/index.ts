@@ -11,6 +11,7 @@ export { OnMove } from './classes/OnMove'
 export { SignedFetchAPI } from './classes/SignedFetch'
 export { SoundPlayer } from './classes/SoundPlayer'
 export { TransformGatherer } from './classes/TransformGatherer'
+export { UserInfo } from './classes/UserInfo'
 
 /**
  * Entities
@@ -45,7 +46,8 @@ export { noSign } from "./ui/images/noSign"
 export { 
   //string
   removeLineBreaks,
-  makeid,
+  b58,
+  makeid, IMakeIdOptions, defaultMakeIdOptions,
   proper,
   lc,
   uc,
@@ -79,4 +81,4 @@ export {
 /**
  * Other stuff
  */
-export { userInfo } from "./utils/userInfo"
+export { userInfo, initUserInfo } from "./utils/userInfo"

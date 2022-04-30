@@ -12,16 +12,63 @@ export function removeLineBreaks(str: string): string {
 }
 
 /**
+ * Strip non base58 chars from a string of text
+ * @param text 
+ * @returns 
+ */
+export function b58(text: string): string {
+	return text.split("").map(
+		(c) => ("0IOl".indexOf(c) === -1 ? c : null)
+	).filter(x => x !== null).join("");
+}
+
+export interface IMakeIdOptions {
+	uppercase: boolean;
+	lowercase: boolean;
+	numbers: boolean;
+	base58: boolean;
+	length: number;
+}
+
+export const defaultMakeIdOptions: IMakeIdOptions = {
+	uppercase: true,
+	lowercase: true,
+	numbers: true,
+	base58: true,
+	length: 5
+}
+
+/**
  * Make a random ID string
- * @param length number of characters
+ * @param lengthOrOptions provide number of random characters or provide makeIdOptions obj
+ * ex options: { 
+ * 	uppercase: boolean, 
+ * 	lowercase: boolean, 
+ * 	numbers: boolean,
+ *  base58: boolean,
+ *  length: number
+ * }
  * @returns a string
  */
-export function makeid(length: number): string {
+export function makeid(lengthOrOptions: number | Partial<IMakeIdOptions>): string {
+	let dictonary: string = ""
+	const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const lowercase = uppercase.toLowerCase();
+	const numbers = Array(10).map((l,i)=>i);
+	if(typeof lengthOrOptions === "number"){
+		dictonary = b58(uppercase + lowercase + numbers);
+	}else{
+		lengthOrOptions = objectAssign(defaultMakeIdOptions, lengthOrOptions) as IMakeIdOptions;
+		let options: Partial<IMakeIdOptions> = lengthOrOptions;
+		if(options.uppercase) dictonary += uppercase;
+		if(options.lowercase) dictonary += lowercase;
+		if(options.numbers) dictonary += numbers;
+		if(options.base58) dictonary = b58(dictonary);
+	}
 	var result = '';
-	var characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz23456789';
-	var charactersLength = characters.length;
-	for (var i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	var charactersLength = dictonary.length;
+	for (var i = 0; i < lengthOrOptions; i++) {
+		result += dictonary.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
 }
@@ -151,6 +198,7 @@ export function parse(token: string){
  */
 const string = {
 	removeLineBreaks,
+	b58,
 	makeid,
 	proper,
 	lc,

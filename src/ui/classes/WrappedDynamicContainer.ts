@@ -19,8 +19,6 @@ export interface IWrappedDynamicContainerOptions {
   scaleOutEnding?: number;
   scaleOutTime?: number;
   scaleOutEase?: (x: number) => number;
-  sourceWidth?: number;
-  sourceHeight?: number;
 }
 
 export const defaultWrappedDynamicContainerProps: IWrappedDynamicContainerOptions = {
@@ -48,7 +46,7 @@ export class WrappedDynamicContainer {
     constructor(
         public props: {
           parent?: UIShape,
-          src: Texture,
+          src: Texture | undefined,
           dimensions: Vector2,
           slice: Vector4,
           offset?: Vector2,
@@ -63,8 +61,8 @@ export class WrappedDynamicContainer {
 		this.container.rect.positionX = this.props.offset!.x!;
 		this.container.rect.positionY = this.props.offset!.y!;
 		this.container.rect.opacity = 1;
-		this.container.rect.isPointerBlocker = false;
-    this.container.rect.visible = true;
+		this.container.rect.isPointerBlocker = this.options.isPointerBlocker!;
+    this.container.rect.visible = this.options.startVisible!;
     if(this.props.src){
       this.setBg(this.props.src, this.props.slice.z!, this.props.slice.w!)
     }
@@ -74,7 +72,6 @@ export class WrappedDynamicContainer {
     }else{
       this.container.rect.visible = false;
     }
-    log({...props, ...options})
   }
 	public setBg(src: Texture, sourceWidth: number, sourceHeight: number, scale: number = 2 ): void {
 		this.bg = new WrappedDynamicImage({
@@ -82,7 +79,7 @@ export class WrappedDynamicContainer {
 			src,
 			dimensions: new Vector2(sourceWidth, sourceHeight),
 			slice: new Vector4(0, 0, sourceWidth, sourceHeight),
-			offset: new Vector2(0, 0)
+			offset: this.props.offset ? this.props.offset : new Vector2(0, 0)
 		});
 		this.container.rect.width = sourceWidth / scale;
 		this.container.rect.height = sourceHeight / scale;
@@ -117,3 +114,13 @@ export class WrappedDynamicContainer {
 		}
   }
 }
+
+// const container = new WrappedDynamicContainer({
+//   parent: Dash_GlobalCanvas,
+//   src: new Texture('https://tyzoo.github.io/assets/images/emote-ui.png'),
+//   dimensions: new Vector2(200,600),
+//   slice: new Vector4(0,0,600,200),
+//   offset: new Vector2(0,0),
+// }, {
+//   startVisible: true
+// })
