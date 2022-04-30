@@ -1,6 +1,6 @@
 {
   "name": "zootools",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "ZooTools Decentraland SDK Library",
   "main": "./dist/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "dclconnect": "^0.5.15",
-    "dcldash": "^0.0.22"
+    "dcldash": "^0.0.23"
   },
   "engines": {
     "node": ">=16.0.0",
