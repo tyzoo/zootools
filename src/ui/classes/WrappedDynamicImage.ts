@@ -1,5 +1,6 @@
 import { Dash_Ease, Dash_GlobalCanvas, Dash_Wait, DynamicImage } from "dcldash";
 import { objectAssign } from "../../utils/index";
+import { WrappedDynamicContainer } from "./WrappedDynamicContainer";
 
 export interface IWrappedDynamicImageOptions {
     hAlign: string;
@@ -69,7 +70,7 @@ export class WrappedDynamicImage {
             this.show();
             if(!!!isNaN(options.hideAfter!)) Dash_Wait(()=>{ this.hide(); }, options.hideAfter!);
         }else{
-          this.di.image.visible = false;
+            this.di.image.visible = false;
         }
     }
     setScale(scale:number): void {

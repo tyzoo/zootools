@@ -68,11 +68,13 @@ export class WrappedDynamicContainer {
     if(this.props.src){
       this.setBg(this.props.src, this.props.slice.z!, this.props.slice.w!)
     }
-    if(options.startVisible){
-      this.show();
-      if(!!!isNaN(options.hideAfter!)) Dash_Wait(()=>{ this.hide(); }, options.hideAfter!);
+    if(!(this.props.parent instanceof WrappedDynamicContainer)){
+      if(options.startVisible){
+        this.show();
+        if(!!!isNaN(options.hideAfter!)) Dash_Wait(()=>{ this.hide(); }, options.hideAfter!);
+      }
     }else{
-      this.container.rect.visible = false;
+      this.container.rect.visible = true;
     }
   }
 	public setBg(src: Texture | ImageSlicer | undefined | null, sourceWidth: number, sourceHeight: number, scale: number = 2 ): void {
