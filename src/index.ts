@@ -68,6 +68,7 @@ export {
   pluck,
   groupBy,
   createList,
+  range,
   //object
   objectAssign,
   //date

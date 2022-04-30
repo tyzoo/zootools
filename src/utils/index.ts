@@ -54,7 +54,7 @@ export function makeid(lengthOrOptions: number | Partial<IMakeIdOptions>): strin
 	let dictonary: string = ""
 	const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	const lowercase = uppercase.toLowerCase();
-	const numbers = Array(10).map((l,i)=>i);
+	const numbers = range(1, 10);
 	if(typeof lengthOrOptions === "number"){
 		dictonary = b58(uppercase + lowercase + numbers);
 	}else{
@@ -358,6 +358,18 @@ export function groupBy(array: any[], key: string): any {
 
 
 /**
+ * Get an array of integers between two integers
+ * @param from starting number 
+ * @param to ending number
+ * @returns array of numbers
+ */
+ export function range(from: number, to: number): number[] {
+	const len = (to - from) + 1;
+	return Array.from(Array(len).keys()).map(a => a += from);
+}
+
+
+/**
  * All array utils
  */
  const array = {
@@ -367,6 +379,7 @@ export function groupBy(array: any[], key: string): any {
 	pluck,
 	groupBy,
 	createList,
+	range,
 }
 
 
