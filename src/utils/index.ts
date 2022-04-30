@@ -27,6 +27,7 @@ export interface IMakeIdOptions {
 	lowercase: boolean;
 	numbers: boolean;
 	base58: boolean;
+	symbols: boolean;
 	length: number;
 }
 
@@ -35,18 +36,20 @@ export const defaultMakeIdOptions: IMakeIdOptions = {
 	lowercase: true,
 	numbers: true,
 	base58: true,
+	symbols: false,
 	length: 5
 }
 
 /**
  * Make a random ID string
- * @param lengthOrOptions provide number of random characters or provide makeIdOptions obj
+ * @param lengthOrOptions provide length or provide makeIdOptions obj
  * ex options: { 
  * 	uppercase: boolean, 
  * 	lowercase: boolean, 
  * 	numbers: boolean,
  *  base58: boolean,
- *  length: number
+ *  length: number,
+ *  symbols: false,
  * }
  * @returns a string
  */
@@ -54,7 +57,8 @@ export function makeid(lengthOrOptions: number | Partial<IMakeIdOptions>): strin
 	let dictonary: string = ""
 	const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	const lowercase = uppercase.toLowerCase();
-	const numbers = range(1, 10);
+	const numbers = range(0,9).join("");
+	const symbols = `!@#$%^&*()-_=+`;
 	if(typeof lengthOrOptions === "number"){
 		dictonary = b58(uppercase + lowercase + numbers);
 	}else{
@@ -64,11 +68,16 @@ export function makeid(lengthOrOptions: number | Partial<IMakeIdOptions>): strin
 		if(options.lowercase) dictonary += lowercase;
 		if(options.numbers) dictonary += numbers;
 		if(options.base58) dictonary = b58(dictonary);
+		if(options.symbols) dictonary += symbols;
+		lengthOrOptions = options.length
 	}
-	var result = '';
-	var charactersLength = dictonary.length;
-	for (var i = 0; i < lengthOrOptions; i++) {
-		result += dictonary.charAt(Math.floor(Math.random() * charactersLength));
+	let result = '';
+	for (let i = 0; i < lengthOrOptions; i++) {
+		result += dictonary.charAt(
+			Math.floor( 
+				Math.random() * dictonary.length 
+			)
+		);
 	}
 	return result;
 }
@@ -356,18 +365,16 @@ export function groupBy(array: any[], key: string): any {
     return { list, has, add }
 }
 
-
 /**
  * Get an array of integers between two integers
  * @param from starting number 
  * @param to ending number
  * @returns array of numbers
  */
- export function range(from: number, to: number): number[] {
+export function range(from: number, to: number): number[] {
 	const len = (to - from) + 1;
 	return Array.from(Array(len).keys()).map(a => a += from);
 }
-
 
 /**
  * All array utils
