@@ -2,6 +2,7 @@ import { DynamicContainerRect } from "dclconnect";
 import { Dash_Ease, Dash_GlobalCanvas, Dash_Wait } from "dcldash";
 import { WrappedDynamicImage } from "./WrappedDynamicImage"
 import { objectAssign } from "../../utils/index";
+import { ImageSlicer } from "./ImageSlicer";
 
 export interface IWrappedDynamicContainerOptions {
   hAlign: string;
@@ -43,15 +44,16 @@ export class WrappedDynamicContainer {
 	public container: DynamicContainerRect
 	public active = false;
 	public bg: WrappedDynamicImage | undefined;
+	public slicer: ImageSlicer | undefined;
     constructor(
-        public props: {
-          parent?: UIShape,
-          src: Texture | undefined,
-          dimensions: Vector2,
-          slice: Vector4,
-          offset?: Vector2,
-        },
-        public options: Partial<IWrappedDynamicContainerOptions> = defaultWrappedDynamicContainerProps
+      public props: {
+        parent?: UIShape,
+        src: Texture | undefined,
+        dimensions: Vector2,
+        slice: Vector4,
+        offset?: Vector2,
+      },
+      public options: Partial<IWrappedDynamicContainerOptions> = defaultWrappedDynamicContainerProps
     ){
     if(!props.offset) this.props.offset = new Vector2(0,0);
 		this.options = objectAssign(defaultWrappedDynamicContainerProps, this.options);
@@ -73,20 +75,25 @@ export class WrappedDynamicContainer {
       this.container.rect.visible = false;
     }
   }
-	public setBg(src: Texture, sourceWidth: number, sourceHeight: number, scale: number = 2 ): void {
-		this.bg = new WrappedDynamicImage({
-			parent: this.container.rect,
-			src,
-			dimensions: new Vector2(sourceWidth, sourceHeight),
-			slice: new Vector4(0, 0, sourceWidth, sourceHeight),
-			offset: this.props.offset ? this.props.offset : new Vector2(0, 0)
-		});
+	public setBg(src: Texture | ImageSlicer | undefined | null, sourceWidth: number, sourceHeight: number, scale: number = 2 ): void {
+		if(!src) return;
+    if(src instanceof Texture){
+      this.bg = new WrappedDynamicImage({
+        parent: this.container.rect,
+        src,
+        dimensions: new Vector2(sourceWidth, sourceHeight),
+        slice: new Vector4(0, 0, sourceWidth, sourceHeight),
+        offset: this.props.offset ? this.props.offset : new Vector2(0, 0)
+      });
+      this.bg.di.image.vAlign= "top";
+      this.bg.di.image.hAlign= "left";
+      this.bg.setScale(scale);
+      this.bg.show()
+    }else{
+      this.slicer = src;
+    }
 		this.container.rect.width = sourceWidth / scale;
 		this.container.rect.height = sourceHeight / scale;
-		this.bg.di.image.vAlign= "top";
-		this.bg.di.image.hAlign= "left";
-		this.bg.setScale(scale);
-    this.bg.show()
 	}
   public show(seconds?: number):void {
 		if (this.container) {
