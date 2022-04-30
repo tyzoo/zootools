@@ -6,7 +6,7 @@ export interface IWrappedDynamicImageOptions {
     vAlign: string;
     startVisible: boolean;
     isPointerBlocker: boolean;
-    hideAfter: number;
+    hideAfter: number | null;
     fadeInTime?: number;
     fadeInEase?: (x: number) => number;
     scaleInStarting?: number;
@@ -24,7 +24,7 @@ export const defaultWrappedDynamicImageProps: IWrappedDynamicImageOptions = {
   vAlign: 'center',
   startVisible: false,
   isPointerBlocker: false,
-  hideAfter: 3,
+  hideAfter: null,
   fadeInTime: 0.5,
   fadeInEase: Dash_Ease.easeInElastic,
   scaleInStarting: 0,
