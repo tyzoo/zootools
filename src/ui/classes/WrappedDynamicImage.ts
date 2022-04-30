@@ -1,6 +1,5 @@
 import { Dash_Ease, Dash_GlobalCanvas, Dash_Wait, DynamicImage } from "dcldash";
 import { objectAssign } from "../../utils/index";
-import { WrappedDynamicContainer } from "./WrappedDynamicContainer";
 
 export interface IWrappedDynamicImageOptions {
     hAlign: string;
