@@ -456,19 +456,27 @@ export function urn(str: string, layer?: number): string {
 	}
 }
 
+/**
+ * Helper functions to calculate specfic scene limitations for Decentraland
+ */
 export const sceneLimitations = {
 	triangles: (nParcels: number) => nParcels * 10000,
 	entities: (nParcels: number) => nParcels * 200,
 	bodies: (nParcels: number) => nParcels * 300,
-	materials: (nParcels: number) => log2(nParcels+1) * 20,
-	textures: (nParcels: number) => log2(nParcels+1) * 10,
-	height: (nParcels: number) => log2(nParcels+1) * 20,
+	materials: (nParcels: number) => Math.ceil(log2(nParcels+1) * 20),
+	textures: (nParcels: number) => Math.ceil(log2(nParcels+1) * 10),
+	height: (nParcels: number) => round(log2(nParcels+1) * 20, 2),
 	filesizeMb: (nParcels: number) => nParcels * 15,
 	fileCount: (nParcels: number) => nParcels * 200
 }
 
+/**
+ * Calculate all scene limitations at once
+ * @param nParcels 
+ * @returns object 
+ */
 export function getSceneLimitations(nParcels: number) {
-	let o: any = {}
+	let o: any = { parcels: nParcels };
 	Object.keys(sceneLimitations).forEach(key => {
 		o[key] = sceneLimitations[key](nParcels);
 	});
