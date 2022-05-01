@@ -238,31 +238,46 @@ export function randomInt(x:number, y?: number): number {
 }
 
 /**
- * Round a number to a certain number of decimal places. Accepts an optional 
- * second third prop as true which force padded zeros and the output changes
- * to a string.
+ * Round a number to a certain number of decimal places
  * @param num 
  * @param decimals 
- * @param pad? force a trailing zeros/decimals
- * @returns a number (or string - see above)
+ * @param pad force a trailing zeros/decimals
+ * @returns a number
  */
-export function round(
-	num: number,
-	decimals: number,
-	pad: boolean = false
-): number | string {
-	let p = ``, n = Number(Math.round(Number(num + "e" + decimals)) + "e-" + decimals);
-	if (pad) {
-	p += n.toString();
-	let decimalCount = p.split(".")[1]?.length || 0;
-	let padCount = decimals - decimalCount;
-	if (decimalCount === 0) p += `.`;
-		if (padCount > 0) {
-			range(1, padCount).forEach(() => (p += `0`));
+export function round(num: number, decimals: number, pad: boolean = false): number | string {
+	let p = ``, n = Number(Math.round(Number(num + "e" + decimals)) + "e-" + decimals)
+	if(pad){
+		p += n.toString();
+		let decimalCount = p.split(".")[1]?.length || 0;
+		if(decimalCount < decimals){
+			range(1,decimals).forEach(() => p += `0`);
 		}
 		return p;
 	}
 	return n;
+}
+
+
+/**
+ * Round a number to a certain number of decimal places forces padded zeros 
+ * and the output is a string.
+ * @param num 
+ * @param decimals 
+ * @returns string
+ */
+ export function roundPad(
+	num: number,
+	decimals: number,
+): string {
+	let p = ``, n = Number(Math.round(Number(num + "e" + decimals)) + "e-" + decimals);
+	p += n.toString();
+	let decimalCount = p.split(".")[1]?.length || 0;
+	let padCount = decimals - decimalCount;
+	if (decimalCount === 0) p += `.`;
+	if (padCount > 0) {
+		range(1, padCount).forEach(() => (p += `0`));
+	}
+	return p;
 }
 
 const NUMBER_FORMATTER = new Intl.NumberFormat(undefined);
@@ -304,6 +319,7 @@ export const log2 = (n: number) => getBaseLog(2,n);
  const number = {
 	randomInt,
 	round,
+	roundPad,
 	formatNumber,
 	formatCompactNumber,
 	getBaseLog,

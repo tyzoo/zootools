@@ -60,6 +60,7 @@ export {
   //number
   randomInt,
   round,
+  roundPad,
   formatNumber,
   formatCompactNumber,
   //array
