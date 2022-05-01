@@ -76,6 +76,8 @@ export {
   isDateValid,
   //dcl
   urn,
+  sceneLimitations,
+  getSceneLimitations,
   //utils grouped by type
   zootils,
 } from './utils/index'
