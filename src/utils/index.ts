@@ -241,20 +241,10 @@ export function randomInt(x:number, y?: number): number {
  * Round a number to a certain number of decimal places
  * @param num 
  * @param decimals 
- * @param pad force a trailing zeros/decimals
  * @returns a number
  */
-export function round(num: number, decimals: number, pad: boolean = false): number {
-	let p = ``, n = Number(Math.round(Number(num + "e" + decimals)) + "e-" + decimals)
-	if(pad){
-		p += n.toString();
-		let decimalCount = p.split(".")[1]?.length || 0;
-		if(decimalCount < decimals){
-			range(1,decimals).forEach(() => p += `0`);
-		}
-		return p;
-	}
-	return n;
+export function round(num: number, decimals: number): number {
+	return Number(Math.round(Number(num + "e" + decimals)) + "e-" + decimals);
 }
 
 
