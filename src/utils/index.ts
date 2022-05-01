@@ -270,6 +270,17 @@ export function formatCompactNumber(number:number): string {
 }
 
 /**
+ * The following function returns the logarithm of y with base x (ie. log x y ):
+ * @param x base
+ * @param y 
+ * @returns 
+ */
+export const getBaseLog = (x: number, y: number) => Math.log(y) / Math.log(x);
+
+export const log2 = (n: number) => getBaseLog(2,n);
+
+
+/**
  * All number utils
  */
  const number = {
@@ -277,6 +288,8 @@ export function formatCompactNumber(number:number): string {
 	round,
 	formatNumber,
 	formatCompactNumber,
+	getBaseLog,
+	log2,
 }
 
 
@@ -443,11 +456,32 @@ export function urn(str: string, layer?: number): string {
 	}
 }
 
+export const sceneLimitations = {
+	triangles: (nParcels: number) => nParcels * 10000,
+	entities: (nParcels: number) => nParcels * 200,
+	bodies: (nParcels: number) => nParcels * 300,
+	materials: (nParcels: number) => log2(nParcels+1) * 20,
+	textures: (nParcels: number) => log2(nParcels+1) * 10,
+	height: (nParcels: number) => log2(nParcels+1) * 20,
+	filesizeMb: (nParcels: number) => nParcels * 15,
+	fileCount: (nParcels: number) => nParcels * 200
+}
+
+export function getSceneLimitations(nParcels: number) {
+	let o: any = {}
+	Object.keys(sceneLimitations).forEach(key => {
+		o[key] = sceneLimitations[key](nParcels);
+	});
+	return o;
+}
+
 /**
  * All other utils
  */
 const dcl = {
 	urn,
+	sceneLimitations, 
+	getSceneLimitations,
 }
 
 
