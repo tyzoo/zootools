@@ -244,7 +244,7 @@ export function randomInt(x:number, y?: number): number {
  * @param pad force a trailing zeros/decimals
  * @returns a number
  */
-export function round(num: number, decimals: number, pad: boolean = false): number | string {
+export function round(num: number, decimals: number, pad: boolean = false): number {
 	let p = ``, n = Number(Math.round(Number(num + "e" + decimals)) + "e-" + decimals)
 	if(pad){
 		p += n.toString();
