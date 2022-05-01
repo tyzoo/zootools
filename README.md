@@ -48,7 +48,7 @@ To use any of the helpers provided by this library:
    ```ts
    import { AlertSystem } from 'zootools';
 
-   const alertSystem = new AlertSystem(scene);
+   const alertSystem = new AlertSystem();
 
    alertSystem.new(`hello world`, 30000);
 
