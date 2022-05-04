@@ -1,6 +1,5 @@
 import { UserData } from "@decentraland/Identity";
 import { Realm } from "@decentraland/EnvironmentAPI";
-import { AlertSystem } from "../../classes/AlertSystem";
 import { ConfirmCodeUI, IConfirmCodeOptions } from "../../classes/ConfirmCodeUI";
 import { ETHSigner } from "../../classes/EthSigner";
 import { SignedFetchAPI } from "../../classes/SignedFetch";
@@ -28,7 +27,9 @@ export class WearableBooth extends Booth {
     constructor(
         props: Partial<IBoothProps>,
         private wearableProps: IWearableBoothProps,
-        private alertSystem: AlertSystem,
+        private alertSystem: {
+            new: (text:  string | string[],  pinMS?: number) => void
+        },
         private confirmCodeOptions: Partial<IConfirmCodeOptions> = {},
     ){
         super({

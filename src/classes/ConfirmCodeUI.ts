@@ -1,5 +1,4 @@
 import { Dash_Ease, Dash_Wait } from "dcldash";
-import { AlertSystem } from "./AlertSystem";
 import { GlobalCanvas, DynamicContainerRect, DynamicImage  } from "dclconnect";
 
 export interface IConfirmCodeOptions {
@@ -16,15 +15,17 @@ export class ConfirmCodeUI {
 	private container: DynamicContainerRect;
 	private texture: Texture;
 	private images: DynamicImage[] = [];
-	private captcha: UIImage;
-	private poapImage: UIImage;
+	private captcha: UIImage | undefined;
+	private poapImage: UIImage | undefined;
 	private textInput: UIInputText;
 	private attempts: number = 0;
 	private active: boolean = false
 	constructor(
 		private onAttemptCompleteCallback: (val:string)=>void, 
         private options: Partial<IConfirmCodeOptions>,
-        private alert: AlertSystem,
+        private alert: {
+            new: (text:  string | string[],  pinMS?: number) => void
+        },
 		private cdn: string
 	){
         if(this.options.modal_bg_image_url === undefined)
@@ -125,7 +126,7 @@ export class ConfirmCodeUI {
 	}
 
 	public setCaptcha(hash:string):void {
-		const [scx, scy] = this.options.secret_code_x_y_offset;
+		const [scx, scy] = this.options.secret_code_x_y_offset!;
 		if(!this.captcha){
 			this.captcha = new UIImage(
 				this.container.rect,
@@ -177,7 +178,7 @@ export class ConfirmCodeUI {
 		}else{
 			this.poapImage.source = new Texture(src);
 		}
-		const [pix, piy] = this.options.poap_image_x_y_offset;
+		const [pix, piy] = this.options.poap_image_x_y_offset!;
 		this.poapImage.width = '150px';
 		this.poapImage.height = '150px';
 		this.poapImage.sourceWidth = width+pix;

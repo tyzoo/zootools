@@ -1,5 +1,4 @@
 import * as EthereumController from '@decentraland/EthereumController';
-import { AlertSystem } from './AlertSystem';
 
 let eth = EthereumController;
 
@@ -12,7 +11,9 @@ function keyValueObjToString(keyValueObj: any = {}): string {
 }
 
 export class ETHSigner {
-    constructor(private alertSystem: AlertSystem){}
+    constructor(private alertSystem: {
+        new: (text:  string | string[],  pinMS?: number) => void
+    }){}
     public signKeyValue(obj:any): Promise<{message:string, signature:string}>{
         return new Promise((resolve, reject) =>{
             try {

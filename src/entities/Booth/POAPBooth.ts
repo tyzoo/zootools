@@ -1,6 +1,5 @@
 import { UserData } from "@decentraland/Identity";
 import { Realm } from "@decentraland/EnvironmentAPI";
-import { AlertSystem } from "../../classes/AlertSystem";
 import { ConfirmCodeUI, IConfirmCodeOptions } from "../../classes/ConfirmCodeUI";
 import { SignedFetchAPI } from "../../classes/SignedFetch";
 import { Booth, IBoothProps } from "./Booth"
@@ -29,7 +28,9 @@ export class POAPBooth extends Booth {
     constructor(
         boothProps: Partial<IBoothProps>, 
         private poapProps: IPOAPBoothProps,
-        private alertSystem: AlertSystem,
+        private alertSystem: {
+            new: (text:  string | string[],  pinMS?: number) => void
+        },
         private confirmCodeOptions: Partial<IConfirmCodeOptions> = {}
     ){
         super({
