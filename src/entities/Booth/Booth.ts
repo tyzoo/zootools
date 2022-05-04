@@ -9,7 +9,7 @@ export interface IBoothProps {
 	wrapTexturePath: string, 
 	dispenserModelPath: string,
 	buttonModelPath: string,
-	useHostedAssets?: boolean,
+	useHostedAssets?: boolean
 }
 
 export class Booth extends Entity  {

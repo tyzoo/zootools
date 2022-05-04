@@ -30,7 +30,7 @@ export class POAPBooth extends Booth {
         boothProps: Partial<IBoothProps>, 
         private poapProps: IPOAPBoothProps,
         private alertSystem: AlertSystem,
-        private confirmCodeOptions: Partial<IConfirmCodeOptions> = {},
+        private confirmCodeOptions: Partial<IConfirmCodeOptions> = {}
     ){
         super({
             //Default booth props:
@@ -138,8 +138,8 @@ export class POAPBooth extends Booth {
     }
 
     private async processPOAP(){
-        if (this.poapProps.userData!.hasConnectedWeb3) {
-            let poap:any = await this.sendPoap(this.poapProps.userData.displayName, this.poapProps.userData.publicKey, this.poapProps.realm.displayName);
+        if (this.poapProps.userData?.hasConnectedWeb3) {
+            let poap:any = await this.sendPoap(this.poapProps.userData.displayName, this.poapProps.userData!.publicKey!, this.poapProps.realm.displayName);
             if (poap.success === true) {
                 this.soundPlayer.playSound('coin')
                 let text = poap.message ? poap.message : "A POAP token for today's event will arrive to your account very soon!";

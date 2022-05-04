@@ -141,7 +141,7 @@ export class WearableBooth extends Booth {
 
     private async processItem() {
         if (this.wearableProps.userData!.hasConnectedWeb3) {
-            let item:any = await this.sendItem(this.wearableProps.userData.displayName, this.wearableProps.userData.publicKey);
+            let item:any = await this.sendItem(this.wearableProps.userData.displayName, this.wearableProps.userData!.publicKey!);
             if (item.success === true) {
                 this.soundPlayer.playSound('coin')
                 let text = item.message ? item.message : "An item for today's event will arrive to your account very soon!";

@@ -6,7 +6,9 @@
     "dist"
   ],
   "compilerOptions": {
+    "target": "es6",
     "module": "ESNext",
+    "strict": true,
     "removeComments": true,
     "declaration": true,
     "declarationDir": ".",
