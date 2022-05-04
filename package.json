@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "dclconnect": "^0.5.15",
-    "dcldash": "^0.0.27"
+    "dcldash": "latest"
   },
   "engines": {
     "node": ">=16.0.0",

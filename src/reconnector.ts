@@ -85,20 +85,20 @@ export class Reconnector {
     }
 }
 
-const eventManager = new EventManager();
+// const eventManager = new EventManager();
 
-const reconnector = new Reconnector(
-    eventManager,
-    async () => {
-        log(`ZooTools: CONNECTION EXAMPLE STARTING`)
-        //connect function
-        await new Promise(resolve=>Dash_Wait(resolve, 4000))
-        log(`ZooTools: throw connect error`)
-        throw Error(`A connection error occurred!`)
-    },
-    () => {
-        //onConnected callback
-        log(`ZooTools: ONCONNECTED EXAMPLE CONNECTED`)
-    },
-    true, // show ui message // DCLConnect.previewMode
-)
+// const reconnector = new Reconnector(
+//     eventManager,
+//     async () => {
+//         log(`ZooTools: CONNECTION EXAMPLE STARTING`)
+//         //connect function
+//         await new Promise(resolve=>Dash_Wait(resolve, 4000))
+//         log(`ZooTools: throw connect error`)
+//         throw Error(`A connection error occurred!`)
+//     },
+//     () => {
+//         //onConnected callback
+//         log(`ZooTools: ONCONNECTED EXAMPLE CONNECTED`)
+//     },
+//     true, // show ui message // DCLConnect.previewMode
+// )
