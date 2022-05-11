@@ -4,8 +4,10 @@
   "description": "ZooTools Decentraland SDK Library",
   "main": "./dist/index.js",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "build": "rollup -c --environment BUILD:production",
-    "link": "npm link && rollup --watch -c --environment BUILD:production"
+    "link": "npm link && rollup --watch -c --environment BUILD:production",
+    "docs": "typedoc src/index.ts"
   },
   "typings": "./dist/index.d.ts",
   "decentralandLibrary": {
@@ -33,7 +35,11 @@
     "decentraland-ecs": "latest",
     "rollup": "^2.70.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "typedoc": "^0.22.15"
+  },
+  "resolutions": {
+    "typescript": "4.4.2"
   },
   "peerDependencies": {
     "dclconnect": "^0.5.15",

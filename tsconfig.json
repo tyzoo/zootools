@@ -7,12 +7,13 @@
   ],
   "compilerOptions": {
     "target": "es6",
-    "module": "ESNext",
+    "module": "esnext",
     "strict": true,
     "removeComments": true,
     "declaration": true,
     "declarationDir": ".",
     "outDir": "dist",
+    "baseUrl": ".",
     "noLib": false,
     "paths": {
       "dcldash": [
@@ -24,7 +25,6 @@
         "node_modules/dclconnect/dist/index.d.ts"
       ],
     },
-    "baseUrl": "."
   },
   "extends": "./node_modules/decentraland-ecs/types/tsconfig.json"
 }

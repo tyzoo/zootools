@@ -69,7 +69,7 @@ export function makeid(lengthOrOptions: number | Partial<IMakeIdOptions>): strin
 		if(options.numbers) dictonary += numbers;
 		if(options.base58) dictonary = b58(dictonary);
 		if(options.symbols) dictonary += symbols;
-		lengthOrOptions = options.length
+		lengthOrOptions = options.length!
 	}
 	let result = '';
 	for (let i = 0; i < lengthOrOptions; i++) {
@@ -483,7 +483,7 @@ export function urn(str: string, layer?: number): string {
 /**
  * Helper functions to calculate specfic scene limitations for Decentraland
  */
-export const sceneLimitations = {
+export const limitations: Record<string, (nParcels: number)=>number> = {
 	triangles: (nParcels: number) => nParcels * 10000,
 	entities: (nParcels: number) => nParcels * 200,
 	bodies: (nParcels: number) => nParcels * 300,
@@ -501,8 +501,8 @@ export const sceneLimitations = {
  */
 export function getSceneLimitations(nParcels: number) {
 	let o: any = { parcels: nParcels };
-	Object.keys(sceneLimitations).forEach(key => {
-		o[key] = sceneLimitations[key](nParcels);
+	Object.keys(limitations).forEach(key => {
+		o[key] = limitations[key](nParcels);
 	});
 	return o;
 }
@@ -512,7 +512,7 @@ export function getSceneLimitations(nParcels: number) {
  */
 const dcl = {
 	urn,
-	sceneLimitations, 
+	limitations, 
 	getSceneLimitations,
 }
 

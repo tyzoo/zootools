@@ -30,6 +30,8 @@ export { WearableBooth, IWearableBoothProps } from './entities/Booth/WearableBoo
 /**
  * Systems
  */ 
+export { ISystemCallback } from "./systems/ISystemCallback"
+export { Interval } from "./systems/Interval"
 export { PersistUntil } from './systems/PersistUntil'
 export { RotateSystem } from "./systems/RotateSystem"
 
@@ -79,7 +81,7 @@ export {
   isDateValid,
   //dcl
   urn,
-  sceneLimitations,
+  limitations,
   getSceneLimitations,
   //utils grouped by type
   zootils,
