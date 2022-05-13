@@ -132,8 +132,10 @@ export class POAPBooth extends Booth {
                     }
                 }
             } catch (err: any) {
-                log('Failed to reach URL', err);
-                this.alertSystem.new('Failed to reach URL.', 1000);
+                const { message } = err;
+                const error = message ? message : "Failed to reach URL."
+                log(error, err);
+                this.alertSystem.new(error, 1000);
             }
         });
     }

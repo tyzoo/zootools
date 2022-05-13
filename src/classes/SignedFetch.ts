@@ -32,7 +32,7 @@ export class SignedFetchAPI {
             }else{
                 const m = `API Response was not ok`;
                 log(m);
-                reject(m);
+                resolve(json ? json : m);
             }
           })
         }catch(err:any){
