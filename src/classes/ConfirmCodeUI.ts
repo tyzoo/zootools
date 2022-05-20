@@ -1,5 +1,6 @@
 import { Dash_Ease, Dash_Wait } from "dcldash";
 import { GlobalCanvas, DynamicContainerRect, DynamicImage  } from "dclconnect";
+import { removeLineBreaks } from "src/index";
 
 export interface IConfirmCodeOptions {
 	modal_bg_image_url: string;
@@ -73,11 +74,11 @@ export class ConfirmCodeUI {
 				}else if(slice.name==="right"){
 					part.image.isPointerBlocker = true;
 					part.image.onClick = new OnPointerDown(() => {
-						let text = this.text.replace("Code","").trim()
-						log(text, this.text.length)
+						let text = removeLineBreaks(this.text.replace("Code","").trim())
 						if(!text.length) return
 						if(text === "Code") return
-						this.onSubmit()
+						this.onHide();
+						this.onSubmit();
 					});
 				}
 				this.images.push(part);
@@ -122,7 +123,6 @@ export class ConfirmCodeUI {
 	public onSubmit(code?:string):void {
 		this.attempts++;
 		this.onAttemptCompleteCallback(code?code:this.text)
-		this.onHide()
 	}
 
 	public setCaptcha(hash:string):void {
