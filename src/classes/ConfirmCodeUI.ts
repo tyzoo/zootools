@@ -106,11 +106,12 @@ export class ConfirmCodeUI {
 		})
 		this.textInput.opacity = 0.35;
 		this.textInput.onTextSubmit = new OnTextSubmit(async x => {
-			x.text = x.text.replace(/\u200B/g, '').trim()
-			const provided: string = x.text.substring(0,6);
-			if (provided === "Code") return;
-			if (!provided.length) return;
-			this.onSubmit(provided);
+			// x.text = x.text.replace(/\u200B/g, '').trim()
+			let text = removeLineBreaks(this.text.replace("Code","").trim())
+			if(!text.length) return
+			if(text === "Code") return
+			this.onHide();
+			this.onSubmit();
 		});
 		this.onHide()
 	}
