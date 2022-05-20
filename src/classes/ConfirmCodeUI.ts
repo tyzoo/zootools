@@ -113,7 +113,6 @@ export class ConfirmCodeUI {
 			this.onHide();
 			this.onSubmit();
 		});
-		this.onHide()
 	}
 	text:string = ''
 
