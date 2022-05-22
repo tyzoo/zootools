@@ -12,6 +12,24 @@ export function removeLineBreaks(str: string): string {
 }
 
 /**
+ * Remove zero width spaces from a string
+ * @param str 
+ * @returns a string
+ */
+export function removeZeroWidthSpaces(str: string): string {
+	return str.replace(/\u200B/g, '');
+}
+
+/**
+ * Sanitize an input string of zero width spaces, hidden line breaks, and trim
+ * @param str 
+ * @returns a string
+ */
+export function sanitizeInputString(str: string): string {
+	return removeZeroWidthSpaces(removeLineBreaks(str)).trim();
+}
+
+/**
  * Strip non base58 chars from a string of text
  * @param text 
  * @returns 
@@ -207,6 +225,8 @@ export function parse(token: string){
  */
 const string = {
 	removeLineBreaks,
+	removeZeroWidthSpaces,
+	sanitizeInputString,
 	b58,
 	makeid,
 	proper,

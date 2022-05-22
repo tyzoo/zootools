@@ -1,6 +1,6 @@
 import { Dash_Ease, Dash_Wait } from "dcldash";
 import { GlobalCanvas, DynamicContainerRect, DynamicImage  } from "dclconnect";
-import { removeLineBreaks } from "src/index";
+import { sanitizeInputString } from "src/index";
 
 export interface IConfirmCodeOptions {
 	modal_bg_image_url: string;
@@ -46,6 +46,7 @@ export class ConfirmCodeUI {
 		this.container.rect.positionX = 50;
 		this.container.rect.positionY = 0;
 		this.container.rect.opacity = 0;
+		this.container.rect.isPointerBlocker = false;
 		const slices = [
 			{ x: 0, y: 0, w: 600, h: 443, px: -600/2, py: 0, name: 'topsection' },
 			{ x: 0, y: 426, w: 300, h: 74, px:-300, py:-426/2, name: 'left' },
@@ -74,7 +75,7 @@ export class ConfirmCodeUI {
 				}else if(slice.name==="right"){
 					part.image.isPointerBlocker = true;
 					part.image.onClick = new OnPointerDown(() => {
-						let text = removeLineBreaks(this.text.replace("Code","").trim())
+						let text = sanitizeInputString(this.text.replace("Code",""))
 						if(!text.length) return
 						if(text === "Code") return
 						this.onHide();
@@ -106,8 +107,7 @@ export class ConfirmCodeUI {
 		})
 		this.textInput.opacity = 0.35;
 		this.textInput.onTextSubmit = new OnTextSubmit(async x => {
-			// x.text = x.text.replace(/\u200B/g, '').trim()
-			let text = removeLineBreaks(this.text.replace("Code","").trim())
+			let text = sanitizeInputString(this.text.replace("Code","").trim())
 			if(!text.length) return
 			if(text === "Code") return
 			this.onHide();
@@ -146,6 +146,7 @@ export class ConfirmCodeUI {
 
 	public onShow():void {
 		this.active = true
+		this.container.rect.isPointerBlocker = true;
 		this.container.scaleIn(0.5, Dash_Ease.easeInOutSine);
 		this.container.fadeIn(0.25);
 		this.textInput.value = '';
@@ -160,6 +161,7 @@ export class ConfirmCodeUI {
 
 	public onHide():void {
 		this.active = false
+		this.container.rect.isPointerBlocker = false;
 		this.container.scaleOut(0.5, Dash_Ease.easeInOutSine);
 		this.container.fadeOut(0.25);
 		this.images.forEach(img=>img.image.isPointerBlocker = false);

@@ -51,6 +51,8 @@ export { noSign } from "./ui/images/noSign"
 export { 
   //string
   removeLineBreaks,
+  removeZeroWidthSpaces,
+  sanitizeInputString,
   b58,
   makeid, IMakeIdOptions, defaultMakeIdOptions,
   proper,
