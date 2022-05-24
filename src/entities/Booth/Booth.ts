@@ -80,7 +80,7 @@ export class Booth extends Entity  {
 		  hoverText: props.buttonText,
 		}))
 	  }else{
-		  this.addComponent(new OnPointerDown(()=>{
+		  this.booth.addComponent(new OnPointerDown(()=>{
 			props.onButtonClick();
 		  }, {
 			hoverText: props.buttonText,
