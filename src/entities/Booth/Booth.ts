@@ -38,7 +38,7 @@ export class Booth extends Entity  {
 	  this.wrapTexture = new Texture(`${this.cdn}${props.wrapTexturePath}`)
 	  this.addComponent(new Transform(props.transformArgs));
 	  this.booth.addComponent(new GLTFShape(props.dispenserModelPath));
-	  this.booth.getComponent(GLTFShape).isPointerBlocker = false;
+	  this.booth.getComponent(GLTFShape).isPointerBlocker = props.useBoothAsButton;
 	  this.booth.addComponent(new Transform({
 		rotation: new Quaternion().setEuler(0,180,0)
 	  }));
