@@ -12,6 +12,7 @@ export interface IBoothProps {
 	useHostedAssets?: boolean,
 	disableCylinder?: boolean,
 	disablePreview?: boolean,
+	useBoothAsButton?: boolean,
 	buttonOffset?: Transform,
 }
 
@@ -31,6 +32,7 @@ export class Booth extends Entity  {
 	  super()
 	  if(props.useHostedAssets === undefined) props.useHostedAssets = true;
 	  if(props.disableCylinder === undefined) props.disableCylinder = false;
+	  if(props.useBoothAsButton === undefined) props.useBoothAsButton = false;
 	  if(props.disablePreview === undefined) props.disablePreview = false;
 	  this.cdn = props.useHostedAssets ? `https://tyzoo.github.io/assets/` : ``; 
 	  this.wrapTexture = new Texture(`${this.cdn}${props.wrapTexturePath}`)
@@ -55,27 +57,35 @@ export class Booth extends Entity  {
 		this.cylinder.getComponent(Material).emissiveIntensity = 1;
 		this.cylinder.setParent(this)
 	  }
-	  const offset = this.props.buttonOffset ? this.props.buttonOffset : new Transform();
-	  const buttonPosition = new Vector3(0, -0.18, 0.12).add(offset.position);
-	  const buttonRotation = 180 + offset.rotation.eulerAngles.y;
-	  this.button.addComponent(new Transform({
-		position: buttonPosition,
-		scale: new Vector3().setAll(1.25),
-		rotation: new Quaternion().setEuler(0,buttonRotation,0)
-	  }))
-	  this.button.addComponent(new Animator())
-	  this.button.getComponent(Animator).addClip(new AnimationState("Button_Action", { looping: false }));
-	  this.button.addComponent(new GLTFShape(props.buttonModelPath))
-	  this.button.setParent(this)
-	  this.button.addComponent(new OnPointerDown(()=>{
-		props.onButtonClick();
-		this.button.getComponent(Animator).getClip('Button_Action').play();
-		Dash_Wait(()=>{
-		  this.button.getComponent(Animator).getClip('Button_Action').stop();
-		},1)
-	  }, {
-		hoverText: props.buttonText,
-	  }))
+	  if(!props.useBoothAsButton){
+		const offset = this.props.buttonOffset ? this.props.buttonOffset : new Transform();
+		const buttonPosition = new Vector3(0, -0.18, 0.12).add(offset.position);
+		const buttonRotation = 180 + offset.rotation.eulerAngles.y;
+		this.button.addComponent(new Transform({
+		  position: buttonPosition,
+		  scale: new Vector3().setAll(1.25),
+		  rotation: new Quaternion().setEuler(0,buttonRotation,0)
+		}))
+		this.button.addComponent(new Animator())
+		this.button.getComponent(Animator).addClip(new AnimationState("Button_Action", { looping: false }));
+		this.button.addComponent(new GLTFShape(props.buttonModelPath))
+		this.button.setParent(this)
+		this.button.addComponent(new OnPointerDown(()=>{
+		  props.onButtonClick();
+		  this.button.getComponent(Animator).getClip('Button_Action').play();
+		  Dash_Wait(()=>{
+			this.button.getComponent(Animator).getClip('Button_Action').stop();
+		  },1)
+		}, {
+		  hoverText: props.buttonText,
+		}))
+	  }else{
+		  this.addComponent(new OnPointerDown(()=>{
+			props.onButtonClick();
+		  }, {
+			hoverText: props.buttonText,
+		  }))
+	  }
 	  this.rotateSystem = new RotateSystem([],[this.cylinder]);
 	  engine.addSystem(this.rotateSystem)
 	}
