@@ -1,7 +1,7 @@
-///<reference lib="es2015.symbol" />
-///<reference lib="es2015.symbol.wellknown" />
-///<reference lib="es2015.collection" />
-///<reference lib="es2015.iterable" />
+///<reference lib='es2015.symbol' />
+///<reference lib='es2015.symbol.wellknown' />
+///<reference lib='es2015.collection' />
+///<reference lib='es2015.iterable' />
 
 /**
  * Classes
@@ -30,10 +30,10 @@ export { WearableBooth, IWearableBoothProps } from './entities/Booth/WearableBoo
 /**
  * Systems
  */ 
-export { ISystemCallback } from "./systems/ISystemCallback"
-export { Interval } from "./systems/Interval"
+export { ISystemCallback } from './systems/ISystemCallback'
+export { Interval } from './systems/Interval'
 export { PersistUntil } from './systems/PersistUntil'
-export { RotateSystem } from "./systems/RotateSystem"
+export { RotateSystem } from './systems/RotateSystem'
 
 /**
  * UI
@@ -42,7 +42,7 @@ export { ImageSlicer, IImgSlice, IImgSliceProps, IImgSliceData } from './ui/clas
 export { WrappedDynamicContainer, IWrappedDynamicContainerOptions, defaultWrappedDynamicContainerProps } from './ui/classes/WrappedDynamicContainer'
 export { WrappedDynamicImage, IWrappedDynamicImageOptions, defaultWrappedDynamicImageProps } from './ui/classes/WrappedDynamicImage'
 export { WrappedImage, IWrappedImageOptions, defaultWrappedImageProps } from './ui/classes/WrappedImage'
-export { noSign } from "./ui/images/noSign"
+export { noSign } from './ui/images/noSign'
 
 /**
  * Various Utils
@@ -92,4 +92,4 @@ export {
 /**
  * Other stuff
  */
-export { userInfo, initUserInfo } from "./utils/userInfo"
+export { userInfo, initUserInfo } from './utils/userInfo'

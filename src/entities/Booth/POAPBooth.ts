@@ -21,10 +21,10 @@ export class POAPBooth extends Booth {
     servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
     claimsAPI = new SignedFetchAPI("https://claims.poap.cc/");
     confirmCodeUI: ConfirmCodeUI;
-    ethSigner: ETHSigner
+    ethSigner: ETHSigner;
     access_token: string | null = null;
     secret_code: string | null = null;
-    soundPlayer: SoundPlayer
+    soundPlayer: SoundPlayer;
     constructor(
         boothProps: Partial<IBoothProps>, 
         private poapProps: IPOAPBoothProps,
@@ -184,6 +184,7 @@ export class POAPBooth extends Booth {
             if (success) {
                 const { image_info } = data, { image_url, height, width } = image_info;
                 this.confirmCodeUI.setImageSrc(image_url,width,height);
+                if(this.props.disablePreview) return;
                 this.setImage(
                     image_url, 
                     `https://poap.gallery/event/${event_id}`, 

@@ -20,10 +20,10 @@ export interface IWearableBoothProps {
 export class WearableBooth extends Booth {
     servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
     confirmCodeUI: ConfirmCodeUI;
-    ethSigner: ETHSigner
+    ethSigner: ETHSigner;
     access_token: string | null = null;
     secret_code: string | null = null;
-    soundPlayer: SoundPlayer
+    soundPlayer: SoundPlayer;
     constructor(
         props: Partial<IBoothProps>,
         private wearableProps: IWearableBoothProps,
@@ -79,6 +79,7 @@ export class WearableBooth extends Booth {
     }
 
     public setModel(localPathToModel:string): void{
+        if(this.props.disablePreview) return;
         this.setItem(new GLTFShape(localPathToModel));
         this.setRotation(this.item!, "left");
     }

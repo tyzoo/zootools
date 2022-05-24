@@ -9,24 +9,29 @@ export interface IBoothProps {
 	wrapTexturePath: string, 
 	dispenserModelPath: string,
 	buttonModelPath: string,
-	useHostedAssets?: boolean
+	useHostedAssets?: boolean,
+	disableCylinder?: boolean,
+	disablePreview?: boolean,
+	buttonOffset?: Transform,
 }
 
 export class Booth extends Entity  {
-	public name = `${makeid(5)}`
+	public name = `${makeid(5)}`;
 	private booth = new Entity(`booth-${this.name}`);
 	private cylinder = new Entity(`cylinder-${this.name}`);
 	private button = new Entity(`button-${this.name}`);
-	private wrapTexture: Texture
+	private wrapTexture: Texture;
 	private rotateSystem: RotateSystem;
 	public image: Entity | undefined;
 	public item: Entity | undefined;
 	public cdn: string;
 	constructor(
-	  props: IBoothProps
+	  public props: IBoothProps
 	){
 	  super()
 	  if(props.useHostedAssets === undefined) props.useHostedAssets = true;
+	  if(props.disableCylinder === undefined) props.disableCylinder = false;
+	  if(props.disablePreview === undefined) props.disablePreview = false;
 	  this.cdn = props.useHostedAssets ? `https://tyzoo.github.io/assets/` : ``; 
 	  this.wrapTexture = new Texture(`${this.cdn}${props.wrapTexturePath}`)
 	  this.addComponent(new Transform(props.transformArgs));
@@ -41,17 +46,22 @@ export class Booth extends Entity  {
 		scale: new Vector3(-0.5,0.57,0.5),
 		rotation: new Quaternion().setEuler(0,270,0)
 	  }))
-	  this.cylinder.addComponent(new CylinderShape());
-	  this.cylinder.addComponent(new Material())
-	  this.cylinder.getComponent(Material).albedoTexture = this.wrapTexture;
-	  this.cylinder.getComponent(Material).emissiveTexture = this.wrapTexture;
-	  this.cylinder.getComponent(Material).emissiveColor = Color3.White();
-	  this.cylinder.getComponent(Material).emissiveIntensity = 1;
-	  this.cylinder.setParent(this)
+	  if(!props.disableCylinder){
+		this.cylinder.addComponent(new CylinderShape());
+		this.cylinder.addComponent(new Material())
+		this.cylinder.getComponent(Material).albedoTexture = this.wrapTexture;
+		this.cylinder.getComponent(Material).emissiveTexture = this.wrapTexture;
+		this.cylinder.getComponent(Material).emissiveColor = Color3.White();
+		this.cylinder.getComponent(Material).emissiveIntensity = 1;
+		this.cylinder.setParent(this)
+	  }
+	  const offset = this.props.buttonOffset ? this.props.buttonOffset : new Transform();
+	  const buttonPosition = new Vector3(0, -0.18, 0.12).add(offset.position);
+	  const buttonRotation = 180 + offset.rotation.eulerAngles.y;
 	  this.button.addComponent(new Transform({
-		position: new Vector3(0, -0.18, 0.12),
+		position: buttonPosition,
 		scale: new Vector3().setAll(1.25),
-		rotation: new Quaternion().setEuler(0,180,0)
+		rotation: new Quaternion().setEuler(0,buttonRotation,0)
 	  }))
 	  this.button.addComponent(new Animator())
 	  this.button.getComponent(Animator).addClip(new AnimationState("Button_Action", { looping: false }));
@@ -72,6 +82,7 @@ export class Booth extends Entity  {
   
 	public setImage(path: string, url: string, hoverText: string): void{
 	  if(!path) return;
+	  if(this.props.disablePreview) return;
 	  const texture = new Texture(path)
 	  const circle = new Texture(`${this.cdn}poap_assets/images/alpha-circle.png`);
 	  this.image = new Entity(`image-${this.name}`);
@@ -99,6 +110,7 @@ export class Booth extends Entity  {
   
 	public setItem(model: GLTFShape): void{
 	  if(!model) return;
+	  if(this.props.disablePreview) return;
 	  this.item = new Entity(`item-${this.name}`);
 	  this.item.addComponent(model);
 	  this.item.getComponent(GLTFShape).isPointerBlocker = true;
