@@ -1,5 +1,6 @@
-import { Dash_Ease, Dash_Wait } from "dcldash";
-import { GlobalCanvas, DynamicContainerRect, DynamicImage  } from "dclconnect";
+import { Dash_Ease, Dash_GlobalCanvas, Dash_Wait } from "dcldash";
+import { DynamicContainerRect } from "src/dclconnect/DynamicContainerRect";
+import { DynamicImage } from "src/dclconnect/DynamicImage";
 import { sanitizeInputString } from "src/index";
 
 export interface IConfirmCodeOptions {
@@ -10,7 +11,7 @@ export interface IConfirmCodeOptions {
     secret_input_x_y_offset: [x:number,y:number],
 }
 
-const canvas = GlobalCanvas
+const canvas = Dash_GlobalCanvas
 
 export class ConfirmCodeUI {
 	private container: DynamicContainerRect;

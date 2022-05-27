@@ -9,7 +9,7 @@ To use any of the helpers provided by this library:
 1. Install the dependencies as an npm package. Run this command in your scene's project folder:
 
    ```
-   npm install dclconnect dcldash@latest zootools@latest -B
+   npm install dcldash@latest zootools@latest -B
    ```
 
 2. Make sure tsconfig.json is properly set up. Also see [tsconfig.json example](https://tyzoo.github.io/assets/json/tsconfig.json)

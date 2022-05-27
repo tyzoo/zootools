@@ -19,11 +19,7 @@
       "dcldash": [
         "node_modules\\dcldash\\dist\\index.d.ts",
         "node_modules/dcldash/dist/index.d.ts"
-      ],
-      "dclconnect": [
-        "node_modules\\dclconnect\\dist\\index.d.ts",
-        "node_modules/dclconnect/dist/index.d.ts"
-      ],
+      ]
     },
   },
   "extends": "./node_modules/decentraland-ecs/types/tsconfig.json"
