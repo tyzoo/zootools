@@ -1,7 +1,5 @@
-import { signedFetch } from "@decentraland/SignedFetch"
-
 export class SignedFetchAPI {
-    constructor(private baseURL: string){}
+    constructor(private baseURL: string, private signedFetch: (url: string, init?: any) => Promise<any>){}
     public request(method:"GET"|"POST"|"PUT"|"DELETE", path: string, body:any = {}): Promise<unknown>{
       const _path = this.baseURL + path
       log(`API Request: ${method} ${_path}`)
@@ -12,12 +10,12 @@ export class SignedFetchAPI {
             switch(method){
               default:
               case "GET":
-                response = await signedFetch(_path);
+                response = await this.signedFetch(_path);
                 break;
               case "PUT":
               case "POST":
               case "DELETE":
-                response = await signedFetch(_path, {
+                response = await this.signedFetch(_path, {
                   headers: { "Content-Type": "application/json" },
                   method, 
                   body: JSON.stringify(body),
