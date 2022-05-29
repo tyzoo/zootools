@@ -2,7 +2,7 @@ import { Dash_Ease, Dash_GlobalCanvas, Dash_Wait } from "dcldash";
 import { WrappedDynamicImage } from "./WrappedDynamicImage"
 import { objectAssign } from "../../utils/index";
 import { ImageSlicer } from "./ImageSlicer";
-import { DynamicContainerRect } from "src/dclconnect/DynamicContainerRect";
+import { DynamicContainerRect } from "../../dclconnect/DynamicContainerRect";
 
 export interface IWrappedDynamicContainerOptions {
   hAlign: string;
