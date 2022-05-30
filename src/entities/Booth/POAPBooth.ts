@@ -18,8 +18,8 @@ export interface IPOAPBoothProps {
 };
 
 export class POAPBooth extends Booth {
-    servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
-    claimsAPI = new SignedFetchAPI("https://claims.poap.cc/");
+    servicesAPI: SignedFetchAPI;
+    claimsAPI: SignedFetchAPI;
     confirmCodeUI: ConfirmCodeUI;
     ethSigner: ETHSigner;
     access_token: string | null = null;
@@ -31,6 +31,7 @@ export class POAPBooth extends Booth {
         private alertSystem: {
             new: (text:  string | string[],  pinMS?: number) => void
         },
+        private signedFetch: (url: string, init?: any | undefined) => Promise<any>,
         private confirmCodeOptions: Partial<IConfirmCodeOptions> = {}
     ){
         super({
@@ -48,6 +49,8 @@ export class POAPBooth extends Booth {
             buttonModelPath: `poap_assets/models/POAP_button.glb`,
             ...boothProps
         })
+        this.servicesAPI = new SignedFetchAPI("https://services.poap.cc/", this.signedFetch);
+        this.claimsAPI = new SignedFetchAPI("https://claims.poap.cc/", this.signedFetch);
         this.ethSigner = new ETHSigner(this.alertSystem);
         this.confirmCodeUI = new ConfirmCodeUI(
             (secret:string)=>{

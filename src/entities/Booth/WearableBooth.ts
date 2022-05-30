@@ -18,7 +18,7 @@ export interface IWearableBoothProps {
 }
 
 export class WearableBooth extends Booth {
-    servicesAPI = new SignedFetchAPI("https://services.poap.cc/");
+    servicesAPI: SignedFetchAPI;
     confirmCodeUI: ConfirmCodeUI;
     ethSigner: ETHSigner;
     access_token: string | null = null;
@@ -30,6 +30,7 @@ export class WearableBooth extends Booth {
         private alertSystem: {
             new: (text:  string | string[],  pinMS?: number) => void
         },
+        private signedFetch: (url: string, init?: any | undefined) => Promise<any>,
         private confirmCodeOptions: Partial<IConfirmCodeOptions> = {},
     ){
         super({
@@ -47,6 +48,7 @@ export class WearableBooth extends Booth {
             buttonModelPath: `poap_assets/models/POAP_button.glb`,
             ...props
         })
+        this.servicesAPI = new SignedFetchAPI("https://services.poap.cc/", this.signedFetch);
         this.ethSigner = new ETHSigner(this.alertSystem);
         this.confirmCodeUI = new ConfirmCodeUI(
             (secret:string)=>{
