@@ -91,6 +91,10 @@ export class POAPBooth extends Booth {
         this.mintPOAPInternal()
     },5000,false);
 
+    public setRealm(realm: Realm) {
+        this.poapProps.realm = realm;
+    }
+
     private async mintPOAPInternal() {
         if (!this.poapProps.event_id) return this.alertSystem.new('Missing Event ID', 1000);
         executeTask(async () => {

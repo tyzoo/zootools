@@ -94,6 +94,10 @@ export class WearableBooth extends Booth {
         this.mintItemInternal()
     },5000,false);
 
+    public setRealm(realm: Realm) {
+        this.wearableProps.realm = realm;
+    }
+
     private async mintItemInternal(): Promise<void> {
         if (!this.wearableProps._giveawayId) return this.alertSystem.new('Missing Giveaway ID', 1000);
         executeTask(async () => {
