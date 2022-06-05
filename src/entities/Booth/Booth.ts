@@ -102,10 +102,10 @@ export class Booth extends Entity  {
 		1,1,
 		1,0,
 		0,0,
-		1,0,
-		0,0,
 		0,1,
 		1,1,
+		1,0,
+		0,0,
 	  ];
 	  this.image.addComponent(new Material());
 	  this.image.getComponent(Material).metallic = 0;
