@@ -80,7 +80,6 @@ export class POAPBooth extends Booth {
         if(this.poapProps.event_id){
             this.setEventId(this.poapProps.event_id);
         }
-        
     }
 
     public async mintPOAP() {
@@ -89,7 +88,7 @@ export class POAPBooth extends Booth {
     
     private mintDebouncer = new CallbackDebouncer(() => {
         this.mintPOAPInternal()
-    },5000,false);
+    }, 5000, false);
 
     public setRealm(realm: Realm) {
         this.poapProps.realm = realm;

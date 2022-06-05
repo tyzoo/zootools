@@ -97,7 +97,16 @@ export class Booth extends Entity  {
 	  const circle = new Texture(`${this.cdn}poap_assets/images/alpha-circle.png`);
 	  this.image = new Entity(`image-${this.name}`);
 	  this.image.addComponent(new PlaneShape());
-	  this.image.getComponent(PlaneShape).uvs = Dash_UV_Image()
+	  this.image.getComponent(PlaneShape).uvs = [
+		0,1,
+		1,1,
+		1,0,
+		0,0,
+		1,0,
+		0,0,
+		0,1,
+		1,1,
+	  ];
 	  this.image.addComponent(new Material());
 	  this.image.getComponent(Material).metallic = 0;
 	  this.image.getComponent(Material).roughness = 1;
