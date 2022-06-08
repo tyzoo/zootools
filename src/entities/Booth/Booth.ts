@@ -117,7 +117,7 @@ export class Booth extends Entity  {
 	  this.image.getComponent(Material).alphaTexture = circle;
 	  this.image.getComponent(Material).albedoTexture = texture;
 	  this.image.getComponent(Material).emissiveTexture = texture;
-	  this.image.getComponent(Material).transparencyMode = 1;
+	  this.image.getComponent(Material).transparencyMode = 2;
 	  this.image.addComponent(new Transform({
 		position: new Vector3(0,1.8,0),
 		scale: new Vector3().setAll(0.69)
