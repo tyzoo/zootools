@@ -95,37 +95,39 @@ export class Booth extends Entity  {
 	  if(this.props.disablePreview) return;
 	  const texture = new Texture(path)
 	  const circle = new Texture(`${this.cdn}poap_assets/images/alpha-circle.png`);
-	  this.image = new Entity(`image-${this.name}`);
-	  this.image.addComponent(new PlaneShape());
-	  this.image.getComponent(PlaneShape).uvs = [
-		0,0,
-		1,0,
-		1,1,
-		0,1,
-
-		1,0,
-		0,0,
-		0,1,
-		1,1,
-	  ]
-	  this.image.addComponent(new Material());
-	  this.image.getComponent(Material).metallic = 0;
-	  this.image.getComponent(Material).roughness = 1;
-	  this.image.getComponent(Material).specularIntensity = 0;
-	  this.image.getComponent(Material).emissiveColor = Color3.White();
-	  this.image.getComponent(Material).emissiveIntensity = 1;
-	  this.image.getComponent(Material).alphaTexture = circle;
+	  if(!this.image){
+		this.image = new Entity(`image-${this.name}`);
+		this.image.addComponent(new PlaneShape());
+		this.image.getComponent(PlaneShape).uvs = [
+		  0,0,
+		  1,0,
+		  1,1,
+		  0,1,
+  
+		  1,0,
+		  0,0,
+		  0,1,
+		  1,1,
+		]
+		this.image.addComponent(new Material());
+		this.image.getComponent(Material).metallic = 0;
+		this.image.getComponent(Material).roughness = 1;
+		this.image.getComponent(Material).specularIntensity = 0;
+		this.image.getComponent(Material).emissiveColor = Color3.White();
+		this.image.getComponent(Material).emissiveIntensity = 1;
+		this.image.getComponent(Material).alphaTexture = circle;
+		this.image.getComponent(Material).transparencyMode = 2;
+		this.image.addComponent(new Transform({
+		  position: new Vector3(0,1.8,0),
+		  scale: new Vector3().setAll(0.69)
+		}));
+		this.image.addComponent(new OnPointerDown(()=>{
+		  openExternalURL(url);
+		}, { hoverText }));
+		this.image.setParent(this)
+	  }
 	  this.image.getComponent(Material).albedoTexture = texture;
 	  this.image.getComponent(Material).emissiveTexture = texture;
-	  this.image.getComponent(Material).transparencyMode = 2;
-	  this.image.addComponent(new Transform({
-		position: new Vector3(0,1.8,0),
-		scale: new Vector3().setAll(0.69)
-	  }));
-	  this.image.addComponent(new OnPointerDown(()=>{
-		openExternalURL(url);
-	  }, { hoverText }));
-	  this.image.setParent(this)
 	} 
   
 	public setItem(model: GLTFShape): void{
