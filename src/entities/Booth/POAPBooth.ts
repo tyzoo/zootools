@@ -26,7 +26,7 @@ export class POAPBooth extends Booth {
     secret_code: string | null = null;
     soundPlayer: SoundPlayer;
     constructor(
-        boothProps: Partial<IBoothProps>, 
+        private boothProps: Partial<IBoothProps>, 
         private poapProps: IPOAPBoothProps,
         private alertSystem: {
             new: (text:  string | string[],  pinMS?: number) => void
@@ -194,7 +194,7 @@ export class POAPBooth extends Booth {
                     `https://poap.gallery/event/${event_id}`, 
                     `View Event on POAP.gallery`
                 );
-                this.setRotation(this.image!, this.props.itemRotationDir!);
+                this.setRotation(this.image!, this.boothProps.itemRotationDir!);
             }
         });
     }

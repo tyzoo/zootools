@@ -91,8 +91,8 @@ export class Booth extends Entity  {
 		  }))
 	  }
 	  this.rotateSystem = new RotateSystem([],[]);
-	  this.setRotation(this.cylinder, this.props.boothRotationDir!)
-	  engine.addSystem(this.rotateSystem)
+	  this.setRotation(this.cylinder, this.props.boothRotationDir!);
+	  engine.addSystem(this.rotateSystem);
 	}
   
 	public setImage(path: string, url: string, hoverText: string): void{
