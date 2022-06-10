@@ -13,8 +13,8 @@ export interface IPOAPBoothProps {
     property: string;
     api_key: string;
     event_id: number | undefined;
-    userData: UserData,
-    realm: Realm
+    userData: UserData | undefined;
+    realm: Realm | undefined;
 };
 
 export class POAPBooth extends Booth {
@@ -90,11 +90,9 @@ export class POAPBooth extends Booth {
         this.mintPOAPInternal()
     }, 5000, false);
 
-    public setRealm(realm: Realm) {
-        this.poapProps.realm = realm;
-    }
-
     private async mintPOAPInternal() {
+        if (!this.poapProps.userData) return this.alertSystem.new('Missing User Data', 1000);
+        if (!this.poapProps.realm) return this.alertSystem.new('Missing Realm Data', 1000);
         if (!this.poapProps.event_id) return this.alertSystem.new('Missing Event ID', 1000);
         executeTask(async () => {
             try {
@@ -108,7 +106,7 @@ export class POAPBooth extends Booth {
                 this.soundPlayer.playSound('openDialog');
 
                 let params: any = { name, address, realm, api_key, property };
-                if (!this.poapProps.userData.hasConnectedWeb3)
+                if (!this.poapProps.userData!.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
                 if (signature && message) { params.signature = signature, params.message = message; }
                 let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.poapProps.event_id}`,params)
@@ -148,7 +146,7 @@ export class POAPBooth extends Booth {
 
     private async processPOAP(){
         if (this.poapProps.userData?.hasConnectedWeb3) {
-            let poap:any = await this.sendPoap(this.poapProps.userData.displayName, this.poapProps.userData!.publicKey!, this.poapProps.realm.displayName);
+            let poap:any = await this.sendPoap(this.poapProps.userData.displayName, this.poapProps.userData!.publicKey!);
             if (poap.success === true) {
                 this.soundPlayer.playSound('coin')
                 let text = poap.message ? poap.message : "A POAP token for today's event will arrive to your account very soon!";
@@ -163,7 +161,7 @@ export class POAPBooth extends Booth {
         }
     }
 
-    private async sendPoap(name: string, address: string, realm: string) {
+    private async sendPoap(name: string, address: string) {
         try {
             let response = await this.claimsAPI.request("POST", 'send-poap', {
                 name, 
@@ -182,7 +180,7 @@ export class POAPBooth extends Booth {
         }
     }
     
-    setEventId(event_id: number){
+    public setEventId(event_id: number): void{
         this.poapProps.event_id = event_id;
         executeTask(async () => {
             let response:any = await this.servicesAPI.request("GET",`poap/info/${event_id}?api_key=${this.poapProps.api_key}`)
@@ -199,5 +197,11 @@ export class POAPBooth extends Booth {
                 this.setRotation(this.image!, "left");
             }
         });
+    }
+    public setUserData(userData: UserData): void {
+        this.poapProps.userData = userData;
+    }
+    public setRealm(realm: Realm): void {
+        this.poapProps.realm = realm;
     }
 }

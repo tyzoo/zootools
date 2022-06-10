@@ -13,8 +13,8 @@ export interface IWearableBoothProps {
     property: string;
     api_key: string;
     _giveawayId: string;
-    userData: UserData,
-    realm: Realm
+    userData: UserData | undefined;
+    realm: Realm | undefined;
 }
 
 export class WearableBooth extends Booth {
@@ -94,11 +94,9 @@ export class WearableBooth extends Booth {
         this.mintItemInternal()
     },5000,false);
 
-    public setRealm(realm: Realm) {
-        this.wearableProps.realm = realm;
-    }
-
     private async mintItemInternal(): Promise<void> {
+        if (!this.wearableProps.userData) return this.alertSystem.new('Missing User Data', 1000);
+        if (!this.wearableProps.realm) return this.alertSystem.new('Missing Realm Data', 1000);
         if (!this.wearableProps._giveawayId) return this.alertSystem.new('Missing Giveaway ID', 1000);
         executeTask(async () => {
             try {
@@ -111,7 +109,7 @@ export class WearableBooth extends Booth {
                 let signature: string | undefined;
                 this.soundPlayer.playSound('openDialog');
                 let params: any = { name, address, realm, api_key, property };
-                if (!this.wearableProps.userData.hasConnectedWeb3)
+                if (!this.wearableProps.userData!.hasConnectedWeb3)
                     return this.alertSystem.new( 'You need an in-browser Ethereum wallet (eg: Metamask) to claim this item.', 5000 );
                 if (signature && message) { params.signature = signature, params.message = message; }
                 let response:any = await this.servicesAPI.request("POST",`dcl/verify/${this.wearableProps._giveawayId}`,params)
@@ -151,7 +149,7 @@ export class WearableBooth extends Booth {
 
     private async processItem() {
         if (this.wearableProps.userData!.hasConnectedWeb3) {
-            let item:any = await this.sendItem(this.wearableProps.userData.displayName, this.wearableProps.userData!.publicKey!);
+            let item:any = await this.sendItem(this.wearableProps.userData!.displayName, this.wearableProps.userData!.publicKey!);
             if (item.success === true) {
                 this.soundPlayer.playSound('coin')
                 let text = item.message ? item.message : "An item for today's event will arrive to your account very soon!";
@@ -195,6 +193,12 @@ export class WearableBooth extends Booth {
                 this.confirmCodeUI.setImageSrc(image_url,width,height);
             }
         });
+    }
+    public setUserData(userData: UserData): void {
+        this.wearableProps.userData = userData;
+    }
+    public setRealm(realm: Realm): void {
+        this.wearableProps.realm = realm;
     }
 }
 
