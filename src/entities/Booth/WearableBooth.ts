@@ -13,8 +13,8 @@ export interface IWearableBoothProps {
     property: string;
     api_key: string;
     _giveawayId: string;
-    userData: UserData | undefined;
-    realm: Realm | undefined;
+    userData?: UserData | undefined;
+    realm?: Realm | undefined;
 }
 
 export class WearableBooth extends Booth {

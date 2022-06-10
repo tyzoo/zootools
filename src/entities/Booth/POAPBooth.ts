@@ -12,9 +12,9 @@ export interface IPOAPBoothProps {
     booth_number: number;
     property: string;
     api_key: string;
-    event_id: number | undefined;
-    userData: UserData | undefined;
-    realm: Realm | undefined;
+    event_id?: number | undefined;
+    userData?: UserData | undefined;
+    realm?: Realm | undefined;
 };
 
 export class POAPBooth extends Booth {
