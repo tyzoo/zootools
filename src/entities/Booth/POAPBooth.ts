@@ -179,7 +179,7 @@ export class POAPBooth extends Booth {
             this.alertSystem.new('Failed to reach URL.', 1000);
         }
     }
-    
+
     public setEventId(event_id: number): void{
         this.poapProps.event_id = event_id;
         executeTask(async () => {
@@ -194,7 +194,6 @@ export class POAPBooth extends Booth {
                     `https://poap.gallery/event/${event_id}`, 
                     `View Event on POAP.gallery`
                 );
-                this.setRotation(this.image!, this.props.itemRotationDir! ?? 'left');
             }
         });
     }

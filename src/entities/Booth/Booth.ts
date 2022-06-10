@@ -129,7 +129,8 @@ export class Booth extends Entity  {
 		this.image.addComponent(new OnPointerDown(()=>{
 		  openExternalURL(url);
 		}, { hoverText }));
-		this.image.setParent(this)
+		this.image.setParent(this);
+		this.setRotation(this.image, this.props.itemRotationDir!);
 	  }
 	  this.image.getComponent(Material).albedoTexture = texture;
 	  this.image.getComponent(Material).emissiveTexture = texture;
@@ -149,10 +150,7 @@ export class Booth extends Entity  {
 	  }));
 	  this.item.setParent(this)
 	} 
-	private rotationSet: boolean = false;
 	public setRotation(entity: Entity, dir: "right" | "left"): void{
-	  if(this.rotationSet) return;
-	  this.rotationSet = true;
 	  switch(dir){
 		case "right": this.rotateSystem.rotateRight.push(entity); break;
 		case "left": this.rotateSystem.rotateLeft.push(entity); break;
