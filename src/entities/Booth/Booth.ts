@@ -14,6 +14,8 @@ export interface IBoothProps {
 	disablePreview?: boolean,
 	useBoothAsButton?: boolean,
 	buttonOffset?: Transform,
+	boothRotationDir?: 'left'|'right',
+	itemRotationDir?: 'left'|'right',
 }
 
 export class Booth extends Entity  {
@@ -34,6 +36,8 @@ export class Booth extends Entity  {
 	  if(props.disableCylinder === undefined) props.disableCylinder = false;
 	  if(props.useBoothAsButton === undefined) props.useBoothAsButton = false;
 	  if(props.disablePreview === undefined) props.disablePreview = false;
+	  if(props.boothRotationDir === undefined) props.boothRotationDir = 'right';
+	  if(props.itemRotationDir === undefined) props.itemRotationDir = 'left';
 	  this.cdn = props.useHostedAssets ? `https://tyzoo.github.io/assets/` : ``; 
 	  this.wrapTexture = new Texture(`${this.cdn}${props.wrapTexturePath}`)
 	  this.addComponent(new Transform(props.transformArgs));
@@ -86,7 +90,8 @@ export class Booth extends Entity  {
 			hoverText: props.buttonText,
 		  }))
 	  }
-	  this.rotateSystem = new RotateSystem([],[this.cylinder]);
+	  this.rotateSystem = new RotateSystem([],[]);
+	  this.setRotation(this.cylinder, this.props.boothRotationDir!)
 	  engine.addSystem(this.rotateSystem)
 	}
   
@@ -144,8 +149,10 @@ export class Booth extends Entity  {
 	  }));
 	  this.item.setParent(this)
 	} 
-	
+	private rotationSet: boolean = false;
 	public setRotation(entity: Entity, dir: "right" | "left"): void{
+	  if(this.rotationSet) return;
+	  this.rotationSet = true;
 	  switch(dir){
 		case "right": this.rotateSystem.rotateRight.push(entity); break;
 		case "left": this.rotateSystem.rotateLeft.push(entity); break;

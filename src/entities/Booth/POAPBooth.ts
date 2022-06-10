@@ -194,7 +194,7 @@ export class POAPBooth extends Booth {
                     `https://poap.gallery/event/${event_id}`, 
                     `View Event on POAP.gallery`
                 );
-                this.setRotation(this.image!, "left");
+                this.setRotation(this.image!, this.props.itemRotationDir!);
             }
         });
     }

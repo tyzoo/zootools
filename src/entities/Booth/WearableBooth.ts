@@ -83,7 +83,7 @@ export class WearableBooth extends Booth {
     public setModel(localPathToModel:string): void{
         if(this.props.disablePreview) return;
         this.setItem(new GLTFShape(localPathToModel));
-        this.setRotation(this.item!, "left");
+        this.setRotation(this.item!, this.props.itemRotationDir!);
     }
    
     public async mintItem() {
