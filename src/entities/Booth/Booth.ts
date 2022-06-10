@@ -1,4 +1,4 @@
-import { Dash_UV_Image, Dash_Wait } from "dcldash";
+import { Dash_Wait } from "dcldash";
 import { makeid } from "../../utils/index";
 import { RotateSystem } from "../../systems/RotateSystem";
 

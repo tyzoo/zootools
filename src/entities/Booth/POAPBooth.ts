@@ -12,7 +12,7 @@ export interface IPOAPBoothProps {
     booth_number: number;
     property: string;
     api_key: string;
-    event_id: number;
+    event_id: number | undefined;
     userData: UserData,
     realm: Realm
 };
