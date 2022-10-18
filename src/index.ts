@@ -34,6 +34,7 @@ export { ISystemCallback } from './systems/ISystemCallback'
 export { Interval } from './systems/Interval'
 export { PersistUntil } from './systems/PersistUntil'
 export { RotateSystem } from './systems/RotateSystem'
+export { ZooTools_AutoDanceZone, ZooTools_AutoEmoter, AutoEmoteSystem } from './systems/Emote'
 
 /**
  * UI
