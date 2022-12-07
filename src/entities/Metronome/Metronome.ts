@@ -22,16 +22,21 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
     
     render: Dash_OnUpdateFrame_Instance;
 
-    constructor(public defaultBPM: number = 128) {
+    constructor(
+        public transform: TransformConstructorArgs,
+        public defaultBPM: number = 128,
+        public onQueueStart: () => void = () => {},
+        public onQueueEnd: () => void = () => {},
+    ) {
         super()
 
         this.bpm = this.defaultBPM;
 
+        const { rotation } = transform;
         this.addComponent(new Transform({
-            position: new Vector3(5, 2, 5),
-            rotation: Quaternion.Euler(-90, 0, 0),
+            ...this.transform,
+            rotation: rotation ? rotation : Quaternion.Euler(-90, 0, 0),
         }))
-
         engine.addEntity(this);
 
         this.addLabel(`title`, `Metronome`, 3, {
@@ -116,6 +121,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
     checkActive() {
         if (!this.active) {
             this.render.stop();
+            this.onQueueEnd();
             this.initialized = false;
             this.setBeatMarkers(0);
             this.setBarMarkers(0);
@@ -128,6 +134,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         } else {
             if (!this.initialized) {
                 this.initialized = true;
+                this.onQueueStart();
                 const btn: ZooTools_ControlBoardButton = this.buttons.get(`active`);
                 btn?.setColor(Color3.Green())
                 btn?.setLabel(`Active`)
