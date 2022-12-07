@@ -70,7 +70,7 @@ export class ZooTools_ControlBoard extends Entity {
         fontSize: number,
         transform: TranformConstructorArgs,
     ) {
-        const action = new ZooTools_ControlBoardOutput(sub.id, fontSize, transform, (actionId: string) => {
+        const action = new ZooTools_ControlBoardOutput(sub.name, fontSize, transform, (actionId: string) => {
             sub.callback(actionId);
             sub.actions.filter(x=>x.name === actionId)[0]?.callback(actionId);
         })
