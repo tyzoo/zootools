@@ -39,8 +39,7 @@
     "typedoc": "^0.22.15"
   },
   "peerDependencies": {
-    "dcldash": "latest",
-    "@decentraland": "latest"
+    "dcldash": "latest"
   },
   "engines": {
     "node": ">=16.0.0",
