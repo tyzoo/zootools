@@ -1,7 +1,7 @@
 import { Dash_Ease, Dash_GlobalCanvas, Dash_Wait } from "dcldash";
 import { DynamicContainerRect } from "../dclconnect/DynamicContainerRect";
 import { DynamicImage } from "../dclconnect/DynamicImage";
-import { sanitizeInputString } from "../index";
+import { sanitizeInputString } from "../utils/index";
 
 export interface IConfirmCodeOptions {
 	modal_bg_image_url: string;
