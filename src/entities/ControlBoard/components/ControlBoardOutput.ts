@@ -1,5 +1,5 @@
 import { Dash_Wait } from "dcldash";
-import { ZooTools_Materials } from "src/utils/Materials";
+import { ZooTools_Materials } from "../../../utils/Materials";
 
 export class ZooTools_ControlBoardOutput extends Entity {
     label: Entity;
@@ -7,15 +7,14 @@ export class ZooTools_ControlBoardOutput extends Entity {
         text: string,
         fontSize: number,
         transform: TranformConstructorArgs,
-        callback: () => void,
+        callback: (actionId: string) => void,
     ) {
         super()
         this.addComponent(new Transform(transform));
         this.addComponent(new BoxShape());
-        this.addComponent(new Material());
         this.addComponent(new OnPointerDown(()=>{
-            callback()
-            this.action()
+            callback(`RANDOM`);
+            this.highlightClick()
         }, {
             hoverText: text,
         }));
@@ -29,7 +28,7 @@ export class ZooTools_ControlBoardOutput extends Entity {
         this.label.getComponent(TextShape).fontSize = fontSize;
         this.label.setParent(this);
     }
-    action(){
+    highlightClick(){
         this.setColor(`Blue`)
         Dash_Wait(() => {
             this.setColor(`Black`)

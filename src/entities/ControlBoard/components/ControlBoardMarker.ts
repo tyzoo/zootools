@@ -1,4 +1,4 @@
-import { ZooTools_Materials } from "src/utils/Materials";
+import { ZooTools_Materials } from "../../../utils/Materials";
 
 export class ZooTools_ControlBoardMarker extends Entity {
     label: Entity;
@@ -10,7 +10,6 @@ export class ZooTools_ControlBoardMarker extends Entity {
         super()
         this.addComponent(new Transform(transform));
         this.addComponent(new BoxShape());
-        this.addComponent(new Material());
         this.setColor(`Gray`);
         this.label = new Entity();
         this.label.addComponent(new Transform({

@@ -1,5 +1,6 @@
-import { ZooTools_Materials } from "src/utils/Materials";
+import { ZooTools_Materials } from "../../../utils/Materials";
 
+ZooTools_Materials
 export class ZooTools_ControlBoardButton extends Entity {
     label: Entity;
     constructor(

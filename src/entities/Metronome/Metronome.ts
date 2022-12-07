@@ -3,6 +3,8 @@ import { ZooTools_ControlBoard } from "../ControlBoard/ControlBoard";
 import { ZooTools_ControlBoardButton } from "../ControlBoard/components/ControlBoardButton";
 import { ZooTools_MetronomeTapBPM } from "./MetronomeTapBPM";
 import { ZooTools_Metronome_ISubscription } from "./types";
+import { Dash_PaginatedList } from "../Dash_Future/PaginatedList/PaginatedList";
+import weightedRandom from "./WeightedRandom";
 
 export class ZooTools_Metronome extends ZooTools_ControlBoard {
 
@@ -17,16 +19,18 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
     timer: number = 0;
 
     tap: ZooTools_MetronomeTapBPM;
-    
-    subscriptions: ZooTools_Metronome_ISubscription[] = [];
-    
-    render: Dash_OnUpdateFrame_Instance;
 
+    subscriptions: ZooTools_Metronome_ISubscription[] = [];
+
+    list: Dash_PaginatedList;
+    render: Dash_OnUpdateFrame_Instance;
     constructor(
         public transform: TransformConstructorArgs,
         public defaultBPM: number = 128,
-        public onQueueStart: () => void = () => {},
-        public onQueueEnd: () => void = () => {},
+        public onSetBPM: (bpm: number) => void = () => {},
+        public onSetActive: (id: string, active: boolean) => void = () => {},
+        public onQueueStart: () => void = () => { },
+        public onQueueEnd: () => void = () => { },
     ) {
         super()
 
@@ -91,9 +95,15 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         /**
          * Actions markers
          */
-        if(this.subscriptions.length){
+        if (this.subscriptions.length) {
             this.subscribe(this.subscriptions)
         }
+
+        this.list = new Dash_PaginatedList(new Transform({
+            position: new Vector3(-0.6, 0.63, -.10),
+            scale: new Vector3(0.2, 0.3, 0.2),
+            rotation: new Quaternion().setEuler(90, 0, 0),
+        }))
 
         this.render = Dash_OnUpdateFrame.add((dt) => this.update(dt, this));
         this.render.start();
@@ -147,6 +157,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
 
     setBPM(bpm: number) {
         this.bpm = bpm;
+        this.onSetBPM(bpm);
         const label = this.labels.get(`bpm`);
         if (label) {
             label.getComponent(TextShape).value = `BPM: ${bpm}`;
@@ -161,16 +172,20 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         this.onBeatCbs.forEach(cb => cb(beat));
         this.setBeatMarkers(beat);
         const actions = this.subscriptions.filter((x: any) => {
-            const { on, every, number } = x;
+            const { on, every, number, active } = x;
+            if (!active) return false
+            if (!on && !every) return false;
             if (on) return on === "beat" && number === beat
             else if (every) {
-                return every === "beat" && number === 1 
+                return every === "beat" && number === 1
                     || every === "beat" && this.isDivisible(beat, number)
             }
         });
         actions?.forEach(action => {
-            this.outputs.get(action.id)?.action();
-            action.callback();
+            this.outputs.get(action.id)?.highlightClick();
+            const randomAction = weightedRandom(action.actions);
+            action.callback(randomAction.name);
+            randomAction.callback(randomAction.name);
         })
     }
 
@@ -182,16 +197,20 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         this.onBeatCbs.forEach(cb => cb(bar));
         this.setBarMarkers(bar);
         const actions = this.subscriptions.filter((x: any) => {
-            const { on, every, number } = x;
+            const { on, every, number, active } = x;
+            if (!active) return false
+            if (!on && !every) return false;
             if (on) return on === "bar" && number === bar
             else if (every) {
-                return every === "bar" && number === 1 
+                return every === "bar" && number === 1
                     || every === "bar" && this.isDivisible(bar, number)
             }
         });
         actions?.forEach(action => {
-            this.outputs.get(action.id)?.action();
-            action.callback();
+            this.outputs.get(action.id)?.highlightClick();
+            const randomAction = weightedRandom(action.actions);
+            action.callback(randomAction.name);
+            randomAction.callback(randomAction.name);
         })
     }
 
@@ -253,13 +272,33 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         }
     }
 
-    subscribe(subs: ZooTools_Metronome_ISubscription[]){
+    subscribe(subs: ZooTools_Metronome_ISubscription[]) {
         subs.forEach(sub => this.subscriptions.push(sub));
         for (let i = 1; i < subs.length + 1; i++) {
-            this.addOutputMarker(subs[i - 1].id, subs[i - 1].name, 2, {
-                position: new Vector3(-1.05 + (i - 1) * 0.3, 0.47, -0.65),
-                scale: new Vector3(0.25, 0.1, 0.25),
-            }, subs[i - 1].callback);
+            const sub = subs[i - 1];
+            this.addOutputMarker(
+                sub.id, 
+                sub.name, 
+                2, 
+                {
+                    position: new Vector3(-1.05 + (i - 1) * 0.3, 0.47, -0.65),
+                    scale: new Vector3(0.25, 0.1, 0.25),
+                }, 
+                sub.callback
+            );
+            const options = this.addOptions(
+                sub.id, 
+                sub.name, 
+                2, 
+                {
+                    position: new Vector3(-1.05 + (i - 1) * 0.3, 0.43, -0.87),
+                    rotation: new Quaternion().setEuler(-90, 0, 0),
+                }, 
+                this.onSetActive, 
+                sub.active, 
+                sub.callback,
+            );
+            this.list.setParent(null)
         }
     }
 
@@ -268,6 +307,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         const beatMs = minMs / bpm;
         return beatMs
     }
+
     isDivisible(dividend: number, divisor: number): boolean {
         return dividend % divisor === 0;
     }
