@@ -11,6 +11,7 @@ const calcYPosition = (i: number, a: number, p: number) => ((i*.3)+(p*i)) - ((.3
 
 export class Dash_PaginatedList extends Entity {
     public active: boolean = false;
+    public id: string | null = null;
     public background: Entity | undefined
     public onClickAllCallback: ()=>void = () => {
         this.active = false;
@@ -21,11 +22,15 @@ export class Dash_PaginatedList extends Entity {
     private readonly rowCount: number = 10
     private readonly initialTransform: Transform
 
-    constructor(private readonly transform: Transform, public options: {
-        closeOnClick: boolean,
-    } = {
-        closeOnClick: true,
-    }){
+    constructor(
+        private readonly transform: Transform, 
+        public options: {
+            closeOnClick: boolean,
+        } = {
+            closeOnClick: true,
+        },
+        public onChange: (id: string, newValue: string) => void,
+    ){
         super()
         this.initialTransform = transform
         this.addComponent(new Transform(transform))
@@ -42,9 +47,8 @@ export class Dash_PaginatedList extends Entity {
         this.scroller.setParent(this)
     }
 
-    private onChange: (actionId: string) => void = () => {};
-    public setOnChange(cb:(actionId: string)=>void){
-        this.onChange = cb;
+    public setId(id: string){
+        this.id = id;
     }
 
     private renderBackground(){
@@ -140,7 +144,7 @@ export class Dash_PaginatedList extends Entity {
                         row.textShape.value = item.label.slice(0,45)
                         row.button.onClick = ()=>{
                             if(item.onClick) item.onClick()
-                            if(this.onChange) this.onChange(item.label)
+                            this.onChange(this.id!, item.label)
                             if(this.onClickAllCallback){
                                 this.onClickAllCallback()
                             }

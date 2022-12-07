@@ -4,16 +4,16 @@ import { ZooTools_Materials } from "../../../utils/Materials";
 export class ZooTools_ControlBoardOutput extends Entity {
     label: Entity;
     constructor(
-        text: string,
-        fontSize: number,
-        transform: TranformConstructorArgs,
-        callback: (actionId: string) => void,
+        public text: string,
+        public fontSize: number,
+        public transform: TranformConstructorArgs,
+        public callback: (actionId: string) => void,
     ) {
         super()
         this.addComponent(new Transform(transform));
         this.addComponent(new BoxShape());
         this.addComponent(new OnPointerDown(()=>{
-            callback(`SKIP`);
+            this.callback(`SKIP`);
             this.highlightClick()
         }, {
             hoverText: text,

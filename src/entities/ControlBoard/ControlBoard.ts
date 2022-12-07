@@ -1,4 +1,4 @@
-import { ZooTools_Materials } from "src/utils/Materials";
+import { ZooTools_Materials } from "../../utils/Materials";
 import { ZooTools_Metronome } from "../Metronome/Metronome";
 import { ZooTools_MetronomeOptions } from "../Metronome/MetronomeOptions";
 import { ZooTools_Metronome_ISubscription } from "../Metronome/types";

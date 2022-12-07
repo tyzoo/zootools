@@ -17,7 +17,7 @@ export class ZooTools_MetronomeOptions extends Entity {
         public transform: TranformConstructorArgs,
         public setActive: (id: string, active: boolean) => void,
         public startActive: boolean,
-        public callback: (actionId: string) => void,
+        public callback: (id: string, actionId: string) => void,
     ) {
         super()
         this.addComponent(new Transform(transform));
@@ -42,6 +42,7 @@ export class ZooTools_MetronomeOptions extends Entity {
             const list = (this.getParent() as ZooTools_Metronome).list;
             if (!list.active) {
                 list.setParent(this.getParent());
+                list.setId(name);
                 list.setContent(
                     this.metronome.subscriptions
                         .filter(
@@ -59,7 +60,6 @@ export class ZooTools_MetronomeOptions extends Entity {
                         })
                 );
                 list.loadPage(0)
-                list.setOnChange(this.callback)
                 list.show()
                 list.active = true;
             } else {

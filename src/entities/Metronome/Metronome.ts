@@ -103,7 +103,11 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             position: new Vector3(-0.6, 0.63, -.10),
             scale: new Vector3(0.2, 0.3, 0.2),
             rotation: new Quaternion().setEuler(90, 0, 0),
-        }))
+        }), { closeOnClick: true }, (id: string, newValue: any) => {
+            const output = this.outputs.get(id);
+            output?.highlightClick();
+            output?.callback(newValue);
+        })
 
         this.render = Dash_OnUpdateFrame.add((dt) => this.update(dt, this));
         this.render.start();
