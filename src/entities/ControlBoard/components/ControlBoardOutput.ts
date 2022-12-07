@@ -13,7 +13,7 @@ export class ZooTools_ControlBoardOutput extends Entity {
         this.addComponent(new Transform(transform));
         this.addComponent(new BoxShape());
         this.addComponent(new OnPointerDown(()=>{
-            this.callback(`SKIP`);
+            this.callback(`RANDOM`);
             this.highlightClick()
         }, {
             hoverText: text,

@@ -2,6 +2,7 @@ import { ZooTools_Materials } from "../../utils/Materials";
 import { ZooTools_Metronome } from "../Metronome/Metronome";
 import { ZooTools_MetronomeOptions } from "../Metronome/MetronomeOptions";
 import { ZooTools_Metronome_ISubscription } from "../Metronome/types";
+import weightedRandom from "../Metronome/WeightedRandom";
 import { ZooTools_ControlBoardButton } from "./components/ControlBoardButton";
 import { ZooTools_ControlBoardMarker } from "./components/ControlBoardMarker";
 import { ZooTools_ControlBoardOutput } from "./components/ControlBoardOutput";
@@ -72,7 +73,11 @@ export class ZooTools_ControlBoard extends Entity {
     ) {
         const action = new ZooTools_ControlBoardOutput(sub.name, fontSize, transform, (actionId: string) => {
             sub.callback(actionId);
-            sub.actions.filter(x=>x.name === actionId)[0]?.callback(actionId);
+            let action = sub.actions.filter(x=>x.name === actionId)[0];
+            if(!action){
+                action = weightedRandom(sub.actions)
+            }
+            action?.callback(action.name);
         })
         action.setParent(this)
         this.outputs.set(sub.id, action);

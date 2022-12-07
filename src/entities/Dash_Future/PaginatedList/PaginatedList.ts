@@ -143,7 +143,7 @@ export class Dash_PaginatedList extends Entity {
                     if(item && item.label && item.onClick){
                         row.textShape.value = item.label.slice(0,45)
                         row.button.onClick = ()=>{
-                            if(item.onClick) item.onClick()
+                            // if(item.onClick) item.onClick()
                             this.onChange(this.id!, item.label)
                             if(this.onClickAllCallback){
                                 this.onClickAllCallback()

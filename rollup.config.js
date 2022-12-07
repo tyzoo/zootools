@@ -10,7 +10,7 @@ const PROD = !!process.env.CI
 export default {
   input: 'src/index.ts',
   context: 'globalThis',
-  external: ['decentraland-ecs'],
+  external: ['@decentraland','decentraland-ecs'],
   output: [
     {
       file: packageJson.main,

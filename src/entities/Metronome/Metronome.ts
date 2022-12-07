@@ -10,7 +10,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
 
     base = new Entity();
 
-    active: boolean = true;
+    active: boolean = false;
     initialized: boolean = false;
 
     bpm: number = 128;

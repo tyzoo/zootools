@@ -77,12 +77,6 @@ export class AdminScrollbar extends Entity {
     setState(pageCount: number, selectedPageId: number){
         this.pageCount = pageCount
         this.selectedPageId = selectedPageId
-        // log('Pagination -----------------')
-        // log('Pagination ----------------')
-        // log('Pagination ---------------')
-        // log('Pagination --------------')
-        // log('Pagination -------------')
-        // log('Pagination ------------')
         log('Pagination', 'PageCount', this.pageCount)
         log('Pagination', 'SelectedPageId', this.selectedPageId)
         this.updateButtons()
