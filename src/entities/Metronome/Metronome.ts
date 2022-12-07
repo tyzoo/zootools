@@ -182,9 +182,11 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             }
         });
         actions?.forEach(action => {
-            this.outputs.get(action.id)?.highlightClick();
+            const output = this.outputs.get(action.id);
+            output?.highlightClick();
             const randomAction = weightedRandom(action.actions);
-            action.callback(randomAction.name);
+            output?.callback(randomAction.name);
+            // action.callback(randomAction.name);
             // randomAction.callback(randomAction.name);
         })
     }
@@ -207,9 +209,11 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             }
         });
         actions?.forEach(action => {
-            this.outputs.get(action.id)?.highlightClick();
+            const output = this.outputs.get(action.id);
+            output?.highlightClick();
             const randomAction = weightedRandom(action.actions);
-            action.callback(randomAction.name);
+            output?.callback(randomAction.name);
+            // action.callback(randomAction.name);
             // randomAction.callback(randomAction.name);
         })
     }
