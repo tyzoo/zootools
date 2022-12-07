@@ -26,6 +26,12 @@ export { ModelGroup, IModelGroupProps } from './entities/ModelGroup'
 export { POAPBooth, IPOAPBoothProps } from './entities/Booth/POAPBooth'
 export { Sound } from './entities/Sound'
 export { WearableBooth, IWearableBoothProps } from './entities/Booth/WearableBooth'
+export { ZooTools_Metronome } from './entities/Metronome/Metronome'
+export { ZooTools_Metronome_ISubscription } from './entities/Metronome/types'
+export { ZooTools_ControlBoard } from './entities/ControlBoard/ControlBoard'
+export { ZooTools_ControlBoardButton } from './entities/ControlBoard/components/ControlBoardButton'
+export { ZooTools_ControlBoardMarker } from './entities/ControlBoard/components/ControlBoardMarker'
+export { ZooTools_ControlBoardOutput } from './entities/ControlBoard/components/ControlBoardOutput'
 
 /**
  * Systems
