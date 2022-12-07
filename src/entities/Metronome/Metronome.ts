@@ -128,7 +128,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             this.beat = 0;
             this.bar = 1;
             const btn: ZooTools_ControlBoardButton = this.buttons.get(`active`);
-            btn?.setColor(Color3.Red())
+            btn?.setColor(`Red`)
             btn?.setLabel(`Not\nActive`)
 
         } else {
@@ -136,10 +136,10 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
                 this.initialized = true;
                 this.onQueueStart();
                 const btn: ZooTools_ControlBoardButton = this.buttons.get(`active`);
-                btn?.setColor(Color3.Green())
+                btn?.setColor(`Green`)
                 btn?.setLabel(`Active`)
                 const b1 = this.markers.get(`bar1`);
-                b1?.setColor(Color3.Green())
+                b1?.setColor(`Green`)
                 this.onBarAction(1);
             }
         }
@@ -202,17 +202,17 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         const m4 = this.markers.get(`beat4`);
         if (m1 && m2 && m3 && m4) {
             const reset = () => {
-                m1.setColor(Color3.Gray())
-                m2.setColor(Color3.Gray())
-                m3.setColor(Color3.Gray())
-                m4.setColor(Color3.Gray())
+                m1.setColor(`Gray`)
+                m2.setColor(`Gray`)
+                m3.setColor(`Gray`)
+                m4.setColor(`Gray`)
             }
             switch (beat) {
                 default: case 0: reset(); break;
-                case 1: reset(); m1.setColor(Color3.Green()); break;
-                case 2: m2.setColor(Color3.Green()); break;
-                case 3: m3.setColor(Color3.Green()); break;
-                case 4: m4.setColor(Color3.Green()); break;
+                case 1: reset(); m1.setColor(`Green`); break;
+                case 2: m2.setColor(`Green`); break;
+                case 3: m3.setColor(`Green`); break;
+                case 4: m4.setColor(`Green`); break;
             }
         }
     }
@@ -228,27 +228,27 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         const b8 = this.markers.get(`bar8`);
         if (b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8) {
             const reset = () => {
-                b1.setColor(Color3.Gray())
-                b2.setColor(Color3.Gray())
-                b3.setColor(Color3.Gray())
-                b4.setColor(Color3.Gray())
-                b5.setColor(Color3.Gray())
-                b6.setColor(Color3.Gray())
-                b7.setColor(Color3.Gray())
-                b8.setColor(Color3.Gray())
+                b1.setColor(`Gray`)
+                b2.setColor(`Gray`)
+                b3.setColor(`Gray`)
+                b4.setColor(`Gray`)
+                b5.setColor(`Gray`)
+                b6.setColor(`Gray`)
+                b7.setColor(`Gray`)
+                b8.setColor(`Gray`)
             }
             switch (bar) {
                 default: case 0: reset(); break;
-                case 1: reset(); b1.setColor(Color3.Green()); break;
+                case 1: reset(); b1.setColor(`Green`); break;
                 case 2:
-                    b1.setColor(Color3.Green());
-                    b2.setColor(Color3.Green()); break;
-                case 3: b3.setColor(Color3.Green()); break;
-                case 4: b4.setColor(Color3.Green()); break;
-                case 5: b5.setColor(Color3.Green()); break;
-                case 6: b6.setColor(Color3.Green()); break;
-                case 7: b7.setColor(Color3.Green()); break;
-                case 8: b8.setColor(Color3.Green()); break;
+                    b1.setColor(`Green`);
+                    b2.setColor(`Green`); break;
+                case 3: b3.setColor(`Green`); break;
+                case 4: b4.setColor(`Green`); break;
+                case 5: b5.setColor(`Green`); break;
+                case 6: b6.setColor(`Green`); break;
+                case 7: b7.setColor(`Green`); break;
+                case 8: b8.setColor(`Green`); break;
             }
         }
     }

@@ -1,3 +1,4 @@
+import { ZooTools_Materials } from "src/utils/Materials";
 import { ZooTools_ControlBoardButton } from "./components/ControlBoardButton";
 import { ZooTools_ControlBoardMarker } from "./components/ControlBoardMarker";
 import { ZooTools_ControlBoardOutput } from "./components/ControlBoardOutput";
@@ -17,8 +18,7 @@ export class ZooTools_ControlBoard extends Entity {
             rotation: Quaternion.Euler(90, 0, 0)
         }))
         this.base.addComponent(new BoxShape())
-        this.base.addComponent(new Material())
-        this.base.getComponent(Material).albedoColor = Color3.Black()
+        this.base.addComponent(ZooTools_Materials.Black)
         this.base.setParent(this);
     }
 
