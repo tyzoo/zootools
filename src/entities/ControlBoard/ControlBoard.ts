@@ -1,6 +1,6 @@
 import { ZooTools_Materials } from "src/utils/Materials";
-import { ZooTools_Metronome } from "src/Metronome/Metronome";
-import { ZooTools_MetronomeOptions } from "src/Metronome/MetronomeOptions";
+import { ZooTools_Metronome } from "../Metronome/Metronome";
+import { ZooTools_MetronomeOptions } from "../Metronome/MetronomeOptions";
 import { ZooTools_ControlBoardButton } from "./components/ControlBoardButton";
 import { ZooTools_ControlBoardMarker } from "./components/ControlBoardMarker";
 import { ZooTools_ControlBoardOutput } from "./components/ControlBoardOutput";
