@@ -185,7 +185,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             this.outputs.get(action.id)?.highlightClick();
             const randomAction = weightedRandom(action.actions);
             action.callback(randomAction.name);
-            randomAction.callback(randomAction.name);
+            // randomAction.callback(randomAction.name);
         })
     }
 
@@ -210,7 +210,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             this.outputs.get(action.id)?.highlightClick();
             const randomAction = weightedRandom(action.actions);
             action.callback(randomAction.name);
-            randomAction.callback(randomAction.name);
+            // randomAction.callback(randomAction.name);
         })
     }
 
@@ -277,26 +277,21 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         for (let i = 1; i < subs.length + 1; i++) {
             const sub = subs[i - 1];
             this.addOutputMarker(
-                sub.id, 
-                sub.name, 
+                sub, 
                 2, 
                 {
                     position: new Vector3(-1.05 + (i - 1) * 0.3, 0.47, -0.65),
                     scale: new Vector3(0.25, 0.1, 0.25),
-                }, 
-                sub.callback
+                },
             );
             const options = this.addOptions(
-                sub.id, 
-                sub.name, 
+                sub, 
                 2, 
                 {
                     position: new Vector3(-1.05 + (i - 1) * 0.3, 0.43, -0.87),
                     rotation: new Quaternion().setEuler(-90, 0, 0),
                 }, 
-                this.onSetActive, 
-                sub.active, 
-                sub.callback,
+                this.onSetActive,
             );
             this.list.setParent(null)
         }

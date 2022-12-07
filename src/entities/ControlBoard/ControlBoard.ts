@@ -1,6 +1,7 @@
 import { ZooTools_Materials } from "src/utils/Materials";
 import { ZooTools_Metronome } from "../Metronome/Metronome";
 import { ZooTools_MetronomeOptions } from "../Metronome/MetronomeOptions";
+import { ZooTools_Metronome_ISubscription } from "../Metronome/types";
 import { ZooTools_ControlBoardButton } from "./components/ControlBoardButton";
 import { ZooTools_ControlBoardMarker } from "./components/ControlBoardMarker";
 import { ZooTools_ControlBoardOutput } from "./components/ControlBoardOutput";
@@ -65,30 +66,28 @@ export class ZooTools_ControlBoard extends Entity {
         return marker;
     };
     addOutputMarker(
-        name: string,
-        text: string,
+        sub: ZooTools_Metronome_ISubscription,
         fontSize: number,
         transform: TranformConstructorArgs,
-        callback: (actionId: string) => void,
     ) {
-        const action = new ZooTools_ControlBoardOutput(text, fontSize, transform, callback)
+        const action = new ZooTools_ControlBoardOutput(sub.id, fontSize, transform, (actionId: string) => {
+            sub.callback(actionId);
+            sub.actions.filter(x=>x.name === actionId)[0]?.callback(actionId);
+        })
         action.setParent(this)
-        this.outputs.set(name, action);
+        this.outputs.set(sub.id, action);
         return action;
     };
     addOptions(
-        name: string,
-        text: string,
+        sub: ZooTools_Metronome_ISubscription,
         fontSize: number,
         transform: TranformConstructorArgs,
         setActive: (id: string, active: boolean) => void,
-        startActive: boolean,
-        callback: (actionId: string) => void,
     ) {
         if ((this as unknown) as ZooTools_Metronome) {
-            const action = new ZooTools_MetronomeOptions((this as unknown) as ZooTools_Metronome, name, text, fontSize, transform, setActive, startActive, callback)
+            const action = new ZooTools_MetronomeOptions((this as unknown) as ZooTools_Metronome, sub.id, sub.name, fontSize, transform, setActive, sub.active, sub.callback)
             action.setParent(this)
-            this.options.set(name, action);
+            this.options.set(sub.id, action);
             return action;
         }
     };
