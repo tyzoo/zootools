@@ -11,9 +11,9 @@ export class CallbackDebouncer {
     }
     /**
      * Execute the function, return boolean if executed
-     * @returns Boolean
+     * @returns boolean
      */
-    execute(): Boolean{
+    execute(): boolean{
         let prevClick = this.lastClick;
         this.lastClick = new Date();
         if (prevClick.getTime() + this.debounceMS > this.lastClick.getTime()) {
