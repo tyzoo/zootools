@@ -9,12 +9,17 @@ export class CallbackDebouncer {
             this.execute();
         }
     }
-    execute(){
+    /**
+     * Execute the function, return boolean if executed
+     * @returns Boolean
+     */
+    execute(): Boolean{
         let prevClick = this.lastClick;
         this.lastClick = new Date();
         if (prevClick.getTime() + this.debounceMS > this.lastClick.getTime()) {
-            return;
+            return false;
         }
         this.cb();
+        return true;
     }
 }
