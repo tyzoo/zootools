@@ -14,6 +14,7 @@ export class ZooTools_MetronomeTapBPM {
         if(this.count >= 4){
             const bpm = Math.floor(this.calculate(this.clicks))
             this.metronome.setBPM(bpm);
+            this.metronome.onSetBPM(bpm);
             this.reset()
         }
     }

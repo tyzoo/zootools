@@ -162,9 +162,15 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         }
     }
 
+    setActive(active: boolean) {
+        this.active = active;
+        if(active){
+            this.render.start();
+        }
+    }
+
     setBPM(bpm: number) {
         this.bpm = bpm;
-        this.onSetBPM(bpm);
         const label = this.labels.get(`bpm`);
         if (label) {
             label.getComponent(TextShape).value = `BPM: ${bpm}`;
@@ -190,11 +196,9 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         });
         actions?.forEach(action => {
             const output = this.outputs.get(action.id);
-            output?.highlightClick();
             const randomAction = weightedRandom(action.actions);
+            output?.highlightClick();
             output?.callback(randomAction.name);
-            // action.callback(randomAction.name);
-            // randomAction.callback(randomAction.name);
         })
     }
 
