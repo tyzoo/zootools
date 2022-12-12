@@ -50,8 +50,8 @@ export class ZooTools_Metronome_DCLConnect_Assign_Commands_Instance {
             log(`ZooToolsMetronome Apply Error: ${err.message}`);
         }
     }
-    subscribe(defaultMetronome: string){
-        const application = this.apply(JSON.stringify(defaultMetronome));
+    subscribe(commandSet: string){
+        const application = this.apply(commandSet);
         if(application){
             this.metronome.subscribe(application);
         }else{
