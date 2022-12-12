@@ -4,6 +4,7 @@ import { ZooTools_ControlBoardButton } from "../ControlBoard/components/ControlB
 import { ZooTools_MetronomeTapBPM } from "./MetronomeTapBPM";
 import { ZooTools_Metronome_ISubscription } from "./types";
 import { Dash_PaginatedList } from "../Dash_Future/PaginatedList/PaginatedList";
+import { ZooTools_Metronome_DCLConnect_Assign_Commands_Instance } from "src/dclconnect/v3/plugins/ZootoolsMetronomeUtil";
 import weightedRandom from "./WeightedRandom";
 
 export class ZooTools_Metronome extends ZooTools_ControlBoard {
@@ -24,6 +25,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
 
     list: Dash_PaginatedList;
     render: Dash_OnUpdateFrame_Instance;
+    dclc: ZooTools_Metronome_DCLConnect_Assign_Commands_Instance;
     constructor(
         public transform: TransformConstructorArgs,
         public defaultBPM: number = 128,
@@ -35,6 +37,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         super()
 
         this.bpm = this.defaultBPM;
+        this.dclc = new ZooTools_Metronome_DCLConnect_Assign_Commands_Instance(this);
 
         const { rotation } = transform;
         this.addComponent(new Transform({
