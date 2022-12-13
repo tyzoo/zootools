@@ -73,7 +73,7 @@ export class ZooTools_ControlBoard extends Entity {
     ) {
         const prev = this.outputs.get(sub.id);
         if(prev) engine.removeEntity(prev);
-        const action = new ZooTools_ControlBoardOutput(sub.name, fontSize, transform, (actionId: string) => {
+        const output = new ZooTools_ControlBoardOutput(sub.name, fontSize, transform, (actionId: string) => {
             sub.callback(actionId);
             let action = sub.actions.filter(x=>x.name === actionId)[0];
             if(!action){
@@ -81,9 +81,9 @@ export class ZooTools_ControlBoard extends Entity {
             }
             action?.callback(action.name);
         })
-        action.setParent(this)
-        this.outputs.set(sub.id, action);
-        return action;
+        output.setParent(this)
+        this.outputs.set(sub.id, output);
+        return output;
     };
     addOptions(
         sub: ZooTools_Metronome_ISubscription,
@@ -94,10 +94,10 @@ export class ZooTools_ControlBoard extends Entity {
         if ((this as unknown) as ZooTools_Metronome) {
             const prev = this.options.get(sub.id);
             if(prev) engine.removeEntity(prev);
-            const action = new ZooTools_MetronomeOptions((this as unknown) as ZooTools_Metronome, sub.id, sub.name, fontSize, transform, setActive, sub.active, sub.callback)
-            action.setParent(this)
-            this.options.set(sub.id, action);
-            return action;
+            const options = new ZooTools_MetronomeOptions((this as unknown) as ZooTools_Metronome, sub.id, sub.name, fontSize, transform, setActive, sub.active, sub.callback)
+            options.setParent(this)
+            this.options.set(sub.id, options);
+            return options;
         }
     };
 

@@ -318,6 +318,8 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             //update
             subs.forEach((sub, i) => {
                 this.subscriptions[i].active = sub.active;
+                const options = this.options.get(sub.id);
+                options?.activate(sub.active);
                 this.subscriptions[i].actions = sub.actions;
             })
         }
