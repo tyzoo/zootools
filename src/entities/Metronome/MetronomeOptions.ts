@@ -73,18 +73,13 @@ export class ZooTools_MetronomeOptions extends Entity {
         }));
         this.menuBtn.setParent(this);
     }
-    onSetActive(id: string, active: boolean){
-        const sub = this.metronome.subscriptions.filter(x => x.id === this.id)[0];
-        sub.active = active;
-        this.setActive(id, active);
-    }
-
     activate(active: boolean) {
         this.active = active;
         const color = active ? `Green` : `Red`;
         this.setActiveColor(color);
         this.setActiveLabel(`Active:\n${this.active}`);
-        this.onSetActive(this.id, active)
+        const sub = this.metronome.subscriptions.filter(x => x.id === this.id)[0];
+        sub.active = this.active;
     }
 
     setActiveLabel(label: string) {
@@ -94,6 +89,7 @@ export class ZooTools_MetronomeOptions extends Entity {
             this.activate(val);
             const color = val ? "Green" : "Red";
             this.setActiveColor(color);
+            this.setActive(this.id, this.active);
         }, {
             hoverText: this.activeLabel
         }))

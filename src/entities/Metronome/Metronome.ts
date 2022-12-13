@@ -29,10 +29,10 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
     constructor(
         public transform: TransformConstructorArgs,
         public defaultBPM: number = 128,
-        public onSetBPM: (bpm: number) => void = () => {},
-        public onSetActive: (id: string, active: boolean) => void = () => {},
-        public onQueueStart: () => void = () => { },
-        public onQueueEnd: () => void = () => { },
+        public onUserSetBPM: (bpm: number) => void = () => {},
+        public onUserSetActive: (id: string, active: boolean) => void = () => {},
+        public onUserStartedQueue: () => void = () => { },
+        public onUserEndedQueue: () => void = () => { },
     ) {
         super()
 
@@ -138,7 +138,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
     checkActive() {
         if (!this.active) {
             this.render.stop();
-            this.onQueueEnd();
+            this.onUserEndedQueue();
             this.initialized = false;
             this.setBeatMarkers(0);
             this.setBarMarkers(0);
@@ -151,7 +151,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         } else {
             if (!this.initialized) {
                 this.initialized = true;
-                this.onQueueStart();
+                this.onUserStartedQueue();
                 const btn: ZooTools_ControlBoardButton = this.buttons.get(`active`);
                 btn?.setColor(`Green`)
                 btn?.setLabel(`Active`)
@@ -306,7 +306,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
                     position: new Vector3(-1.05 + (i - 1) * 0.3, 0.43, -0.87),
                     rotation: new Quaternion().setEuler(-90, 0, 0),
                 }, 
-                this.onSetActive,
+                this.onUserSetActive,
             );
             this.list.setParent(null)
         }
