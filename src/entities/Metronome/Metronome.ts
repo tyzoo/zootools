@@ -64,7 +64,10 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             const setTo = !this.active;
             this.active = setTo;
             if (setTo === true) {
-                this.render.start()
+                this.render.start();
+                this.onUserStartedQueue();
+            }else{
+                this.onUserEndedQueue();
             }
         });
 
@@ -138,7 +141,6 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
     checkActive() {
         if (!this.active) {
             this.render.stop();
-            this.onUserEndedQueue();
             this.initialized = false;
             this.setBeatMarkers(0);
             this.setBarMarkers(0);
@@ -151,7 +153,6 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         } else {
             if (!this.initialized) {
                 this.initialized = true;
-                this.onUserStartedQueue();
                 const btn: ZooTools_ControlBoardButton = this.buttons.get(`active`);
                 btn?.setColor(`Green`)
                 btn?.setLabel(`Active`)
