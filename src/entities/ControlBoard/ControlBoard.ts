@@ -2,10 +2,10 @@ import { ZooTools_Materials } from "../../utils/Materials";
 import { ZooTools_Metronome } from "../Metronome/Metronome";
 import { ZooTools_MetronomeOptions } from "../Metronome/MetronomeOptions";
 import { ZooTools_Metronome_ISubscription } from "../Metronome/types";
-import weightedRandom from "../Metronome/WeightedRandom";
 import { ZooTools_ControlBoardButton } from "./components/ControlBoardButton";
 import { ZooTools_ControlBoardMarker } from "./components/ControlBoardMarker";
 import { ZooTools_ControlBoardOutput } from "./components/ControlBoardOutput";
+import weightedRandom from "../Metronome/WeightedRandom";
 
 declare const Map: any
 
@@ -71,6 +71,8 @@ export class ZooTools_ControlBoard extends Entity {
         fontSize: number,
         transform: TranformConstructorArgs,
     ) {
+        const prev = this.outputs.get(sub.id);
+        if(prev) engine.removeEntity(prev);
         const action = new ZooTools_ControlBoardOutput(sub.name, fontSize, transform, (actionId: string) => {
             sub.callback(actionId);
             let action = sub.actions.filter(x=>x.name === actionId)[0];
@@ -90,6 +92,8 @@ export class ZooTools_ControlBoard extends Entity {
         setActive: (id: string, active: boolean) => void,
     ) {
         if ((this as unknown) as ZooTools_Metronome) {
+            const prev = this.options.get(sub.id);
+            if(prev) engine.removeEntity(prev);
             const action = new ZooTools_MetronomeOptions((this as unknown) as ZooTools_Metronome, sub.id, sub.name, fontSize, transform, setActive, sub.active, sub.callback)
             action.setParent(this)
             this.options.set(sub.id, action);

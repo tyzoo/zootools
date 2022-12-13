@@ -28,6 +28,12 @@ export class ZooTools_MetronomeOptions extends Entity {
         }));
         this.activeBtn.addComponent(new BoxShape())
         this.activeBtn.setParent(this);
+        this.activeBtn.addComponentOrReplace(new OnPointerDown(() => {
+            const val = !this.active;
+            this.setActive(this.id, val);
+        }, {
+            hoverText: this.activeLabel
+        }))
         this.activate(this.startActive);
 
         this.menuBtn = new Entity();
@@ -73,6 +79,7 @@ export class ZooTools_MetronomeOptions extends Entity {
         }));
         this.menuBtn.setParent(this);
     }
+
     activate(active: boolean) {
         this.active = active;
         const color = active ? `Green` : `Red`;
@@ -84,15 +91,6 @@ export class ZooTools_MetronomeOptions extends Entity {
 
     setActiveLabel(label: string) {
         this.activeLabel = label;
-        this.activeBtn.addComponentOrReplace(new OnPointerDown(() => {
-            const val = !this.active;
-            this.activate(val);
-            const color = val ? "Green" : "Red";
-            this.setActiveColor(color);
-            this.setActive(this.id, this.active);
-        }, {
-            hoverText: this.activeLabel
-        }))
     }
 
     setActiveColor(color: string) {
