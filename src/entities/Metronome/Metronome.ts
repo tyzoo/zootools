@@ -29,8 +29,8 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
     constructor(
         public transform: TransformConstructorArgs,
         public defaultBPM: number = 128,
-        public onUserSetBPM: (bpm: number) => void = () => {},
-        public onUserSetActive: (id: string, active: boolean) => void = () => {},
+        public onUserSetBPM: (bpm: number) => void = () => { },
+        public onUserSetActive: (id: string, active: boolean) => void = () => { },
         public onUserStartedQueue: () => void = () => { },
         public onUserEndedQueue: () => void = () => { },
     ) {
@@ -66,7 +66,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             if (setTo === true) {
                 this.render.start();
                 this.onUserStartedQueue();
-            }else{
+            } else {
                 this.onUserEndedQueue();
             }
         });
@@ -102,7 +102,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
          * Actions markers
          */
         if (this.subscriptions.length) {
-            this.subscribe(this.subscriptions)
+            this.subscribeOrUpdate(this.subscriptions)
         }
 
         this.list = new Dash_PaginatedList(new Transform({
@@ -165,7 +165,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
 
     setActive(active: boolean) {
         this.active = active;
-        if(active){
+        if (active) {
             this.render.start();
         }
     }
@@ -287,29 +287,39 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             }
         }
     }
-
-    subscribe(subs: ZooTools_Metronome_ISubscription[]) {
-        subs.forEach(sub => this.subscriptions.push(sub));
-        for (let i = 1; i < subs.length + 1; i++) {
-            const sub = subs[i - 1];
-            this.addOutputMarker(
-                sub, 
-                2, 
-                {
-                    position: new Vector3(-1.05 + (i - 1) * 0.3, 0.47, -0.65),
-                    scale: new Vector3(0.25, 0.1, 0.25),
-                },
-            );
-            const options = this.addOptions(
-                sub, 
-                2, 
-                {
-                    position: new Vector3(-1.05 + (i - 1) * 0.3, 0.43, -0.87),
-                    rotation: new Quaternion().setEuler(-90, 0, 0),
-                }, 
-                this.onUserSetActive,
-            );
-            this.list.setParent(null)
+    subscribed: boolean = false;
+    subscribeOrUpdate(subs: ZooTools_Metronome_ISubscription[]) {
+        if (!this.subscribed) {
+            //create
+            this.subscribed = true
+            subs.forEach(sub => this.subscriptions.push(sub));
+            for (let i = 1; i < subs.length + 1; i++) {
+                const sub = subs[i - 1];
+                this.addOutputMarker(
+                    sub,
+                    2,
+                    {
+                        position: new Vector3(-1.05 + (i - 1) * 0.3, 0.47, -0.65),
+                        scale: new Vector3(0.25, 0.1, 0.25),
+                    },
+                );
+                const options = this.addOptions(
+                    sub,
+                    2,
+                    {
+                        position: new Vector3(-1.05 + (i - 1) * 0.3, 0.43, -0.87),
+                        rotation: new Quaternion().setEuler(-90, 0, 0),
+                    },
+                    this.onUserSetActive,
+                );
+                this.list.setParent(null)
+            }
+        }else{
+            //update
+            subs.forEach((sub, i) => {
+                this.subscriptions[i].active = sub.active;
+                this.subscriptions[i].actions = sub.actions;
+            })
         }
     }
 
