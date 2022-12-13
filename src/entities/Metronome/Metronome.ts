@@ -31,6 +31,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         public defaultBPM: number = 128,
         public onUserSetBPM: (bpm: number) => void = () => { },
         public onUserSetActive: (id: string, active: boolean) => void = () => { },
+        public onUserTriggeredAction: (id: string) => void = () => { },
         public onUserStartedQueue: () => void = () => { },
         public onUserEndedQueue: () => void = () => { },
     ) {
@@ -112,7 +113,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         }), { closeOnClick: true }, (id: string, newValue: any) => {
             const output = this.outputs.get(id);
             output?.highlightClick();
-            output?.callback(newValue);
+            output?.callback(newValue, true);
         })
 
         this.render = Dash_OnUpdateFrame.add((dt) => this.update(dt, this));
@@ -194,12 +195,12 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
                 return every === "beat" && number === 1
                     || every === "beat" && this.isDivisible(beat, number)
             }
-        });
+        })
         actions?.forEach(action => {
             const output = this.outputs.get(action.id);
             const randomAction = weightedRandom(action.actions);
             output?.highlightClick();
-            output?.callback(randomAction.name);
+            output?.callback(randomAction.name, false);
         })
     }
 
@@ -224,9 +225,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
             const output = this.outputs.get(action.id);
             output?.highlightClick();
             const randomAction = weightedRandom(action.actions);
-            output?.callback(randomAction.name);
-            // action.callback(randomAction.name);
-            // randomAction.callback(randomAction.name);
+            output?.callback(randomAction.name, false);
         })
     }
 
@@ -312,8 +311,8 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
                     },
                     this.onUserSetActive,
                 );
-                this.list.setParent(null)
             }
+            this.list.setParent(null)
         }else{
             //update
             subs.forEach((sub, i) => {

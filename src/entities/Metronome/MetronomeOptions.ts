@@ -15,13 +15,14 @@ export class ZooTools_MetronomeOptions extends Entity {
         public text: string,
         public fontSize: number,
         public transform: TranformConstructorArgs,
-        public setActive: (id: string, active: boolean) => void,
+        public userSetActive: (id: string, active: boolean) => void,
         public startActive: boolean,
-        public callback: (id: string, actionId: string) => void,
+        // public callback: (id: string, actionId: string, userTriggered: boolean) => void,
     ) {
         super()
         this.addComponent(new Transform(transform));
         this.id = name;
+
         this.activeBtn = new Entity();
         this.activeBtn.addComponent(new Transform({
             scale: new Vector3(0.25, 0.1, 0.05),
@@ -30,7 +31,7 @@ export class ZooTools_MetronomeOptions extends Entity {
         this.activeBtn.setParent(this);
         this.activeBtn.addComponentOrReplace(new OnPointerDown(() => {
             const val = !this.active;
-            this.setActive(this.id, val);
+            this.userSetActive(this.id, val);
         }, {
             hoverText: this.activeLabel
         }))
@@ -58,7 +59,7 @@ export class ZooTools_MetronomeOptions extends Entity {
                             return {
                                 label: action.name,
                                 onClick: () => {
-                                    action.callback(action.name);
+                                    action.callback(action.name, true);
                                     const output = this.metronome.outputs.get(name);
                                     if(output) output.highlightClick();
                                 },

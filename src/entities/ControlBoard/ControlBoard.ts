@@ -4,7 +4,7 @@ import { ZooTools_MetronomeOptions } from "../Metronome/MetronomeOptions";
 import { ZooTools_Metronome_ISubscription } from "../Metronome/types";
 import { ZooTools_ControlBoardButton } from "./components/ControlBoardButton";
 import { ZooTools_ControlBoardMarker } from "./components/ControlBoardMarker";
-import { ZooTools_ControlBoardOutput } from "./components/ControlBoardOutput";
+import { ZooTools_MetronomeOutput } from "../Metronome/MetronomeOutput";
 import weightedRandom from "../Metronome/WeightedRandom";
 
 declare const Map: any
@@ -22,6 +22,7 @@ export class ZooTools_ControlBoard extends Entity {
             rotation: Quaternion.Euler(90, 0, 0)
         }))
         this.base.addComponent(new BoxShape())
+        this.base.getComponent(BoxShape).isPointerBlocker = false;
         this.base.addComponent(ZooTools_Materials.Black)
         this.base.setParent(this);
     }
@@ -71,16 +72,26 @@ export class ZooTools_ControlBoard extends Entity {
         fontSize: number,
         transform: TranformConstructorArgs,
     ) {
+        const metronome = (this as unknown) as ZooTools_Metronome;
         const prev = this.outputs.get(sub.id);
-        if(prev) engine.removeEntity(prev);
-        const output = new ZooTools_ControlBoardOutput(sub.name, fontSize, transform, (actionId: string) => {
-            sub.callback(actionId);
-            let action = sub.actions.filter(x=>x.name === actionId)[0];
-            if(!action){
-                action = weightedRandom(sub.actions)
-            }
-            action?.callback(action.name);
-        })
+        if (prev) engine.removeEntity(prev);
+        const output = new ZooTools_MetronomeOutput(
+            metronome,
+            sub.name,
+            fontSize,
+            transform,
+            (actionId: string, userTriggered: boolean = false) => {
+                if (userTriggered){
+
+                } else {
+                    sub.callback(actionId, userTriggered);
+                    let action = sub.actions.filter(x => x.name === actionId)[0];
+                    if (!action) {
+                        action = weightedRandom(sub.actions)
+                    }
+                    action?.callback(action.name, userTriggered);
+                }
+            })
         output.setParent(this)
         this.outputs.set(sub.id, output);
         return output;
@@ -93,8 +104,17 @@ export class ZooTools_ControlBoard extends Entity {
     ) {
         if ((this as unknown) as ZooTools_Metronome) {
             const prev = this.options.get(sub.id);
-            if(prev) engine.removeEntity(prev);
-            const options = new ZooTools_MetronomeOptions((this as unknown) as ZooTools_Metronome, sub.id, sub.name, fontSize, transform, setActive, sub.active, sub.callback)
+            if (prev) engine.removeEntity(prev);
+            const options = new ZooTools_MetronomeOptions(
+                (this as unknown) as ZooTools_Metronome, 
+                sub.id, 
+                sub.name, 
+                fontSize, 
+                transform, 
+                setActive, 
+                sub.active, 
+                // sub.callback,
+            )
             options.setParent(this)
             this.options.set(sub.id, options);
             return options;

@@ -1,24 +1,30 @@
 import { Dash_Wait } from "dcldash";
-import { ZooTools_Materials } from "../../../utils/Materials";
+import { ZooTools_Metronome } from "src/index";
+import { ZooTools_Materials } from "../../utils/Materials";
 
-export class ZooTools_ControlBoardOutput extends Entity {
+export class ZooTools_MetronomeOutput extends Entity {
+
     label: Entity;
+
     constructor(
+        public metronome: ZooTools_Metronome,
         public text: string,
         public fontSize: number,
         public transform: TranformConstructorArgs,
-        public callback: (actionId: string) => void,
+        public callback: (actionId: string, userTriggered: boolean) => void,
     ) {
         super()
+
         this.addComponent(new Transform(transform));
         this.addComponent(new BoxShape());
         this.addComponent(new OnPointerDown(()=>{
-            this.callback(`RANDOM`);
+            this.callback(`RANDOM`, true);
             this.highlightClick()
         }, {
             hoverText: text,
         }));
         this.setColor(`Black`);
+
         this.label = new Entity();
         this.label.addComponent(new Transform({
             position: new Vector3(0, 0.51, 0),
@@ -28,12 +34,14 @@ export class ZooTools_ControlBoardOutput extends Entity {
         this.label.getComponent(TextShape).fontSize = fontSize;
         this.label.setParent(this);
     }
+
     highlightClick(){
         this.setColor(`Blue`)
         Dash_Wait(() => {
             this.setColor(`Black`)
         }, 0.5)
     }
+    
     setColor(color: string){
         this.addComponentOrReplace(ZooTools_Materials[color]);
     }

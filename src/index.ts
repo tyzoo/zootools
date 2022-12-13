@@ -31,7 +31,7 @@ export { ZooTools_Metronome_ISubscription } from './entities/Metronome/types'
 export { ZooTools_ControlBoard } from './entities/ControlBoard/ControlBoard'
 export { ZooTools_ControlBoardButton } from './entities/ControlBoard/components/ControlBoardButton'
 export { ZooTools_ControlBoardMarker } from './entities/ControlBoard/components/ControlBoardMarker'
-export { ZooTools_ControlBoardOutput } from './entities/ControlBoard/components/ControlBoardOutput'
+export { ZooTools_MetronomeOutput as ZooTools_ControlBoardOutput } from './entities/Metronome/MetronomeOutput'
 
 /**
  * Systems

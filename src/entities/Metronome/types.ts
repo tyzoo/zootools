@@ -1,6 +1,6 @@
 export interface ZooTools_Command {
     name: string;
-    callback: (newState: any) => void;
+    callback: (newState: any, userTriggered: boolean) => void;
     active: boolean;
     weight?: number;
 }
@@ -10,7 +10,7 @@ export interface ZooTools_Metronome_IOnSubscription {
     name: string;
     on: string;
     number: number;
-    callback: (actionId: string) => void;
+    callback: (actionId: string, userTriggered: boolean) => void;
     active: boolean;
     actions: ZooTools_Command[];
 }
@@ -20,7 +20,7 @@ export interface ZooTools_Metronome_IEverySubscription {
     name: string;
     every: string;
     number: number;
-    callback: (actionId: string) => void;
+    callback: (actionId: string, userTriggered: boolean) => void;
     active: boolean;
     actions: ZooTools_Command[];
 }

@@ -1,10 +1,13 @@
 import { ZooTools_Metronome } from "./Metronome";
 
 export class ZooTools_MetronomeTapBPM {
+
     clicks: number[] = [];
     tapping: boolean = false;
     count: number = 0;
+    
     constructor(public metronome: ZooTools_Metronome){}
+
     tap(){
         this.count++;
         if(!this.tapping){
