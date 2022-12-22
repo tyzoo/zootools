@@ -3,6 +3,7 @@
 ///<reference lib='es2015.collection' />
 ///<reference lib='es2015.iterable' />
 
+
 /**
  * Classes
  */
@@ -100,3 +101,8 @@ export {
  * Other stuff
  */
 export { userInfo, initUserInfo } from './utils/userInfo'
+
+/**
+ * Future dash
+ */
+export { Dash_PaginatedList } from './entities/Dash_Future/PaginatedList/PaginatedList'
