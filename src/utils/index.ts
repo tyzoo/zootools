@@ -221,6 +221,20 @@ export function parse(token: string){
 }
 
 /**
+ * Repeat a string n times
+ * @param str   The string to repeat
+ * @param count Number of times to repeat
+ * @returns Repeated string
+ */
+export function repeat(str: string, count: number): string {
+    let result = "";
+    for (let i = 0; i < count; i++) {
+        result += str;
+    }
+    return result;
+}
+
+/**
  * All string utils
  */
 const string = {
@@ -236,7 +250,8 @@ const string = {
 	rgbToHex,
 	b2a,
 	a2b,
-	parse
+	parse,
+	repeat,
 }
 
 /**

@@ -71,6 +71,7 @@ export {
   b2a,
   a2b,
   parse,
+  repeat,
   //number
   randomInt,
   round,
