@@ -77,6 +77,7 @@ export class ZooTools_ControlBoard extends Entity {
         if (prev) engine.removeEntity(prev);
         const output = new ZooTools_MetronomeOutput(
             metronome,
+            sub.id,
             sub.name,
             fontSize,
             transform,

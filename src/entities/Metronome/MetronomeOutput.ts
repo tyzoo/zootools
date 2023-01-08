@@ -8,6 +8,7 @@ export class ZooTools_MetronomeOutput extends Entity {
 
     constructor(
         public metronome: ZooTools_Metronome,
+        public name: string,
         public text: string,
         public fontSize: number,
         public transform: TranformConstructorArgs,
