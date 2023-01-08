@@ -19,7 +19,8 @@ export class ZooTools_MetronomeOutput extends Entity {
         this.addComponent(new BoxShape());
         this.addComponent(new OnPointerDown(()=>{
             this.callback(`RANDOM`, true);
-            this.highlightClick()
+            this.highlightClick();
+            this.metronome.onUserTriggeredAction(this.text, "RANDOM");
         }, {
             hoverText: text,
         }));

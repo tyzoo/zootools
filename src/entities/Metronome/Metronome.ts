@@ -31,7 +31,7 @@ export class ZooTools_Metronome extends ZooTools_ControlBoard {
         public defaultBPM: number = 128,
         public onUserSetBPM: (bpm: number) => void = () => { },
         public onUserSetActive: (id: string, active: boolean) => void = () => { },
-        public onUserTriggeredAction: (id: string) => void = () => { },
+        public onUserTriggeredAction: (id: string, value: string) => void = () => { },
         public onUserStartedQueue: () => void = () => { },
         public onUserEndedQueue: () => void = () => { },
     ) {

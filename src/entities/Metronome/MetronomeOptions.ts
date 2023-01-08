@@ -62,6 +62,7 @@ export class ZooTools_MetronomeOptions extends Entity {
                                     action.callback(action.name, true);
                                     const output = this.metronome.outputs.get(name);
                                     if(output) output.highlightClick();
+                                    if(output) this.metronome.onUserTriggeredAction(this.id, action.name);
                                 },
                             }
                         })
