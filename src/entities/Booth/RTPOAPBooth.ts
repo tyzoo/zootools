@@ -18,11 +18,11 @@ export class RTPOAPBooth extends Entity {
         public endpoint: string = `https://api.reward.tools`,
     ) {
         super()
-        this.addComponent(new Transform({}));
+        this.addComponent(new Transform(props.transformArgs));
         executeTask(async () => {
             await this.loadUserData()
             this.booth = new Booth({
-                transformArgs: { position: new Vector3(8, 0, 8) },
+                transformArgs: { position: new Vector3(0, 0, 0) },
                 buttonText: `Claim this POAP`,
                 onButtonClick: () => {
                     void executeTask(async () => {
