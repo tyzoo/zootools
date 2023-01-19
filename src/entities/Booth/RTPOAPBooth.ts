@@ -4,8 +4,8 @@ import { signedFetch } from "@decentraland/SignedFetch";
 import { AlertSystem } from "src/index";
 import { Booth, IBoothProps } from "./Booth";
 
-export class RTBooth extends Entity {
-    booth: Booth;
+export class RTPOAPBooth extends Entity {
+    public booth: Booth;
     constructor(
         public props: Partial<IBoothProps>,
         public rewardId: string,
@@ -15,11 +15,11 @@ export class RTBooth extends Entity {
         this.addComponent(new Transform({}));
         this.booth = new Booth({
             transformArgs: { position: new Vector3(8, 0, 8) },
-            buttonText: `Get Attendance Token`,
+            buttonText: `Claim this POAP`,
             onButtonClick: () => {
                 void executeTask(async () => {
                     try {
-                        log("POAP", { rewardId })
+                        log("Claiming POAP", { rewardId })
                         alertSystem.new("Attempting to claim POAP... Please wait...")
                         const userData = await getUserData();
                         const realm = await getCurrentRealm();
@@ -36,14 +36,14 @@ export class RTBooth extends Entity {
                             body: JSON.stringify({
                                 address,
                                 displayName,
-                                rewardId,
+                                rewardId: this.rewardId,
                                 realm,
                                 timezone: new Date().toString(),
                             }),
                         })
                         let json = JSON.parse(response.text ?? "");
                         const { message } = json;
-                        log(json)
+                        log("Reward claim",{json})
                         alertSystem.new(message)
 
                     } catch (err: any) {
@@ -57,5 +57,8 @@ export class RTBooth extends Entity {
             ...props,
         })
         this.booth.setParent(this);
+    }
+    setRewardId(rewardId: string){
+        this.rewardId = rewardId;
     }
 }

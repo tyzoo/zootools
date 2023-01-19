@@ -3,7 +3,6 @@
 ///<reference lib='es2015.collection' />
 ///<reference lib='es2015.iterable' />
 
-
 /**
  * Classes
  */
@@ -25,7 +24,7 @@ export { Image } from './entities/Image'
 export { Model, IModelProps } from './entities/Model'
 export { ModelGroup, IModelGroupProps } from './entities/ModelGroup'
 export { POAPBooth, IPOAPBoothProps } from './entities/Booth/POAPBooth'
-export { RTBooth } from './entities/Booth/RTBooth'
+export { RTPOAPBooth } from './entities/Booth/RTPOAPBooth'
 export { Sound } from './entities/Sound'
 export { WearableBooth, IWearableBoothProps } from './entities/Booth/WearableBooth'
 export { ZooTools_Metronome } from './entities/Metronome/Metronome'
