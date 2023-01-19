@@ -51,9 +51,9 @@ export class RTPOAPBooth extends Entity {
                             })
                             let json = JSON.parse(response.text ?? "");
                             const { message } = json;
-                            log("Reward claim",{json})
+                            log("Reward claim", { json })
                             alertSystem.new(message)
-    
+
                         } catch (err: any) {
                             alertSystem.new(err?.message ?? `An error has occcured`)
                         }
@@ -65,43 +65,52 @@ export class RTPOAPBooth extends Entity {
                 ...props,
             })
             this.initialized = true;
-            if(this?.rewardId){
+            if (this?.rewardId) {
                 this.setRewardId(this.rewardId);
             }
             this.booth.setParent(this);
         })
     }
-    async loadUserData(){
+    async loadUserData() {
         this.userData = await getUserData();
         this.realm = await getCurrentRealm();
     }
-    async getReward(rewardId: string){
-        const address = this.userData?.publicKey;
-        const displayName = this.userData?.displayName;
-        const callUrl = `${this.endpoint}/v1/quest/fetch`;
-        const response = await signedFetch(callUrl, {
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-          body: JSON.stringify({
-            address,
-            displayName,
-            rewardId,
-          }),
+    getReward(rewardId: string): Promise<any> {
+        return new Promise((resolve) => {
+            executeTask(async () => {
+                try {
+                    const address = this.userData?.publicKey;
+                    const displayName = this.userData?.displayName;
+                    const callUrl = `${this.endpoint}/v1/quest/fetch`;
+                    const response = await signedFetch(callUrl, {
+                        headers: { "Content-Type": "application/json" },
+                        method: "POST",
+                        body: JSON.stringify({
+                            address,
+                            displayName,
+                            rewardId,
+                        }),
+                    })
+                    resolve(JSON.parse(response.text ?? ""));
+                }catch {
+                    resolve(null);
+                }
+            })
         })
-        return JSON.parse(response.text ?? "");
     }
-    async setRewardId(rewardId: string){
-        if(this.initialized){
+    async setRewardId(rewardId: string) {
+        if (this.initialized) {
             this.rewardId = rewardId;
-            const response = await this.getReward(rewardId);
-            this.rewardData = response?.data;
+            const reward = await this.getReward(rewardId);
+            if(!reward) this.alertSystem.new(`Reward not found`)
+            this.rewardData = reward?.data;
             log(`Got Reward`, this.rewardData)
             this.booth.setImage(
                 this.rewardData.imageUrl,
-                `https://poap.gallery/event/${this.rewardData.event_id}`, 
+                `https://poap.gallery/event/${this.rewardData.event_id}`,
                 `View Event on POAP.gallery`
             )
-        }else{
+        } else {
             log(`RTPOAPBooth not initialized. Waiting 5 seconds to reattempt..`)
             Dash_Wait(() => {
                 this.setRewardId(rewardId);
