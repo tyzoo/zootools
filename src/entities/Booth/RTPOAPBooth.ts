@@ -94,6 +94,7 @@ export class RTPOAPBooth extends Entity {
         if(this.initialized){
             this.rewardId = rewardId;
             this.rewardData = await this.getReward(rewardId);
+            log(`Got Reward`, this.rewardData)
             this.booth.setImage(
                 this.rewardData.imageUrl,
                 `https://poap.gallery/event/${this.rewardData.event_id}`, 
