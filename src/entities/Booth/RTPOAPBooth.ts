@@ -88,12 +88,13 @@ export class RTPOAPBooth extends Entity {
             rewardId,
           }),
         })
-        return JSON.parse(response.text ?? "")
+        return JSON.parse(response.text ?? "");
     }
     async setRewardId(rewardId: string){
         if(this.initialized){
             this.rewardId = rewardId;
-            this.rewardData = await this.getReward(rewardId);
+            const response = await this.getReward(rewardId);
+            this.rewardData = response?.data;
             log(`Got Reward`, this.rewardData)
             this.booth.setImage(
                 this.rewardData.imageUrl,
