@@ -52,9 +52,12 @@ export class RTPOAPBooth extends Booth {
                             rewardId,
                         }),
                     })
-                    resolve(JSON.parse(response.text ?? ""));
-                } catch {
-                    resolve(null);
+                    const json = JSON.parse(response.text ?? "");
+                    if(response.status !== 200) throw Error(json?.message);
+                    resolve(json)
+                } catch (err: any) {
+                    log(`RTPOAPBooth Fetch Error: ${err.message}`)
+                    resolve(null)
                 }
             })
         })
