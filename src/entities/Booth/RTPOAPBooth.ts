@@ -104,7 +104,6 @@ export class RTPOAPBooth extends Booth {
 
     async setRewardId(rewardId: string) {
         const reward = await this.getReward(rewardId);
-        log({ reward })
         if (reward == null) {
             this.alertSystem.new(`Reward not found`);
             return;
