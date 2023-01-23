@@ -28,6 +28,7 @@ export class Booth extends Entity  {
 	public image: Entity | undefined;
 	public item: Entity | undefined;
 	public cdn: string;
+	public onButtonClick: () => void;
 	constructor(
 	  public props: IBoothProps
 	){
@@ -52,6 +53,7 @@ export class Booth extends Entity  {
 		scale: new Vector3(-0.5,0.57,0.5),
 		rotation: new Quaternion().setEuler(0,270,0)
 	  }))
+	  this.onButtonClick = props.onButtonClick;
 	  if(!props.disableCylinder){
 		this.cylinder.addComponent(new CylinderShape());
 		this.cylinder.addComponent(new Material())
@@ -75,7 +77,7 @@ export class Booth extends Entity  {
 		this.button.addComponent(new GLTFShape(props.buttonModelPath))
 		this.button.setParent(this)
 		this.button.addComponent(new OnPointerDown(()=>{
-		  props.onButtonClick();
+		  this.onButtonClick();
 		  this.button.getComponent(Animator).getClip('Button_Action').play();
 		  Dash_Wait(()=>{
 			this.button.getComponent(Animator).getClip('Button_Action').stop();
@@ -85,7 +87,7 @@ export class Booth extends Entity  {
 		}))
 	  }else{
 		  this.booth.addComponent(new OnPointerDown(()=>{
-			props.onButtonClick();
+			this.onButtonClick();
 		  }, {
 			hoverText: props.buttonText,
 		  }))
