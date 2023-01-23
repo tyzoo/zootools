@@ -31,6 +31,7 @@ export class RTPOAPBooth extends Booth {
             await this.loadUserData()
             this.debouncer = new CallbackDebouncer(this.getButtonClick, 5000, false);
             this.onButtonClick = () => this.debouncer.execute();
+            this.initialized = true;
         })
     }
 
@@ -67,7 +68,6 @@ export class RTPOAPBooth extends Booth {
     }
 
     async getButtonClick() {
-
         void executeTask(async () => {
             try {
                 this.debug && log("Claiming POAP", { rewardId: this.rewardId })
@@ -113,21 +113,20 @@ export class RTPOAPBooth extends Booth {
             return;
         }
         if (!this.initialized) {
-            this.initialized = true;
-            this.rewardId = rewardId;
-            this.rewardData = reward?.data;
-            this.debug && log(`Got Reward`, this.rewardData)
-            this.setImage(
-                this.rewardData.imageUrl,
-                `https://poap.gallery/event/${this.rewardData.event_id}`,
-                `View Event on POAP.gallery`
-            )
-        } else {
             this.debug && log(`RTPOAPBooth not initialized. Waiting 5 seconds to reattempt..`)
             Dash_Wait(() => {
                 this.setRewardId(rewardId);
             }, 5)
+            return;
         }
+        this.rewardId = rewardId;
+        this.rewardData = reward?.data;
+        this.debug && log(`Got Reward`, this.rewardData)
+        this.setImage(
+            this.rewardData.imageUrl,
+            `https://poap.gallery/event/${this.rewardData.event_id}`,
+            `View Event on POAP.gallery`
+        )
     }
     
 }
