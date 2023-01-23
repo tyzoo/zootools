@@ -2,7 +2,7 @@ import { getCurrentRealm, Realm } from "@decentraland/EnvironmentAPI";
 import { getUserData, UserData } from "@decentraland/Identity";
 import { signedFetch } from "@decentraland/SignedFetch";
 import { Dash_Wait } from "dcldash";
-import { AlertSystem } from "src/index";
+import { AlertSystem, CallbackDebouncer } from "src/index";
 import { Booth, IBoothProps } from "./Booth";
 
 export class RTPOAPBooth extends Booth {
@@ -10,6 +10,7 @@ export class RTPOAPBooth extends Booth {
     public userData!: UserData | null;
     public realm!: Realm | undefined;
     public rewardData!: any;
+    public debouncer!: CallbackDebouncer;
     constructor(
         public rtProps: Partial<IBoothProps>,
         public alertSystem: AlertSystem,
@@ -18,17 +19,18 @@ export class RTPOAPBooth extends Booth {
         public debug: boolean = false,
     ) {
         super({
-            ...rtProps,
             transformArgs: rtProps.transformArgs!,
             buttonText: `Claim this POAP`,
             onButtonClick: () => { },
             wrapTexturePath: `poap_assets/images/wrap1.png`,
             dispenserModelPath: `poap_assets/models/POAP_dispenser.glb`,
             buttonModelPath: `poap_assets/models/POAP_button.glb`,
+            ...rtProps,
         })
         executeTask(async () => {
             await this.loadUserData()
-            this.onButtonClick = this.getButtonClick;
+            this.debouncer = new CallbackDebouncer(this.getButtonClick, 5000, false);
+            this.onButtonClick = () => this.debouncer.execute();
         })
     }
 
@@ -65,6 +67,7 @@ export class RTPOAPBooth extends Booth {
     }
 
     async getButtonClick() {
+
         void executeTask(async () => {
             try {
                 this.debug && log("Claiming POAP", { rewardId: this.rewardId })
