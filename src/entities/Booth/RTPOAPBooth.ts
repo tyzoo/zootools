@@ -11,13 +11,14 @@ export class RTPOAPBooth extends Booth {
     public realm!: Realm | undefined;
     public rewardData!: any;
     constructor(
-        public rtProps: IBoothProps,
+        public rtProps: Partial<IBoothProps>,
         public alertSystem: AlertSystem,
         public rewardId?: string,
         public endpoint: string = `https://api.reward.tools`,
     ) {
         super({
             ...rtProps,
+            transformArgs: rtProps.transformArgs!,
             buttonText: `Claim this POAP`,
             onButtonClick: () => { },
             wrapTexturePath: `poap_assets/images/wrap1.png`,
