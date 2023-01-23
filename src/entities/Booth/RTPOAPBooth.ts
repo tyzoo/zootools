@@ -101,10 +101,13 @@ export class RTPOAPBooth extends Booth {
     }
 
     async setRewardId(rewardId: string) {
+        const reward = await this.getReward(rewardId);
+        if (!reward) {
+            this.alertSystem.new(`Reward not found`);
+            return;
+        }
         if (this.initialized) {
             this.rewardId = rewardId;
-            const reward = await this.getReward(rewardId);
-            if (!reward) this.alertSystem.new(`Reward not found`)
             this.rewardData = reward?.data;
             log(`Got Reward`, this.rewardData)
             this.setImage(
