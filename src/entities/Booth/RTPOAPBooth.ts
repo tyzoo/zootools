@@ -32,6 +32,9 @@ export class RTPOAPBooth extends Booth {
             this.debouncer = new CallbackDebouncer(this.getButtonClick, 5000, false);
             this.onButtonClick = () => this.debouncer.execute();
             this.initialized = true;
+            if (this?.rewardId) {
+                this.setRewardId(this.rewardId);
+            }
         })
     }
 
@@ -96,14 +99,10 @@ export class RTPOAPBooth extends Booth {
                 const { message } = json;
                 this.debug && log("Reward claim", { json })
                 this.alertSystem.new(message)
-
             } catch (err: any) {
                 this.alertSystem.new(err?.message ?? `An error has occcured`)
             }
         })
-        if (this?.rewardId) {
-            this.setRewardId(this.rewardId);
-        }
     }
 
     async setRewardId(rewardId: string) {
