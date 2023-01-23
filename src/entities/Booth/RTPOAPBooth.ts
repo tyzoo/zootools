@@ -15,6 +15,7 @@ export class RTPOAPBooth extends Booth {
         public alertSystem: AlertSystem,
         public rewardId?: string,
         public endpoint: string = `https://api.reward.tools`,
+        public debug: boolean = false,
     ) {
         super({
             ...rtProps,
@@ -56,7 +57,7 @@ export class RTPOAPBooth extends Booth {
                     if(response.status !== 200) throw Error(json?.message);
                     resolve(json)
                 } catch (err: any) {
-                    log(`RTPOAPBooth Fetch Error: ${err.message}`)
+                    this.debug && log(`RTPOAPBooth Fetch Error: ${err.message}`)
                     resolve(null)
                 }
             })
@@ -66,7 +67,7 @@ export class RTPOAPBooth extends Booth {
     async getButtonClick() {
         void executeTask(async () => {
             try {
-                log("Claiming POAP", { rewardId: this.rewardId })
+                this.debug && log("Claiming POAP", { rewardId: this.rewardId })
                 this.alertSystem.new("Attempting to claim POAP... Please wait...")
                 const userData = await getUserData();
                 const realm = await getCurrentRealm();
@@ -90,7 +91,7 @@ export class RTPOAPBooth extends Booth {
                 })
                 let json = JSON.parse(response.text ?? "");
                 const { message } = json;
-                log("Reward claim", { json })
+                this.debug && log("Reward claim", { json })
                 this.alertSystem.new(message)
 
             } catch (err: any) {
@@ -112,14 +113,14 @@ export class RTPOAPBooth extends Booth {
             this.initialized = true;
             this.rewardId = rewardId;
             this.rewardData = reward?.data;
-            log(`Got Reward`, this.rewardData)
+            this.debug && log(`Got Reward`, this.rewardData)
             this.setImage(
                 this.rewardData.imageUrl,
                 `https://poap.gallery/event/${this.rewardData.event_id}`,
                 `View Event on POAP.gallery`
             )
         } else {
-            log(`RTPOAPBooth not initialized. Waiting 5 seconds to reattempt..`)
+            this.debug && log(`RTPOAPBooth not initialized. Waiting 5 seconds to reattempt..`)
             Dash_Wait(() => {
                 this.setRewardId(rewardId);
             }, 5)
