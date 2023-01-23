@@ -97,7 +97,6 @@ export class RTPOAPBooth extends Booth {
                 this.alertSystem.new(err?.message ?? `An error has occcured`)
             }
         })
-        this.initialized = true;
         if (this?.rewardId) {
             this.setRewardId(this.rewardId);
         }
@@ -105,11 +104,13 @@ export class RTPOAPBooth extends Booth {
 
     async setRewardId(rewardId: string) {
         const reward = await this.getReward(rewardId);
-        if (!reward) {
+        log({ reward })
+        if (reward == null) {
             this.alertSystem.new(`Reward not found`);
             return;
         }
-        if (this.initialized) {
+        if (!this.initialized) {
+            this.initialized = true;
             this.rewardId = rewardId;
             this.rewardData = reward?.data;
             log(`Got Reward`, this.rewardData)
