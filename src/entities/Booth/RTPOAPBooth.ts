@@ -29,7 +29,7 @@ export class RTPOAPBooth extends Booth {
         })
         executeTask(async () => {
             await this.loadUserData()
-            this.debouncer = new CallbackDebouncer(this.getButtonClick, 5000, false);
+            this.debouncer = new CallbackDebouncer(() => this.getButtonClick(), 5000, false);
             this.onButtonClick = () => this.debouncer.execute();
             this.initialized = true;
             if (this?.rewardId) {

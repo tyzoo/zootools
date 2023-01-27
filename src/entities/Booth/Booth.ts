@@ -20,9 +20,9 @@ export interface IBoothProps {
 
 export class Booth extends Entity  {
 	public name = `${makeid(5)}`;
+	public button = new Entity(`button-${this.name}`);
 	private booth = new Entity(`booth-${this.name}`);
 	private cylinder = new Entity(`cylinder-${this.name}`);
-	private button = new Entity(`button-${this.name}`);
 	private wrapTexture: Texture;
 	private rotateSystem: RotateSystem;
 	public image: Entity | undefined;
