@@ -24,7 +24,6 @@ import { Image } from './entities/Image'
 import { Model, IModelProps } from './entities/Model'
 import { ModelGroup, IModelGroupProps } from './entities/ModelGroup'
 import { POAPBooth, IPOAPBoothProps } from './entities/Booth/POAPBooth'
-import { RTPOAPBooth } from './entities/Booth/RTPOAPBooth'
 import { Sound } from './entities/Sound'
 import { WearableBooth, IWearableBoothProps } from './entities/Booth/WearableBooth'
 import { ZooTools_Metronome } from './entities/Metronome/Metronome'
@@ -127,7 +126,6 @@ export {
   Model, IModelProps,
   ModelGroup, IModelGroupProps,
   POAPBooth, IPOAPBoothProps,
-  RTPOAPBooth,
   Sound,
   WearableBooth, IWearableBoothProps,
   ZooTools_Metronome,

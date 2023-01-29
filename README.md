@@ -56,28 +56,7 @@ To use any of the helpers provided by this library:
 
 
 ## Usage
-
-### Reward Tools Decentraland POAP Booth
-Spawn a Decentraland POAP booth compatible with [https://reward.tools](https://reward.tools)
-
-   ```ts
-   import { RTPOAPBooth, AlertSystem } from "zootools";
-   const alertSystem = new AlertSystem()
-   const poapBooth = new RTPOAPBooth(
-      {
-         transformArgs: {
-               position: new Vector3(4,0,4),
-         },
-      },
-      alertSystem,
-      // "rewardMongoId", //set rewardId here
-   )
-   poapBooth.setRewardId("rewardMongoId"); // or here
-   engine.addEntity(poapBooth);
-
-   ```
-
-Be sure to add the [poap_assets](https://github.com/tyzoo/tyzoo.github.io/tree/master/assets/poap_assets) folder to the root of your scene
+Coming soon
 
 ### < Docs coming soon >
 
