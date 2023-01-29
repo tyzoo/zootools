@@ -11,7 +11,8 @@ export default {
   input: 'src/index.ts',
   context: 'globalThis',
   external: [
-    '@decentraland',
+    /@dcl\//, 
+    /@decentraland\//, 
     '@decentraland/Identity',
     '@decentraland/EnvironmentAPI',
     '@decentraland/web3-provider',
