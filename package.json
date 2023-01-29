@@ -40,12 +40,12 @@
   },
   "peerDependencies": {
     "dcldash": "latest",
-    "@decentraland/EthereumController": "latest",
-    "@decentraland/EnvironmentAPI": "latest",
-    "@decentraland/Identity": "latest",
-    "@decentraland/web3-provider": "latest",
-    "@decentraland/SignedFetch": "latest",
-    "@decentraland/RestrictedActions": "latest"
+    "@decentraland/EthereumController": "",
+    "@decentraland/EnvironmentAPI": "",
+    "@decentraland/Identity": "",
+    "@decentraland/web3-provider": "",
+    "@decentraland/SignedFetch": "",
+    "@decentraland/RestrictedActions": ""
   },
   "engines": {
     "node": ">=16.0.0",
