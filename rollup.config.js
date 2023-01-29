@@ -15,9 +15,18 @@ export default {
     {
       file: packageJson.main,
       format: 'amd',
+      sourceMap: true,
       amd: {
         id: packageJson.name
       },
+      plugins: [],
+    },
+    {
+      file: packageJson.main,
+      format: 'es',
+      sourcemap: true,
+      file: 'dist/bundle.js',
+      plugins: [],
     },
   ],
   plugins: [
@@ -31,6 +40,25 @@ export default {
       exclude: 'node_modules',
       ignoreGlobal: true,
     }),
-    PROD && terser({ format: { comments: false } }),
+    PROD && terser({
+      mangle: {
+        toplevel: false,
+        module: false,
+        eval: true,
+        keep_classnames: true,
+        keep_fnames: true,
+        reserved: ['global', 'globalThis', 'define']
+      },
+      compress: {
+        passes: 2
+      },
+      format: {
+        ecma: 5,
+        comments: /^!/,
+        beautify: false
+      },
+      toplevel: false
+      // output: { quote_style: 1 },
+    })
   ],
 };
