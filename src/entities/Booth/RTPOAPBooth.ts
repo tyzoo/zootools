@@ -2,7 +2,8 @@ import { getCurrentRealm, Realm } from "@decentraland/EnvironmentAPI";
 import { getUserData, UserData } from "@decentraland/Identity";
 import { signedFetch } from "@decentraland/SignedFetch";
 import { Dash_Wait } from "dcldash";
-import { AlertSystem, CallbackDebouncer } from "src/index";
+import { AlertSystem } from "../../classes/AlertSystem";
+import { CallbackDebouncer } from "../../classes/CallbackDebouncer";
 import { Booth, IBoothProps } from "./Booth";
 
 export class RTPOAPBooth extends Booth {

@@ -10,12 +10,12 @@ const PROD = !!process.env.CI
 export default {
   input: 'src/index.ts',
   context: 'globalThis',
-  external: ['@decentraland','decentraland-ecs'],
+  external: ['@decentraland','decentraland-ecs','dcldash'],
   output: [
     {
       file: packageJson.main,
       format: 'amd',
-      sourceMap: true,
+      sourcemap: true,
       amd: {
         id: packageJson.name
       },
