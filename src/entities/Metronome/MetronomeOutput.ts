@@ -1,6 +1,6 @@
 import { Dash_Wait } from "dcldash";
-import { ZooTools_Metronome } from "src/index";
 import { ZooTools_Materials } from "../../utils/Materials";
+import { ZooTools_Metronome } from "./Metronome";
 
 export class ZooTools_MetronomeOutput extends Entity {
 

@@ -1,6 +1,6 @@
 import { ZooTools_Metronome } from "../../../entities/Metronome/Metronome";
 import { ZooTools_Metronome_ISubscription } from "../../../entities/Metronome/types";
-
+declare const Map: any;
 export interface IZooTools_Metronome_DCLConnect_Command {
     id: string;
     callback: (value: string) => any;
@@ -11,7 +11,8 @@ export interface IZooTools_Metronome_DCLConnect_Assign_Command extends IZooTools
 }
 
 export class ZooTools_Metronome_DCLConnect_Assign_Commands_Instance {
-    public commands: Map<string, IZooTools_Metronome_DCLConnect_Assign_Command> = new Map()
+    // public commands: Map<string, IZooTools_Metronome_DCLConnect_Assign_Command> = new Map()
+    public commands: typeof Map = new Map()
     constructor(public metronome: ZooTools_Metronome, cmds?: IZooTools_Metronome_DCLConnect_Assign_Command[]) {
         cmds && this.setCommands(cmds);
     }
