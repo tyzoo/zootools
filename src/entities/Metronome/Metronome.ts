@@ -4,7 +4,7 @@ import { ZooTools_ControlBoardButton } from "../ControlBoard/components/ControlB
 import { ZooTools_MetronomeTapBPM } from "./MetronomeTapBPM";
 import { ZooTools_Metronome_ISubscription } from "./types";
 import { Dash_PaginatedList } from "../Dash_Future/PaginatedList/PaginatedList";
-import { ZooTools_Metronome_DCLConnect_Assign_Commands_Instance } from "src/dclconnect/v3/plugins/ZootoolsMetronomeUtil";
+import { ZooTools_Metronome_DCLConnect_Assign_Commands_Instance } from "../../dclconnect/v3/plugins/ZootoolsMetronomeUtil";
 import weightedRandom from "./WeightedRandom";
 
 export class ZooTools_Metronome extends ZooTools_ControlBoard {
