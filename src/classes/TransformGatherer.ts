@@ -29,7 +29,7 @@ export class TransformGatherer {
 			ActionButton.PRIMARY,
 			true,
 			event => {
-				log(this.get())
+				this.log(this.get())
 			}
 		);
 
@@ -42,7 +42,7 @@ export class TransformGatherer {
 		tf.lookAt(origin)
 		const rotation = tf.rotation
 		this.rotations.push(rotation.eulerAngles)
-		log(`added transform !`)
+		this.log(`added transform !`)
 	}
 
 	public get(): [position: Vector3, rotation: Vector3][]{
@@ -56,10 +56,11 @@ export class TransformGatherer {
 
 	public unsubscribe(): void{
 		Input.instance.unsubscribe('BUTTON_DOWN', ActionButton.SECONDARY,(e:any)=>{
-			log("unsubscribled secondary",e)
+			this.log("unsubscribled secondary",e)
 		})
 		Input.instance.unsubscribe('BUTTON_DOWN', ActionButton.PRIMARY,(e:any)=>{
-			log("unsubscribled primary",e)
+			this.log("unsubscribled primary",e)
 		})
 	}
+	private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ TransformGatherer ]', ...props)}
 }

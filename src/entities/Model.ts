@@ -34,7 +34,7 @@ export class Model extends Entity {
 		this.addComponent(gltfShape);
 		this.addComponent(new Transform(this.props.transform));
 		if (this.props.host) this.setParent(this.props.host);
-		log(`ZooTools: Created new Model entity ${this.name}`);
+		this.log(`Created new Model entity ${this.name}`);
 	}
 	public setPosition(vec3: Vector3 | [x: number, y: number, z: number]): void {
 		if (vec3 instanceof Vector3) {
@@ -81,7 +81,7 @@ export class Model extends Entity {
 			this.setParent(this.props.host);
 			_host = this.props.host;
 		} else {
-			log(`Model ${this.name} has no host`);
+			this.log(`Model ${this.name} has no host`);
 		}
 		if (_host && _host.alive) if (!this.alive) engine.addEntity(this);
 	}
@@ -90,4 +90,6 @@ export class Model extends Entity {
 		engine.removeEntity(this);
 		this.setParent(null);
 	}
+
+	private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ Model ]', ...props)}
 }

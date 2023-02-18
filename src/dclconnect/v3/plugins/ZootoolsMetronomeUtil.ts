@@ -48,7 +48,7 @@ export class ZooTools_Metronome_DCLConnect_Assign_Commands_Instance {
                 }
             });
         } catch (err: any) {
-            log(`ZooToolsMetronome Apply Error: ${err.message}`);
+            this.log(`Apply Error: ${err.message}`);
         }
     }
     subscribeOrUpdate(commandSet: string) {
@@ -56,8 +56,8 @@ export class ZooTools_Metronome_DCLConnect_Assign_Commands_Instance {
         if (application) {
             this.metronome.subscribeOrUpdate(application);
         } else {
-            log(`ZooToolsMetronome failed to subscribe`)
+            this.log(`failed to subscribe`)
         }
     }
-
+	private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ Metronome ]', ...props)}
 }

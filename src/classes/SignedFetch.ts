@@ -2,7 +2,7 @@ export class SignedFetchAPI {
     constructor(private baseURL: string, private signedFetch: (url: string, init?: any) => Promise<any>){}
     public request(method:"GET"|"POST"|"PUT"|"DELETE", path: string, body:any = {}): Promise<unknown>{
       const _path = this.baseURL + path
-      log(`API Request: ${method} ${_path}`)
+      this.log(`API Request: ${method} ${_path}`)
       return new Promise((resolve, reject)=>{
         try {
           executeTask(async ()=>{
@@ -25,18 +25,19 @@ export class SignedFetchAPI {
             let json: any;
             if(response.text) json = JSON.parse(response.text);
             if(response.ok){
-                log(`API Request Success: ${json.message}`);
+                this.log(`API Request Success: ${json.message}`);
                 resolve(json);
             }else{
                 const m = `API Response was not ok`;
-                log(m);
+                this.log(m);
                 resolve(json ? json : m);
             }
           })
         }catch(err:any){
-          log(`API Request error occurred`, err);
+          this.log(`API Request error occurred`, err);
           reject(err);
         }
       })
     }
+    private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ SignedFetch ]', ...props)}
 }

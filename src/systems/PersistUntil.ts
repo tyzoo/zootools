@@ -17,8 +17,9 @@ export class PersistUntil implements ISystem {
 			if (this.checkIfTrue()) {
 				this.onDone();
 				engine.removeSystem(this.system);
-                log(`ZooTools: OnDone`)
+                this.log(`OnDone`)
 			}
 		}
 	}
+	private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ PersistUntil ]', ...props)}
 }

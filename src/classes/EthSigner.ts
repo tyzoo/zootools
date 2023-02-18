@@ -31,9 +31,10 @@ export class ETHSigner {
                     resolve({message, signature});
                 })
             }catch(err:any){
-                log(`ETHSigner error`, err)
+                this.log(`Error`, err)
                 reject(`An error occurred`)
             }
         })
     }
+    private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ ETHSigner ]', ...props)}
 }

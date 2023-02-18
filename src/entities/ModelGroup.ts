@@ -63,7 +63,7 @@ export class ModelGroup extends Entity {
 			this.setParent(this.props.host);
 			_host = this.props.host;
 		} else {
-			log(`ModelGroup ${this.name} has no host`);
+			this.log(`ModelGroup ${this.name} has no host`);
 		}
 		if (_host && _host.alive) if (!this.alive) engine.addEntity(this);
 	}
@@ -72,4 +72,5 @@ export class ModelGroup extends Entity {
 		engine.removeEntity(this);
 		this.setParent(null);
 	}
+	private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ ModelGroup ]', ...props)}
 }

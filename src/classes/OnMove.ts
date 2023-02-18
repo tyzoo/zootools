@@ -6,7 +6,7 @@ export class OnMove {
 	public movement: boolean = false;
 	public queue: Function[] = [];
 	public cameraChecker = new PersistUntil(this.hasMoved, 0.5, () => {
-		log(`ZooTools: MOVEMENT DETECTED!  ${this.queue.length} delayed items`);
+		this.log(`ZooTools: MOVEMENT DETECTED!  ${this.queue.length} delayed items`);
 		this.movement = true;
 		engine.removeSystem(this.cameraChecker);
 		this.queue.forEach(fn => {
@@ -74,4 +74,5 @@ export class OnMove {
 			return false;
 		}
 	}
+	private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ OnMove ]', ...props)}
 }

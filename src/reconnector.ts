@@ -46,8 +46,7 @@ export class Reconnector {
                     this.eventManager.fireEvent(new ConnectionSuccessEvent());
                     resolve(true);
                 }catch(e:any){
-                    log(`ZooTools: Connection Error: `, e.message)
-                    log(e)
+                    this.log(`Connection Error: `, e.message)
                     this.onConnectionLost(e.message); 
                     resolve(false)
                 }
@@ -77,12 +76,13 @@ export class Reconnector {
         let timeout = this.attempts * this.attemptDelay * this.attemptDelayMultipler
         if(timeout > this.maxDelay) timeout = this.maxDelay
         let wait = timeout / 1000;
-        log(`ZooTools: Waiting ${wait} seconds for next attempt`)
+        this.log(`Waiting ${wait} seconds for next attempt`)
         this.eventManager.fireEvent(new ConnectionErrorEvent(errorMsg, wait));
         Dash_Wait(()=>{ 
             this.connectWrapper(); 
         },wait);
     }
+    private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ Reconnector ]', ...props)}
 }
 
 // const eventManager = new EventManager();

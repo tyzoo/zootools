@@ -147,7 +147,7 @@ export interface DynamicImageAnimations {
 
     scaleIn(duration: number, ease?: (n: number) => number, callback?: () => void, delay?: number ){
         let animate = () => {
-            log(new UIValue(this.defaultSettings.height.type == UIValueType.PERCENT ? '0%' : 0))
+            this.log(new UIValue(this.defaultSettings.height.type == UIValueType.PERCENT ? '0%' : 0))
             this.rect.visible = true
             this.animations.width = new DynamicImageAnimation({
                 from: new UIValue(this.defaultSettings.height.type == UIValueType.PERCENT ? '0%' : 0),
@@ -208,4 +208,6 @@ export interface DynamicImageAnimations {
     isPercent(value: any) : boolean{
         return value instanceof UIValue ? value.type == UIValueType.PERCENT : false
     }
+
+    private log(...props:any){ log('[ 🦁 ZooTools 🐒 ]', '[ DynamicContainerRect ]', ...props)}
  }
