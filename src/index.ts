@@ -13,6 +13,7 @@ export { SignedFetchAPI } from './classes/SignedFetch'
 export { SoundPlayer } from './classes/SoundPlayer'
 export { TransformGatherer } from './classes/TransformGatherer'
 export { UserInfo } from './classes/UserInfo'
+export { ZoneMaker } from './classes/ZoneMaker'
 
 /**
  * Entities
@@ -32,16 +33,18 @@ export { ZooTools_ControlBoard } from './entities/ControlBoard/ControlBoard'
 export { ZooTools_ControlBoardButton } from './entities/ControlBoard/components/ControlBoardButton'
 export { ZooTools_ControlBoardMarker } from './entities/ControlBoard/components/ControlBoardMarker'
 export { ZooTools_MetronomeOutput as ZooTools_ControlBoardOutput } from './entities/Metronome/MetronomeOutput'
+export { VideoCountdown } from './classes/VideoCountdown'
+export { ZooTools_ToggleEntity } from './entities/ToggleEntity'
 
 /**
  * Systems
- */ 
+ */
 export { ISystemCallback } from './systems/ISystemCallback'
 export { Interval } from './systems/Interval'
 export { PersistUntil } from './systems/PersistUntil'
 export { RotateSystem } from './systems/RotateSystem'
 export { ZooTools_AutoDanceZone, ZooTools_AutoEmoter, AutoEmoteSystem } from './systems/Emote'
-
+export { ZooTools_ToggleSystem } from './systems/ToggleSystem'
 /**
  * Camera Utils
  */
@@ -49,7 +52,7 @@ export { getCameraCompassDirection, getCompassDirection, CompassDirections } fro
 
 /**
  * UI
- */ 
+ */
 export { ImageSlicer, IImgSlice, IImgSliceProps, IImgSliceData } from './ui/classes/ImageSlicer'
 export { WrappedDynamicContainer, IWrappedDynamicContainerOptions, defaultWrappedDynamicContainerProps } from './ui/classes/WrappedDynamicContainer'
 export { WrappedDynamicImage, IWrappedDynamicImageOptions, defaultWrappedDynamicImageProps } from './ui/classes/WrappedDynamicImage'
@@ -60,7 +63,7 @@ export { noSign } from './ui/images/noSign'
  * Various Utils
  */
 
-export { 
+export {
   //string
   removeLineBreaks,
   removeZeroWidthSpaces,
