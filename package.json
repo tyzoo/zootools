@@ -1,6 +1,6 @@
 {
   "name": "zootools",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "description": "ZooTools Decentraland SDK Library",
   "main": "./dist/index.js",
   "scripts": {
