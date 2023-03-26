@@ -115,7 +115,6 @@ export class ZoneMaker extends Entity {
   }
 
   onStop() {
-
     // if(this.prompt) this.prompt.close();
     // this.prompt = new ui.FillInPrompt("Name your Zone", (zoneName:string)=>{
     const { position, scale, rotation } = this.getComponent(Transform);
