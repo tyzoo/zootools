@@ -9,6 +9,7 @@ export interface IBoothProps {
 	wrapTexturePath: string,
 	dispenserModelPath: string,
 	buttonModelPath: string,
+	alphaSrcTxtPath: string,
 	useHostedAssets?: boolean,
 	disableCylinder?: boolean,
 	disablePreview?: boolean,
@@ -33,12 +34,13 @@ export class Booth extends Entity {
 		public props: IBoothProps
 	) {
 		super()
-		if (props.useHostedAssets === undefined) props.useHostedAssets = true;
+		if (props.useHostedAssets === undefined) props.useHostedAssets = false;
 		if (props.disableCylinder === undefined) props.disableCylinder = false;
 		if (props.useBoothAsButton === undefined) props.useBoothAsButton = false;
 		if (props.disablePreview === undefined) props.disablePreview = false;
 		if (props.boothRotationDir === undefined) props.boothRotationDir = 'right';
 		if (props.itemRotationDir === undefined) props.itemRotationDir = 'left';
+		if (props.alphaSrcTxtPath === undefined) props.alphaSrcTxtPath = 'images/alpha-circle.png';
 		this.cdn = props.useHostedAssets ? `https://tyzoo.github.io/assets/` : ``;
 		this.wrapTexture = new Texture(`${this.cdn}${props.wrapTexturePath}`)
 		this.addComponent(new Transform(props.transformArgs));
@@ -101,7 +103,7 @@ export class Booth extends Entity {
 		if (!path) return;
 		if (this.props.disablePreview) return;
 		const texture = new Texture(path)
-		const circle = new Texture(`${this.cdn}images/alpha-circle.png`);
+		const circle = new Texture(`${this.cdn}${this.props.alphaSrcTxtPath}`);
 		if (!this.image) {
 			this.image = new Entity(`image-${this.name}`);
 			this.image.addComponent(new PlaneShape());
